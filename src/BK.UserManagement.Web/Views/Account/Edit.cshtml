@@ -1,0 +1,15 @@
+@using BK.UserManagement.Web.Controllers
+@model DbUser  
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+<div>
+    <label>User Id</label> @Model.USER_ID
+</div>
+
+<div>
+    <label>User Name</label> @Model.USERNAME
+</div>

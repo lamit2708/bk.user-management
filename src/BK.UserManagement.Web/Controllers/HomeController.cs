@@ -1,13 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using System.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Mvc;
 using Dapper;
+using Oracle.ManagedDataAccess.Client;
 
 namespace BK.UserManagement.Web.Controllers
 {
+    public class DbUser
+    {
+        public string USER_ID { get; set; }
+        public string USERNAME { get; set; }
+        public string ACCOUNT_STATUS { get; set; }
+        public string LOCK_DATE { get; set; }
+        public string EXPIRE_DATE { get; set; }
+        // TODO
+    }
+
     public class HomeController : Controller
     {
         public IActionResult Index()
@@ -18,17 +24,17 @@ namespace BK.UserManagement.Web.Controllers
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
-
-            return View();
+            using (var ole = new OracleConnection("Data Source=localhost/db11g;Persist Security Info=True;User ID=system;Password=Abc123;"))
+            {
+                var users = ole.Query<DbUser>("SELECT * FROM dba_users");
+                return View(users);
+            }
         }
 
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
-            //using (var ole = new SqlConnection("asdfasdfsadfsdaf"))
-            //{
-            //    var user= ole.Query<object>("SELECT * FROM User WHERE Id = @Id", new { Id = 3 }).FirstOrDefault();
-            //}
+            
                 return View();
         }
 
