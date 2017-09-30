@@ -20,6 +20,7 @@ namespace BK.UserManagement.Web
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+            
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -29,6 +30,9 @@ namespace BK.UserManagement.Web
         {
             // Add framework services.
             services.AddMvc();
+            //http://www.c-sharpcorner.com/article/setting-and-reading-values-from-app-settings-json-in-net-core/
+            services.AddSingleton<IConfiguration>(Configuration);
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

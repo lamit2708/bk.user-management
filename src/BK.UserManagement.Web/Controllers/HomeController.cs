@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Dapper;
 using Oracle.ManagedDataAccess.Client;
+//using System.Configuration;
+using Microsoft.Extensions.Configuration;
+using System.Configuration;
+using System;
 
 namespace BK.UserManagement.Web.Controllers
 {
@@ -16,6 +20,11 @@ namespace BK.UserManagement.Web.Controllers
 
     public class HomeController : Controller
     {
+        IConfiguration _iconfiguration;
+        public HomeController(IConfiguration iconfiguration)
+        {
+            _iconfiguration = iconfiguration;
+        }
         public IActionResult Index()
         {
             return View();
@@ -23,8 +32,11 @@ namespace BK.UserManagement.Web.Controllers
 
         public IActionResult About()
         {
+            //_iconfiguration.GetSection("Data").GetSection("ConnectionString").Value;
+            //_iconfiguration.GetValue<string>("ConnectionStrings:DefaultConnection")
             ViewData["Message"] = "Your application description page.";
-            using (var ole = new OracleConnection("Data Source=localhost/db11g;Persist Security Info=True;User ID=system;Password=Abc123;"))
+            
+            using (var ole = new OracleConnection(_iconfiguration.GetSection("ConnectionStrings")["DefaultConnection"]))
             {
                 var users = ole.Query<DbUser>("SELECT * FROM dba_users");
                 return View(users);
