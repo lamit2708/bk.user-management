@@ -5,19 +5,14 @@ using Oracle.ManagedDataAccess.Client;
 using Microsoft.Extensions.Configuration;
 using System.Configuration;
 using System;
+using BK.UserManagement.Web.Models;
 
 namespace BK.UserManagement.Web.Controllers
 {
-    public class DbUser
-    {
-        public string USER_ID { get; set; }
-        public string USERNAME { get; set; }
-        //public string PASSWORD { get; set; }
-        public string ACCOUNT_STATUS { get; set; }
-        public string LOCK_DATE { get; set; }
-        public string EXPIRE_DATE { get; set; }
-        // TODO
-    }
+    //public class DbUser
+    //{
+       
+    //}
 
     public class HomeController : Controller
     {

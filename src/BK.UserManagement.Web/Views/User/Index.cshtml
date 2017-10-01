@@ -1,0 +1,33 @@
+@using BK.UserManagement.Web.Models
+@model IEnumerable<DbUser>
+    @{
+        ViewData["Title"] = "About";
+    }
+    <h2>@ViewData["Title"].</h2>
+    <h3>@ViewData["Message"]</h3>
+
+    <p>Use this area to provide additional information.</p>
+    @foreach (var u in Model)
+    {
+        <div>
+            <label>User Name: </label> <label>@u.USERNAME</label>
+            <input type="button" class="btnEdit" value="Edit" data-user-id="@u.USER_ID" />
+            <button name="Delete">Delete</button>
+        </div>
+    }
+
+    @section Scripts {
+
+        <script type="text/javascript">
+    $(document).ready(function () {
+
+        $('.btnEdit').click(function (e)
+        {
+            var userId = $(e.target).data('userId');
+            location.href = '@Url.Content("~/User/Edit/")' + userId;
+        });
+
+    });
+        </script>
+
+    }
