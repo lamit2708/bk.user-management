@@ -26,6 +26,11 @@ namespace BK.UserManagement.Web.Controllers
             return View();
         }
 
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
+
         public IActionResult About()
         {
             //_iconfiguration.GetSection("Data").GetSection("ConnectionString").Value;
