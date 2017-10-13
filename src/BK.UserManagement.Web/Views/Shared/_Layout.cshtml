@@ -117,21 +117,21 @@
                 <ul class="sidebar-menu" data-widget="tree">
                     <!-- Optionally, you can add icons to the links -->
                     
-                    <li><a asp-area="" asp-controller="User" asp-action="Index"><i class="fa fa-link"></i> <span>User</span></a></li>
-                    <li><a asp-area="" asp-controller="Account" asp-action="LogOn"><i class="fa fa-link"></i> <span>LogOn</span></a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Dashboard"><i class="fa fa-link"></i> <span>Dashboard</span></a></li>
+                    
                     <li class="treeview">
                         <a href="#">
-                            <i class="fa fa-link"></i> <span>Multilevel</span>
+                            <i class="fa fa-user"></i> <span>Account</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="#">Link in level 2</a></li>
-                            <li><a href="#">Link in level 2</a></li>
+                            <li><a class="menu_logon" asp-controller="Account" asp-action="LogOn">Logon</a></li>
+                            <li><a class="menu_profile" href="#">Profile</a></li>
                         </ul>
                     </li>
+                    <li><a class="menu_user" asp-area="" asp-controller="User" asp-action="Index"><i class="fa fa-users"></i> <span>User</span></a></li>
+                    <li><a class="menu_dashboard" asp-area="" asp-controller="Home" asp-action="Dashboard"><i class="fa fa-link"></i> <span>Dashboard</span></a></li>
                 </ul>
                 <!-- /.sidebar-menu -->
             </section>
@@ -265,5 +265,22 @@
     </environment>
 
     @RenderSection("Scripts", required: false)
+    <script>
+        $(document).ready(function () {
+          
+            var url = window.location;
+            
+            // for sidebar menu entirely but not cover treeview
+            $('ul.sidebar-menu a').filter(function () {
+                console.log(this.href);
+                return this.href == url;
+            }).parent().addClass('active');
+
+            // for treeview
+            $('ul.treeview-menu a').filter(function () {
+                return this.href == url;
+            }).closest('.treeview').addClass('active');
+        });
+    </script>
 </body>
 </html>

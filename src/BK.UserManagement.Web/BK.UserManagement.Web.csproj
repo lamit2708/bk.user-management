@@ -40,6 +40,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\lib\datatables.net-bs\js\dataTables.bootstrap.js" />
+    <None Include="wwwroot\lib\datatables.net-bs\js\dataTables.bootstrap.min.js" />
+    <None Include="wwwroot\lib\datatables.net-bs\Readme.md" />
+    <None Include="wwwroot\lib\datatables.net\js\jquery.dataTables.js" />
+    <None Include="wwwroot\lib\datatables.net\js\jquery.dataTables.min.js" />
+    <None Include="wwwroot\lib\datatables.net\Readme.md" />
+    <None Include="wwwroot\lib\fastclick\lib\fastclick.js" />
+    <None Include="wwwroot\lib\fastclick\LICENSE" />
+    <None Include="wwwroot\lib\fastclick\README.md" />
     <None Include="wwwroot\lib\font-awesome\.gitignore" />
     <None Include="wwwroot\lib\font-awesome\.npmignore" />
     <None Include="wwwroot\lib\font-awesome\css\font-awesome.css.map" />
@@ -817,6 +826,10 @@
     <None Include="wwwroot\lib\Ionicons\src\woman.svg" />
     <None Include="wwwroot\lib\Ionicons\src\wrench.svg" />
     <None Include="wwwroot\lib\Ionicons\src\xbox.svg" />
+    <None Include="wwwroot\lib\jquery-slimscroll\examples\libs\prettify\prettify.js" />
+    <None Include="wwwroot\lib\jquery-slimscroll\jquery.slimscroll.js" />
+    <None Include="wwwroot\lib\jquery-slimscroll\jquery.slimscroll.min.js" />
+    <None Include="wwwroot\lib\jquery-slimscroll\README.md" />
   </ItemGroup>
 
 </Project>

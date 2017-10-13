@@ -5,11 +5,60 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
-<div>
-    <label>User Id</label> @Model.USER_ID
-</div>
 
-<div>
-    <label>User Name</label> @Model.USERNAME
-</div>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        User Details
+    </h1>
+
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> User</a></li>
+        <li class="active">Edit</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class=" col-md-12">
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    @*<h3 class="box-title">General Elements</h3>*@
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form role="form">
+                        <div class="form-group">
+                            <label>USERNAME</label>
+                            <input type="text" class="form-control" placeholder=" @Model.USERNAME" disabled>
+                        </div>
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Text</label>
+                            <input type="text" class="form-control" placeholder="Enter ...">
+                        </div>
+                       
+                    </form>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+
+    </div>
+</section>
+
+
+@section Scripts {
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        // Active Menu
+        $('.menu_user').parent().addClass('active').closest('.treeview').addClass('active');
+
+    });
+    </script>
+
+
+}
