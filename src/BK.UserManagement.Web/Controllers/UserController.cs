@@ -28,7 +28,7 @@ namespace BK.UserManagement.Web.Controllers
                 var users = ole.Query<DbUser>("SELECT * FROM dba_users");
                 return View(users);
             }
-            
+
         }
         public IActionResult Edit(string id)
         {
@@ -36,8 +36,33 @@ namespace BK.UserManagement.Web.Controllers
             {
                 var user = ole.Query<DbUser>("SELECT * FROM dba_users u WHERE u.USER_ID = :UserId", new { UserId = id })
                     .FirstOrDefault();
+                //var cmd = conn.CreateCommand();
+                //cmd.CommandText =
+                //  "SELECT * FROM dba_users u WHERE u.USER_ID = :UserId";
+                //var p = cmd.Parameters;
+                //p.Add("UserId", id);
+                //cmd.BindByName = true;
+                //cmd.ExecuteNonQuery();
                 return View(user);
             }
         }
+        public IActionResult Add(string id)
+        {
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                var user = ole.Query<DbUser>("create user userID = :UserId", new { UserId = id })
+                    .FirstOrDefault();
+                //var cmd = conn.CreateCommand();
+                //cmd.CommandText =
+                //  "SELECT * FROM dba_users u WHERE u.USER_ID = :UserId";
+                //var p = cmd.Parameters;
+                //p.Add("UserId", id);
+                //cmd.BindByName = true;
+                //cmd.ExecuteNonQuery();
+                return View(user);
+            }
+        }
+
+        
     }
 }

@@ -35,10 +35,22 @@
                         </div>
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Text</label>
-                            <input type="text" class="form-control" placeholder="Enter ...">
+                            <label>UPDATE YOUR PASSWORD</label>
+                            <input type="password" class="form-control" placeholder="********">
                         </div>
-                       
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>RE-PASSWORD</label>
+                            <input type="password" class="form-control" placeholder="">
+                        </div>
+                        <button type="button" data-user-id="@Model.USER_ID"
+                                class="btn btn-success pull-left" style="margin-right: 5px;">
+                            <i class="fa fa-save"></i> Save
+                        </button>
+                        <button type="reset" 
+                                class="btnEdit btn btn-default pull-left" style="margin-right: 5px;">
+                            <i class="fa fa-undo"></i> Reset
+                        </button>
                     </form>
                 </div>
                 <!-- /.box-body -->

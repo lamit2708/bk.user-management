@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace BK.UserManagement.Web
 {
@@ -29,6 +30,8 @@ namespace BK.UserManagement.Web
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+
+
             services.AddMvc();
             //http://www.c-sharpcorner.com/article/setting-and-reading-values-from-app-settings-json-in-net-core/
             services.AddSingleton<IConfiguration>(Configuration);
@@ -52,7 +55,14 @@ namespace BK.UserManagement.Web
             }
 
             app.UseStaticFiles();
-
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            {
+                AuthenticationScheme = "CookieAuthentication",
+                LoginPath = new PathString("/Account/Login"),
+                AccessDeniedPath = new PathString("/Account/Forbidden/"),
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true
+            });
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
