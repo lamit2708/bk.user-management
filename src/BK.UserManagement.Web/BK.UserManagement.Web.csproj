@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="Models\UserViewModels\" />
     <Folder Include="Views\User\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>

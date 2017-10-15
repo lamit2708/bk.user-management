@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using BK.UserManagement.Web.Models;
 using Dapper;
 using Microsoft.AspNetCore.Authorization;
+using BK.UserManagement.Web.Models.AccountViewModels;
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -48,21 +49,29 @@ namespace BK.UserManagement.Web.Controllers
                 return View(user);
             }
         }
-        public IActionResult Add(string id)
+        [HttpGet]
+        public IActionResult Add()
         {
-            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Add(RegisterViewModel model)
+        {
+
+            if (ModelState.IsValid)
             {
-                var user = ole.Query<DbUser>("create user userID = :UserId", new { UserId = id })
-                    .FirstOrDefault();
-                //var cmd = conn.CreateCommand();
-                //cmd.CommandText =
-                //  "SELECT * FROM dba_users u WHERE u.USER_ID = :UserId";
-                //var p = cmd.Parameters;
-                //p.Add("UserId", id);
-                //cmd.BindByName = true;
-                //cmd.ExecuteNonQuery();
-                return View(user);
+                using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+                {
+
+                    var user = ole.Query<DbUser>($"create user \"{model.Username}\" identified by \"{model.Password}\"");
+                    return RedirectToAction(nameof(UserController.Index), "User");
+                    //return RedirectToLocal(returnUrl);
+                }
+
             }
+
+
+            return View(model);
         }
         //private Task<ApplicationUser> GetCurrentUserAsync()
         //{

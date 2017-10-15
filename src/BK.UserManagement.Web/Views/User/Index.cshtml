@@ -22,8 +22,10 @@
             <div class="box">
                 <div class="box-header">
                     @*<h3 class="box-title">User List</h3>*@
-                     <button type="button" class="btnAdd btn btn-primary pull-left">
-                        <i class="fa fa-plus"></i> @Html.ActionLink("Add User", "Add")
+
+                     <button type="button" class="btnAdd btn btn-primary pull-left" 
+                             onclick="location.href='@Url.Action("Add", "User")';" >
+                        <i class="fa fa-plus"></i> Add User
                     </button>
                 </div>
                 <!-- /.box-header -->
