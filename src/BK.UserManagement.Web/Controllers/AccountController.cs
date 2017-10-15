@@ -6,12 +6,23 @@ using BK.UserManagement.Web.Models;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Security.Claims;
+using Microsoft.Extensions.Configuration;
+using BK.UserManagement.Web.Models.AccountViewModels;
+using System.Data.OleDb;
+using System;
+using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BK.UserManagement.Web.Controllers
 {
     public class AccountController : Controller
     {
 
+        private readonly IConfiguration config;
+        public AccountController(IConfiguration iconfig)
+        {
+            config = iconfig;
+        }
         [HttpGet]
         public IActionResult LogOn(string id)
         {
@@ -19,14 +30,18 @@ namespace BK.UserManagement.Web.Controllers
 
         }
         [HttpGet]
-        public IActionResult Login()
+        public async Task<IActionResult> Login(string returnUrl = null)
         {
+            // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.Authentication.SignOutAsync("CookieAuthentication");
+
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
         //
         // GET: /Account/Login
         //[HttpGet]
-        
+
         //public async Task<IActionResult> Login(string returnUrl = null)
         //{
         //    // Clear the existing external cookie to ensure a clean login process
@@ -44,21 +59,38 @@ namespace BK.UserManagement.Web.Controllers
             return Redirect("/Account/Login");
         }
         [HttpPost]
-        //public async Task<IActionResult> Login(LoginModel loginModel)
-        public IActionResult Login(LoginModel loginModel)
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        //public IActionResult Login(LoginModel loginModel)
         {
-            if (LoginUser(loginModel.Username, loginModel.Password))
+            if (LoginUser(model.Username, model.Password))
             {
                 var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, loginModel.Username)
+                new Claim(ClaimTypes.Name, model.Username)
             };
 
                 var userIdentity = new ClaimsIdentity(claims, "login");
+                if (model.RememberMe)
+                {
+                    ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                    await HttpContext.Authentication.SignInAsync("CookieAuthentication",
+                        principal,
+                        new AuthenticationProperties
+                        {
+                            IsPersistent = true
+                        });
+                }
+                else
+                {
+                    ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                    await HttpContext.Authentication.SignInAsync("CookieAuthentication",
+                        principal,
+                        new AuthenticationProperties
+                        {
+                            ExpiresUtc = DateTime.UtcNow.AddMinutes(15)
+                        });
+                }
 
-                ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
-                HttpContext.Authentication.SignInAsync("CookieAuthentication", principal);
-                
                 //Just redirect to our index after logging in. 
                 return Redirect("/");
             }
@@ -88,9 +120,35 @@ namespace BK.UserManagement.Web.Controllers
 
         private bool LoginUser(string username, string password)
         {
-            //As an example. This method would go to our data store and validate that the combination is correct. 
-            //For now just return true. 
-            return true;
+
+            try
+            {
+                using (var con = new OracleConnection())
+                {
+                    con.ConnectionString = "Data Source=localhost/db11g;Persist Security Info=True;User ID=" + username + ";Password=" + password + ";";
+                    con.Open();
+
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return false;
+            }
+            //try
+            //{ 
+            //using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            //{
+            //    var user = ole.Query<userModel>("SELECT * FROM sys.user$ u WHERE u.NAME = :uname", new { uname = username.ToUpper(), upass = password })
+            //        .FirstOrDefault();
+            //    if (user != null) return true;
+            //}
+            //}catch(Exception e)
+            //{
+            //    throw e;
+            //}
+            //return false;
         }
         public IActionResult Index()
         {
@@ -105,5 +163,55 @@ namespace BK.UserManagement.Web.Controllers
         {
             return View();
         }
+        // GET: /Account/Register
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Register(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public IActionResult Register(RegisterViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+                {
+
+                    var user = ole.Query<DbUser>($"create user \"{model.Username}\" identified by \"{model.Password}\"");
+                    return RedirectToAction(nameof(UserController.Index), "User");
+                    //return RedirectToLocal(returnUrl);
+                }
+
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+        private IActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+        }
+        //private void AddErrors(IdentityResult result)
+        //{
+        //    foreach (var error in result.Errors)
+        //    {
+        //        ModelState.AddModelError(string.Empty, error.Description);
+        //    }
+        //}
     }
 }

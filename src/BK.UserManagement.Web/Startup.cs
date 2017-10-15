@@ -59,7 +59,7 @@ namespace BK.UserManagement.Web
             {
                 AuthenticationScheme = "CookieAuthentication",
                 LoginPath = new PathString("/Account/Login"),
-                AccessDeniedPath = new PathString("/Account/Forbidden/"),
+                AccessDeniedPath = new PathString("/Account/AccessDenied/"),
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true
             });

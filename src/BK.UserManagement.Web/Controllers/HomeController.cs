@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using System.Configuration;
 using System;
 using BK.UserManagement.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BK.UserManagement.Web.Controllers
 {
@@ -13,7 +14,7 @@ namespace BK.UserManagement.Web.Controllers
     //{
        
     //}
-
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IConfiguration config;
