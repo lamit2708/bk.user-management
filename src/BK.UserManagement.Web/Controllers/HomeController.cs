@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BK.UserManagement.Web.Controllers
 {
-    //public class DbUser
+    //public class UserModel
     //{
        
     //}
-    [Authorize]
+    //[Authorize]
     public class HomeController : Controller
     {
         private readonly IConfiguration config;
@@ -42,7 +42,7 @@ namespace BK.UserManagement.Web.Controllers
             
             using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
             {
-                var users = ole.Query<DbUser>("SELECT * FROM dba_users");
+                var users = ole.Query<UserModel>("SELECT * FROM dba_users");
                 return View(users);
             }
         }

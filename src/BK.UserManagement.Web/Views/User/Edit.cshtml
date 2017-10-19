@@ -1,5 +1,5 @@
-@using BK.UserManagement.Web.Models
-@model DbUser
+@using BK.UserManagement.Web.Models.UserViewModels
+@model EditUserViewModel
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -21,36 +21,112 @@
 <!-- Main content -->
 <section class="content">
     <div class="row">
-        <div class=" col-md-12">
+        <div class=" col-md-6">
             <div class="box box-warning">
                 <div class="box-header with-border">
                     @*<h3 class="box-title">General Elements</h3>*@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <form role="form">
+                    <form role="form" asp-controller="User" asp-action="Edit" asp-route-returnurl="@ViewData["ReturnUrl"]" class="form-horizontal">
+                        <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-group">
-                            <label>USERNAME</label>
-                            <input type="text" class="form-control" placeholder=" @Model.USERNAME" disabled>
+                            <label asp-for="UserId" class="col-md-4 control-label"></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" value="@Model.User.USER_ID" disabled>
+                                <input type="hidden" asp-for="UserId" value="@Model.User.USER_ID">
+                                <span asp-validation-for="UserId" class="text-danger"></span>
+                            </div>
                         </div>
-                        <!-- text input -->
                         <div class="form-group">
-                            <label>UPDATE YOUR PASSWORD</label>
-                            <input type="password" class="form-control" placeholder="********">
+                            <label asp-for="Username" class="col-md-4 control-label"></label>
+                            <div class="col-md-8">
+                                <input class="form-control" value="@Model.User.USERNAME" disabled />
+                                <input type="hidden" asp-for="Username" value="@Model.User.USERNAME">
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
                         </div>
-                        <!-- text input -->
                         <div class="form-group">
-                            <label>RE-PASSWORD</label>
-                            <input type="password" class="form-control" placeholder="">
+                            <label asp-for="Password" class="col-md-4 control-label"></label>
+                            <div class="col-md-8">
+                                <input asp-for="Password" class="form-control" placeholder="Update your password here!" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
                         </div>
-                        <button type="button" data-user-id="@Model.USER_ID"
-                                class="btn btn-success pull-left" style="margin-right: 5px;">
-                            <i class="fa fa-save"></i> Save
-                        </button>
-                        <button type="reset" 
-                                class="btnEdit btn btn-default pull-left" style="margin-right: 5px;">
-                            <i class="fa fa-undo"></i> Reset
-                        </button>
+                        <div class="form-group">
+                            <label asp-for="ConfirmPassword" class="col-md-4 control-label"></label>
+                            <div class="col-md-8">
+                                <input asp-for="ConfirmPassword" class="form-control" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="DefaultTablespaceName" class="col-md-4 control-label"></label>
+                            <div class="col-md-8">
+                                <select asp-for="DefaultTablespaceName" asp-items="@Model.Tablespaces"
+                                        class="form-control select2" style="width: 100%;"></select>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="TemporaryTablespaceName" class="col-md-4 control-label"></label>
+                            <div class="col-md-8">
+                                <select asp-for="TemporaryTablespaceName" asp-items="@Model.Tablespaces"
+                                        class="form-control select2" style="width: 100%;"></select>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ProfileName" class="col-md-4 control-label"></label>
+                            <div class="col-md-8">
+                                <select asp-for="ProfileName" asp-items="@Model.Profiles"
+                                        class="form-control select2" style="width: 100%;"></select>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="AccountStatus" class="col-md-4 control-label"></label>
+                            <div class="col-md-5">
+                                <select asp-for="AccountStatus" asp-items="@Model.AccoutStatusList"
+                                        class="form-control select2" style="width: 100%;" disabled></select>
+
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" data-user-name="@Model.User.USERNAME"
+                                        class="btnLock btn btn-warning pull-right" style="margin-right: 5px;">
+                                    <i class="fa fa-lock"></i> Lock
+                                </button>
+                                <button type="button" data-user-name="@Model.User.USERNAME"
+                                        class="btnUnlock btn btn-warning pull-right" style="margin-right: 5px;">
+                                    <i class="fa fa-unlock"></i> Unlock
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Quota" class="col-md-4 control-label"></label>
+                            <div class="col-md-3">
+                                <input asp-for="Quota" type="text" class="form-control" placeholder="MB" />
+
+                            </div>
+                            <label class="col-md-1 control-label">ON</label>
+                            <div class="col-md-4">
+                                <select asp-for="QuotaTablespace" asp-items="@Model.Tablespaces"
+                                        class="form-control select2" style="width: 100%;"></select>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-8">
+                                <button type="submit"
+                                        class="btnSave btn btn-success pull-left" style="margin-right: 5px;">
+                                    <i class="fa fa-save"></i> Save
+                                </button>
+                                <button type="reset"
+                                        class="btnReset btn btn-default pull-right" style="margin-right: 5px;">
+                                    <i class="fa fa-undo"></i> Reset
+                                </button>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <!-- /.box-body -->
@@ -58,18 +134,73 @@
             <!-- /.box -->
         </div>
 
+
+        <div class="col-md-6">
+            <div class="box  box-warning">
+                <div class="box-header  with-border">
+                    <h3 class="box-title">Quota List</h3>
+                    
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>TABLESPACE_NAME</th>
+                            <th>BYTES</th>
+                            <th>MAX_BYTES</th>
+                        </tr>
+                        @foreach (var u in Model.QuotaList)
+                        {
+                            <tr>
+                                <td>@u.TABLESPACE_NAME</td>
+                                <td>@u.BYTES</td>
+                                <td>@u.MAX_BYTES</td>
+                            </tr>
+                        }
+                    </table>
+                    <hr/>
+                    
+                        
+                        
+                        
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
     </div>
 </section>
 
-
 @section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 
     <script type="text/javascript">
-    $(document).ready(function () {
-        // Active Menu
-        $('.menu_user').parent().addClass('active').closest('.treeview').addClass('active');
+        $(document).ready(function () {
+            // Active Menu
+            $('.menu_user').parent().addClass('active').closest('.treeview').addClass('active');
+             $('.btnUnlock').click(function (e) {
+                //var userId = $(this).data('userId');
+                var username = $(this).data('userName');
+                //console.log($(this).data());
+                location.href = '@Url.Content("~/User/Unlock/")' + username;
+            });
+             $('.btnLock').click(function (e) {
+                //var userId = $(this).data('userId');
+                var username = $(this).data('userName');
+                //console.log($(this).data());
+                location.href = '@Url.Content("~/User/Lock/")' + username;
+            });
+             var accountStatus = "@Model.AccountStatus";
+             if (accountStatus == 'OPEN' || accountStatus == 'EXPIRED') {
+                 console.log(123);
+                 $('.btnUnlock').addClass('hidden');
 
-    });
+             } else {
+                 $('.btnLock').addClass('hidden');
+                 console.log(456);
+             }
+        });
     </script>
 
 

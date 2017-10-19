@@ -135,7 +135,7 @@ namespace BK.UserManagement.Web.Controllers
                 using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
                 {
 
-                    var user = ole.Query<DbUser>($"create user \"{model.Username}\" identified by \"{model.Password}\"");
+                    var user = ole.Query<UserModel>($"create user \"{model.Username}\" identified by \"{model.Password}\"");
                     return RedirectToAction(nameof(UserController.Index), "User");
                     
                 }

@@ -1,5 +1,5 @@
 @using BK.UserManagement.Web.Models
-@model IEnumerable<DbUser>
+@model IEnumerable<UserModel>
 @{
     ViewData["Title"] = "User";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -12,7 +12,7 @@
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> User</a></li>
         <li class="active><a href="#">Index</a></li>
-        
+
     </ol>
 </section>
 <!-- Main content -->
@@ -23,8 +23,8 @@
                 <div class="box-header">
                     @*<h3 class="box-title">User List</h3>*@
 
-                     <button type="button" class="btnAdd btn btn-primary pull-left" 
-                             onclick="location.href='@Url.Action("Add", "User")';" >
+                    <button type="button" class="btnAdd btn btn-primary pull-left"
+                            onclick="location.href='@Url.Action("Add", "User")';">
                         <i class="fa fa-plus"></i> Add User
                     </button>
                 </div>
@@ -33,8 +33,12 @@
                     <table id="tbl_user" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                
+                                <th>ID</th>
                                 <th>User Name</th>
+                                <th>Default Tablespace</th>
+                                <th>Temporary Tablespace</th>
+                                <th>Profile</th>
+                                <th>Account Status</th>
                                 <th>Features</th>
 
                             </tr>
@@ -46,19 +50,24 @@
                             @foreach (var u in Model)
                             {
                                 <tr>
-                                    
+                                    <td>@u.USER_ID</td>
                                     <td>@u.USERNAME</td>
+                                    <td>@u.DEFAULT_TABLESPACE</td>
+                                    <td>@u.TEMPORARY_TABLESPACE</td>
+                                    <td>@u.PROFILE</td>
+                                    <td>@u.ACCOUNT_STATUS</td>
                                     <td>
-                                        <button type="button" class="btn btn-danger pull-right">
+                                        <button data-user-id="@u.USER_ID"
+                                                data-user-name="@u.USERNAME" type="button" class="btnDelete btn btn-danger pull-right">
                                             <i class="fa fa-remove"></i> Delete
                                         </button>
                                         @*@Html.ActionLink("Edit", "Edit", new { id=u.USER_ID})*@
-                                        <button type="button" data-user-id="@u.USER_ID"  
+                                        <button type="button" data-user-id="@u.USER_ID" data-user-name="@u.USERNAME"
                                                 class="btnEdit btn btn-success pull-right" style="margin-right: 5px;">
                                             <i class="fa fa-edit"></i> Edit
                                         </button>
-                                        
-                                       
+
+
                                     </td>
                                 </tr>
                             }
@@ -92,16 +101,33 @@
 @section Scripts {
 
     <script type="text/javascript">
-    $(document).ready(function () {
+        $(document).ready(function () {
 
-        $('.btnEdit').click(function (e)
-        {
-            var userId = $(this).data('userId');
-            //console.log($(this).data());
-            location.href = '@Url.Content("~/User/Edit/")' + userId;
+            $('.btnEdit').click(function (e) {
+                //var userId = $(this).data('userId');
+                var username = $(this).data('userName');
+                //console.log($(this).data());
+                location.href = '@Url.Content("~/User/Edit/")' + username;
+            });
+            $('.btnDelete').click(function (e)
+            {
+                var userId = $(this).data('userId');
+                var username = $(this).data('userName');
+                if (userId > 100 && userId < 2147483638) {
+
+                    //console.log(username);
+                    //console.log('@Url.Content("~/User/Delete/")' + username)
+                    location.href = '@Url.Content("~/User/Delete/")' + username;
+
+                } else {
+
+                    alert("Can not delete the user "+username+"/"+userId+"!\r\n Your have not privileges to delete the user with id <100. ");
+
+                }
+
+            });
+
         });
-
-    });
     </script>
 
     <!-- page script -->
@@ -119,7 +145,7 @@
         })
     </script>
 
-     <!-- Menu Active -->
+    <!-- Menu Active -->
     <script type="text/javascript">
         $(document).ready(function () {
             $('a.menu_user').closest('li').addClass('active');
