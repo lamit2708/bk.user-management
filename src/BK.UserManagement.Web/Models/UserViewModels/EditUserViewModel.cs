@@ -20,7 +20,6 @@ namespace BK.UserManagement.Web.Models.UserViewModels
         [Display(Name = "Profile")]
         public string ProfileName { get; set; }
 
-        [Required]
         [Display(Name = "UserId")]
         public string UserId { get; set; }
 

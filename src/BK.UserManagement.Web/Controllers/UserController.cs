@@ -120,6 +120,67 @@ namespace BK.UserManagement.Web.Controllers
             return RedirectToAction(nameof(UserController.Index), "User");
         }
         [HttpGet]
+        public IActionResult Add()
+        {
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                EditUserViewModel vmEditUser = new EditUserViewModel();
+
+                //vmEditUser.User = ole.Query<UserModel>("SELECT * FROM dba_users u WHERE u.USERNAME = :Username", new { Username = id })
+                 //   .FirstOrDefault();
+                var tablespaces = ole.Query<TablespaceModel>("SELECT TABLESPACE_NAME FROM SYS.DBA_TABLESPACES");
+                vmEditUser.Tablespaces = tablespaces.Select(x =>
+                                  new SelectListItem()
+                                  {
+                                      Text = x.TABLESPACE_NAME.ToString(),
+                                      Value = x.TABLESPACE_NAME.ToString()
+                                  });
+
+                vmEditUser.DefaultTablespaceName = "SYSTEM";
+                vmEditUser.TemporaryTablespaceName = "TEMP";
+                var profiles = ole.Query<ProfileModel>("SELECT DISTINCT PROFILE FROM SYS.DBA_PROFILES");
+                vmEditUser.Profiles = profiles.Select(x =>
+                                    new SelectListItem()
+                                    {
+                                        Text = x.PROFILE.ToString(),
+                                        Value = x.PROFILE.ToString()
+                                    });
+                vmEditUser.ProfileName = "DEFAULT";
+                return View(vmEditUser);
+            }
+        }
+        [HttpPost]
+        public IActionResult Add(EditUserViewModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                using (var conn = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+                {
+                    //var user = ole.Query<UserModel>($"create user \"{model.Username}\" identified by \"{model.Password}\";grant create session to {model.Username};");
+                    conn.Open();
+                    OracleCommand cmd = conn.CreateCommand();
+                    cmd.CommandText = $@"
+CREATE USER ""{model.Username.ToUpper()}"" IDENTIFIED BY ""{model.Password}""
+TEMPORARY TABLESPACE {model.TemporaryTablespaceName}
+DEFAULT TABLESPACE {model.DefaultTablespaceName}
+PROFILE  { model.ProfileName}";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = $@"GRANT CONNECT TO ""{ model.Username.ToUpper()}""";
+                    cmd.ExecuteNonQuery();
+
+                    if (model.Quota != 0)
+                    {
+                        cmd.CommandText = $"ALTER USER {model.Username.ToUpper()} QUOTA {model.Quota}M ON {model.QuotaTablespace}";
+                        cmd.ExecuteNonQuery();
+                    }
+                    return RedirectToAction(nameof(UserController.Index), "User");
+                }
+            }
+
+            return View(model);
+        }
+        [HttpGet]
         public IActionResult Unlock(String id)
         {
 
@@ -175,47 +236,8 @@ namespace BK.UserManagement.Web.Controllers
 
 
         }
-        [HttpGet]
-        public IActionResult Add()
-        {
-            return View();
-        }
-        [HttpPost]
-        public IActionResult Add(RegisterViewModel model)
-        {
-
-            if (ModelState.IsValid)
-            {
-                using (var conn = new OracleConnection(config.GetConnectionString("DefaultConnection")))
-                {
-
-                    //var user = ole.Query<UserModel>($"create user \"{model.Username}\" identified by \"{model.Password}\";grant create session to {model.Username};");
-                    conn.Open();
-                    OracleCommand cmd = conn.CreateCommand();
-                    //cmd.CommandText = "CREATE TABLESPACE \"" + schema + "\" DATAFILE '" + oracleDataPath + schema + ".DBF' SIZE 10M AUTOEXTEND ON NEXT 1M";
-                    //cmd.ExecuteNonQuery();
-                    //cmd.CommandText = "CREATE USER \"" + username + "\" IDENTIFIED BY \"" + password + "\" DEFAULT TABLESPACE \"" + schema + "\" TEMPORARY TABLESPACE TEMP";
-                    cmd.CommandText = $@"
-CREATE USER ""{model.Username.ToUpper()}"" IDENTIFIED BY ""{model.Password}""
-GRANT CONNECT TO ""{ model.Username.ToUpper()}""";
-                    cmd.ExecuteNonQuery();
-                    //cmd.CommandText = $"";
-                    //cmd.ExecuteNonQuery();
-                    //cmd.CommandText = "ALTER USER \"" + username + "\" QUOTA UNLIMITED ON \"" + schema + "\"";
-                    //cmd.ExecuteNonQuery();
-                    return RedirectToAction(nameof(UserController.Index), "User");
-                    //return RedirectToLocal(returnUrl);
-                }
-
-            }
-
-
-            return View(model);
-        }
-        //private Task<ApplicationUser> GetCurrentUserAsync()
-        //{
-        //    return _userManager.GetUserAsync(HttpContext.User);
-        //}
+        
+       
         [HttpGet]
         public IActionResult Delete(string id)
         {

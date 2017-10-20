@@ -1,4 +1,4 @@
-@model RegisterViewModel
+@model EditUserViewModel
 @{
     ViewData["Title"] = "Add User";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,47 +6,93 @@
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
-    <h1>Create a new account.</h1>
+    <h1>Add a new user.</h1>
     <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Account</a></li>
-        <li class="active">LogOn</li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> User</a></li>
+        <li class="active">Add</li>
     </ol>
 </section>
 <!-- Main content -->
 <section class="content">
     <div class="row">
+        <div class=" col-md-12">
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    @*<h3 class="box-title">General Elements</h3>*@
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form asp-controller="User" asp-action="Add" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Username" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="Username" class="form-control" />
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Password" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="Password" class="form-control" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ConfirmPassword" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="ConfirmPassword" class="form-control" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="DefaultTablespaceName" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <select asp-for="DefaultTablespaceName" asp-items="@Model.Tablespaces"
+                                        class="form-control select2" style="width: 100%;"></select>
 
-        <form asp-controller="User" asp-action="Add" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-            
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Username" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="Username" class="form-control" />
-                    <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="TemporaryTablespaceName" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <select asp-for="TemporaryTablespaceName" asp-items="@Model.Tablespaces"
+                                        class="form-control select2" style="width: 100%;"></select>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ProfileName" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <select asp-for="ProfileName" asp-items="@Model.Profiles"
+                                        class="form-control select2" style="width: 100%;"></select>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Quota" class="col-md-2 control-label"></label>
+
+                            <div class="col-md-10">
+                                <input asp-for="Quota" type="text" class="form-control" placeholder="MB" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">On Tablespace</label>
+                            <div class="col-md-10">
+                                <select asp-for="QuotaTablespace" asp-items="@Model.Tablespaces"
+                                        class="form-control select2" style="width: 100%;"></select>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <button type="submit" class="btn btn-success">Add User</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="ConfirmPassword" class="form-control" />
-                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <button type="submit" class="btn btn-default">Add User</button>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 </section>
 @section Scripts {
