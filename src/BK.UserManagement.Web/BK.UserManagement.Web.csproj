@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="Views\Role\" />
     <Folder Include="Views\User\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
