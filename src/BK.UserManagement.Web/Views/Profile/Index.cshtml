@@ -1,0 +1,136 @@
+@using BK.UserManagement.Web.Models
+@model IEnumerable<ProfileModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Profile List
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Profile</a></li>
+        <li class="active><a href="#">Index</a></li>
+
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="tbl_user" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>RPROFILE</th>
+                                <th>RESOURCE_NAME</th>
+                                <th>RESOURCE_TYPE</th>
+                                <th>LIMIT</th>
+
+                                <th>Features</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+
+                            @foreach (var u in Model)
+                            {
+                                <tr>
+                                    <td>@u.PROFILE</td>
+                                    <td>@u.RESOURCE_NAME </td>
+                                    <td>@u.RESOURCE_TYPE</td>
+                                    <td>@u.LIMIT </td>
+
+
+                                    <td>
+                                        <button type="button" class="btnDelete btn btn-danger pull-right">
+                                            <i class="fa fa-remove"></i> Delete
+                                        </button>
+
+                                        <button type="button"
+                                                class="btnEdit btn btn-success pull-right" style="margin-right: 5px;">
+                                            <i class="fa fa-edit"></i> Edit
+                                        </button>
+
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <th>Profile Name</th>
+                                <th>Features</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+
+
+@section Scripts {
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('.btnEdit').click(function (e) {
+                //var userId = $(this).data('userId');
+                var username = $(this).data('userName');
+                //console.log($(this).data());
+                location.href = '@Url.Content("~/User/Edit/")' + username;
+            });
+            $('.btnDelete').click(function (e)
+            {
+                var userId = $(this).data('userId');
+                var username = $(this).data('userName');
+                if (userId > 100 && userId < 2147483638) {
+
+                    //console.log(username);
+                    //console.log('@Url.Content("~/User/Delete/")' + username)
+                    location.href = '@Url.Content("~/User/Delete/")' + username;
+
+                } else {
+
+                    alert("Can not delete the user "+username+"/"+userId+"!\r\n Your have not privileges to delete the user with id <100. ");
+
+                }
+
+            });
+
+        });
+    </script>
+
+    <!-- page script -->
+    <script>
+        $(function () {
+            //$('#example1').DataTable()
+            $('#tbl_user').DataTable({
+                'paging': true,
+                'lengthChange': true,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            })
+        })
+    </script>
+
+
+
+}
+
