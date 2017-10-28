@@ -81,13 +81,13 @@ namespace BK.UserManagement.Web.Controllers
             {
                 using (var con = new OracleConnection())
                 {
-                    con.ConnectionString = "Data Source=localhost/orcl;Persist Security Info=True;User ID=" + username + ";Password=" + password + ";";
+                    con.ConnectionString = "Data Source=localhost/orclbk;Persist Security Info=True;User ID=" + username + ";Password=" + password + ";";
                     con.Open();
 
                     return true;
                 }
             }
-            catch (Exception e)
+            catch 
             {
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 return false;
