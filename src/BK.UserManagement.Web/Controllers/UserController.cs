@@ -28,6 +28,7 @@ namespace BK.UserManagement.Web.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
+            //string con2 = String.Format(conn, username, password);
             using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
             {
                 var users = ole.Query<UserModel>("SELECT * FROM dba_users");

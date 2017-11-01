@@ -8,6 +8,14 @@ namespace BK.UserManagement.Web.Models.AccountViewModels
     {
         [Required]
         [DataType(DataType.Text)]
+        public string Server { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        public string Sid { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
         public string Username { get; set; }
 
         [Required]

@@ -23,7 +23,7 @@ namespace BK.UserManagement.Web.Controllers
         {
             config = iconfig;
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
@@ -33,66 +33,72 @@ namespace BK.UserManagement.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
-       
-        
+
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         //public IActionResult Login(LoginModel loginModel)
         {
-            if (LoginUser(model.Username, model.Password))
+            if (ModelState.IsValid)
             {
-                var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, model.Username)
-            };
+                if (LoginUser(model.Server + "/" + model.Sid, model.Username, model.Password))
+                {
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, model.Username),
+                       
+                    };
 
-                var userIdentity = new ClaimsIdentity(claims, "login");
-                if (model.RememberMe)
-                {
-                    ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
-                    await HttpContext.Authentication.SignInAsync("CookieAuthentication",
-                        principal,
-                        new AuthenticationProperties
-                        {
-                            IsPersistent = true
-                        });
+                    var userIdentity = new ClaimsIdentity(claims, "login");
+                    if (model.RememberMe)
+                    {
+                        ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                        await HttpContext.Authentication.SignInAsync("CookieAuthentication",
+                            principal,
+                            new AuthenticationProperties
+                            {
+                                IsPersistent = true
+                            });
+                    }
+                    else
+                    {
+                        ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                        await HttpContext.Authentication.SignInAsync("CookieAuthentication",
+                            principal,
+                            new AuthenticationProperties
+                            {
+                                ExpiresUtc = DateTime.UtcNow.AddMinutes(15)
+                            });
+                    }
+                    return RedirectToLocal(returnUrl);
+                    //Just redirect to our index after logging in. 
+                    //return Redirect("/");
                 }
-                else
-                {
-                    ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
-                    await HttpContext.Authentication.SignInAsync("CookieAuthentication",
-                        principal,
-                        new AuthenticationProperties
-                        {
-                            ExpiresUtc = DateTime.UtcNow.AddMinutes(15)
-                        });
-                }
-                return RedirectToLocal(returnUrl);
-                //Just redirect to our index after logging in. 
-                //return Redirect("/");
             }
             return View();
         }
 
-        private bool LoginUser(string username, string password)
+        private bool LoginUser(string dataSource, string username, string password)
         {
 
             try
             {
                 using (var con = new OracleConnection())
                 {
-                    con.ConnectionString = "Data Source=localhost/orcl;Persist Security Info=True;User ID=" + username + ";Password=" + password + ";";
+                    //String conn = "Data Source=localhost/orcl;Persist Security Info=True;User ID=" + username + ";Password=" + password + ";";
+                    //con.ConnectionString = "Data Source=localhost/orcl;Persist Security Info=True;User ID=" + username + ";Password=" + password + ";";
+                    con.ConnectionString = String.Format(config.GetConnectionString("UserConnection"), dataSource, username, password);
                     con.Open();
 
                     return true;
                 }
             }
-            catch (Exception e)
+            catch 
             {
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 return false;
             }
-           
+
         }
         [HttpGet]
         public async Task<IActionResult> Logout()
@@ -137,12 +143,12 @@ namespace BK.UserManagement.Web.Controllers
 
                     var user = ole.Query<UserModel>($"create user \"{model.Username}\" identified by \"{model.Password}\"");
                     return RedirectToAction(nameof(UserController.Index), "User");
-                    
+
                 }
 
             }
 
-            
+
             return View(model);
         }
         private IActionResult RedirectToLocal(string returnUrl)

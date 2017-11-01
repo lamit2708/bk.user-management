@@ -13,13 +13,22 @@
         <form asp-controller="Account" asp-action="Login"  method="post" asp-route-returnurl="@ViewData["ReturnUrl"]">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group has-feedback">
+                <input type="text" asp-for="Server" class="form-control" value="localhost"  placeholder="Server">
+                <span class="glyphicon glyphicon-object-align-bottom form-control-feedback" ></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="text" asp-for="Sid" class="form-control" value="orcl"  placeholder="Sid">
+                <span class="glyphicon glyphicon-list form-control-feedback" ></span>
+            </div>
+            <div class="form-group has-feedback">
                 <input type="text" asp-for="Username" class="form-control" placeholder="Username">
-                <span class="glyphicon glyphicon-user form-control-feedback"  asp-validation-for="Username"></span>
+                <span class="glyphicon glyphicon-user form-control-feedback"  ></span>
             </div>
             <div class="form-group has-feedback">
                 <input type="password" asp-for="Password" class="form-control" placeholder="Password">
-                <span class="glyphicon glyphicon-lock form-control-feedback"  asp-validation-for="Password"></span>
+                <span class="glyphicon glyphicon-lock form-control-feedback"  ></span>
             </div>
+            
             <div class="row">
                 <div class="col-xs-8">
                     <div class="checkbox icheck">
@@ -40,14 +49,13 @@
     <!-- /.login-box-body -->
 </div>
 <!-- /.login-box -->
-<!-- jQuery 3 -->
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- iCheck -->
+    <!-- iCheck -->
 <script src="~/lib/iCheck/icheck.min.js"></script>
+<!-- FastClick -->
+<script src="~/lib/fastclick/lib/fastclick.js"></script>
+
 <script>
-    $(function () {
+    $(document).ready(function () {
         $('input').iCheck({
             checkboxClass: 'icheckbox_square-blue',
             radioClass: 'iradio_square-blue',
