@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Oracle.ManagedDataAccess.Client;
 using BK.UserManagement.Web.Models;
 using Dapper;
-
+using System.Net;
 
 namespace BK.UserManagement.Web.Controllers
 {
@@ -25,9 +25,33 @@ namespace BK.UserManagement.Web.Controllers
         {
             using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
             {
-                var listProfile = ole.Query<ProfileModel>("SELECT * FROM dba_profiles");
+                var listProfile = ole.Query<ProfileModel>("SELECT u.profile as PROFILE,count(u.username) AS NOOFUSER FROM dba_users u GROUP BY u.profile");
                 return View(listProfile);
             }
         }
+
+
+        [HttpGet]
+        public IActionResult ViewProfile(string _profileName)
+        {
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                var profileResource = ole.Query<ProfileResource>("SELECT * FROM dba_profiles where Profile = '" + _profileName + "'");
+                ViewBag.ProfileName = _profileName;
+                return View(profileResource);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult ViewUserInProfile(string _profileName)
+        {
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                var userInProfile = ole.Query<UserModel>("SELECT username FROM dba_users WHERE profile = ''" + _profileName + "'");
+                return PartialView(userInProfile);
+            }
+                
+        }
+
     }
 }

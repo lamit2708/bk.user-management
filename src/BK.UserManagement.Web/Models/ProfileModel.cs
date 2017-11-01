@@ -13,9 +13,7 @@ namespace BK.UserManagement.Web.Models
     {
         
         public string PROFILE { get; set; }
-        public string RESOURCE_NAME { get; set; }
-        public string RESOURCE_TYPE { get; set; }
-        public string LIMIT { get; set; }
+        public string NOOFUSER { get; set; }
 
     }
 }
