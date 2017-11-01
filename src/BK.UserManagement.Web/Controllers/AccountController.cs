@@ -12,6 +12,8 @@ using System.Data.OleDb;
 using System;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using BK.UserManagement.Web.Models.UserViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BK.UserManagement.Web.Controllers
 {
@@ -169,5 +171,47 @@ namespace BK.UserManagement.Web.Controllers
         //        ModelState.AddModelError(string.Empty, error.Description);
         //    }
         //}
+        [HttpGet]
+        public IActionResult Logon()
+        {
+            var loggedInUser = HttpContext.User;
+            string username = loggedInUser.Identity.Name;
+            
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                EditUserViewModel vmEditUser = new EditUserViewModel();
+
+                vmEditUser.User = ole.Query<UserModel>("SELECT * FROM sys.dba_users WHERE USERNAME = :Username", new { Username = username.ToUpper() })
+                    .FirstOrDefault();
+                var tablespaces = ole.Query<TablespaceModel>("SELECT TABLESPACE_NAME FROM SYS.DBA_TABLESPACES");
+                vmEditUser.Tablespaces = tablespaces.Select(x =>
+                                  new SelectListItem()
+                                  {
+                                      Text = x.TABLESPACE_NAME.ToString(),
+                                      Value = x.TABLESPACE_NAME.ToString()
+                                  });
+
+                vmEditUser.DefaultTablespaceName = vmEditUser.User.DEFAULT_TABLESPACE;
+                vmEditUser.TemporaryTablespaceName = vmEditUser.User.TEMPORARY_TABLESPACE;
+                var profiles = ole.Query<ProfileModel>("SELECT DISTINCT PROFILE FROM SYS.DBA_PROFILES");
+                vmEditUser.Profiles = profiles.Select(x =>
+                                    new SelectListItem()
+                                    {
+                                        Text = x.PROFILE.ToString(),
+                                        Value = x.PROFILE.ToString()
+                                    });
+                vmEditUser.ProfileName = vmEditUser.User.PROFILE;
+                var accountStatusList = new List<SelectListItem>();
+                accountStatusList.Add(new SelectListItem() { Text = "OPEN", Value = "0" });
+                accountStatusList.Add(new SelectListItem() { Text = "PASSWORD EXPIRED", Value = "EXPIRED" });
+                accountStatusList.Add(new SelectListItem() { Text = "LOCKED", Value = "LOCKED" });
+                accountStatusList.Add(new SelectListItem() { Text = "EXPIRED & LOCKED", Value = "EXPIRED & LOCKED" });
+                vmEditUser.AccoutStatusList = accountStatusList;
+                vmEditUser.AccountStatus = vmEditUser.User.ACCOUNT_STATUS;
+                vmEditUser.QuotaList = ole.Query<QuotaModel>($"SELECT TABLESPACE_NAME, BYTES, MAX_BYTES FROM SYS.DBA_TS_QUOTAS WHERE USERNAME = '{vmEditUser.User.USERNAME}'");
+                return View(vmEditUser);
+            }
+
+        }
     }
 }
