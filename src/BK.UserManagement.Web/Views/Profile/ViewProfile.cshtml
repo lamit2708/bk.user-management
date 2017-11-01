@@ -45,7 +45,10 @@
                                 <tr>
                                     <td>@u.Resource_Name</td>
                                     <td>@u.Resource_Type</td>
-                                    <td>@u.Limit </td>
+                                    @{
+                                        var pk = u.Profile + "-" + u.Resource_Name;
+                                    }
+                                    <td><a href="#" class="DLimit" data-type="text" data-pk=pk data-url=@Url.Action("EditLimit", "Profile") data-title="Enter Model Name">@u.Limit</a></td>
                                 </tr>
                             }
                         </tbody>
@@ -83,6 +86,10 @@
                 'autoWidth': false
             })
         })
+
+        //$('.DLimit').Editable();
+
+
     </script>
 
 

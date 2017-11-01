@@ -8,6 +8,7 @@ using Oracle.ManagedDataAccess.Client;
 using BK.UserManagement.Web.Models;
 using Dapper;
 using System.Net;
+using Microsoft.AspNetCore.Http;
 
 namespace BK.UserManagement.Web.Controllers
 {
@@ -52,6 +53,35 @@ namespace BK.UserManagement.Web.Controllers
                 return PartialView(userInProfile);
             }
                 
+        }
+
+        public ActionResult EditResource(string pk, string value, string name)
+        {
+            using (var conn = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                conn.Open();
+                OracleCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = $@"ALTER PROFILE {pk} LIMIT {pk} {value}";
+
+                cmd.ExecuteNonQuery();
+                return new StatusCodeResult(200);
+            }
+
+
+
+            //var dev = db.tblDevice_Model.Find(pk);
+            //if (dev != null)
+            //{
+            //    dev.ModelName = value;
+            //    db.SaveChanges();
+            //    return new HttpStatusCodeResult(HttpStatusCode.OK);
+            //}
+            //else
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            
         }
 
     }
