@@ -83,10 +83,10 @@ namespace BK.UserManagement.Web.Controllers
 
             try
             {
+
                 using (var con = new OracleConnection())
                 {
-                    //String conn = "Data Source=localhost/orcl;Persist Security Info=True;User ID=" + username + ";Password=" + password + ";";
-                    //con.ConnectionString = "Data Source=localhost/orcl;Persist Security Info=True;User ID=" + username + ";Password=" + password + ";";
+
                     con.ConnectionString = String.Format(config.GetConnectionString("UserConnection"), dataSource, username, password);
                     con.Open();
 

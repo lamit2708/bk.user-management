@@ -1,0 +1,65 @@
+@model IEnumerable<BK.UserManagement.Web.Models.UserModel>
+
+<div class="modal fade">
+        <div class="modal-dialog" style="width:460px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title"><b>List of users has profile @ViewBag.ProfileName </b></h4>
+                </div>
+                <div class="modal-body">
+                    <table id="tbl_user" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                @*<th>ID</th>*@
+                                <th>User Name</th>
+                                @*<th>Default Tablespace</th>
+                                <th>Temporary Tablespace</th>
+                                <th>Profile</th>
+                                <th>Account Status</th>
+                                <th>Features</th>*@
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+
+                            @foreach (var u in Model)
+                            {
+                                <tr>
+                                    @*<td>@u.USER_ID</td>*@
+                                    <td>@u.USERNAME</td>
+                                    @*<td>@u.DEFAULT_TABLESPACE</td>
+                                    <td>@u.TEMPORARY_TABLESPACE</td>
+                                    <td>@u.PROFILE</td>
+                                    <td>@u.ACCOUNT_STATUS</td>
+                                    <td>
+                                        <button data-user-id="@u.USER_ID"
+                                                data-user-name="@u.USERNAME" type="button" class="btnDelete btn btn-danger pull-right">
+                                            <i class="fa fa-remove"></i> Delete
+                                        </button>
+                                        @Html.ActionLink("Edit", "Edit", new { id=u.USER_ID})
+                                        <button type="button" data-user-id="@u.USER_ID" data-user-name="@u.USERNAME"
+                                                class="btnEdit btn btn-success pull-right" style="margin-right: 5px;">
+                                            <i class="fa fa-edit"></i> Edit
+                                        </button>
+
+
+                                    </td>*@
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                @*<th>ID</th>*@
+                                <th>User Name</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>

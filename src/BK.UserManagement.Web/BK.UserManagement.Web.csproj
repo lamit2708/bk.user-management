@@ -34,9 +34,9 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="Views\Sys\" />
     <Folder Include="Views\Role\" />
     <Folder Include="Views\User\" />
-    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
   <ItemGroup>
