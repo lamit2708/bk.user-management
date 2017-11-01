@@ -51,7 +51,7 @@
                                     <td>@u.PROFILE</td>
                                     <td>@u.NOOFUSER
 
-                                        @Html.ActionLink(" [View]", "ViewUserInProfile", "Profile", new { id = u.PROFILE }, new { @class = "InvoiceLink" })
+                                        @Html.ActionLink(" [Show List]", "ViewUserInProfile", "Profile", new { _profileName = u.PROFILE }, new { @class = "UserListLink" })
                                                                            
                                     </td>
                                     <td>
@@ -97,7 +97,7 @@
 @section Scripts {
 
        <!-- page script -->
-    <script>
+    <script type="text/javascript">
         $(function () {
             //$('#example1').DataTable()
             $('#tbl_user').DataTable({
@@ -109,6 +109,25 @@
                 'autoWidth': false
             })
         })
+
+        $(document).on("click", "a.UserListLink", function () {
+            console.log(this.href)
+            $.ajax({
+                url: this.href,
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    console.log($('#ModelView'))
+                    $('#ModalView').html(result).find('.modal').modal({
+                        show: true
+                    });
+                    console.log($('#ModelView').find('.modal'))
+                }
+            });
+
+            return false;
+        });
+
     </script>
 
 

@@ -43,11 +43,12 @@ namespace BK.UserManagement.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult ViewUserInProfile(string _profileName)
+        public IActionResult ViewUserInProfile(string _profileName)
         {
             using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
             {
-                var userInProfile = ole.Query<UserModel>("SELECT username FROM dba_users WHERE profile = ''" + _profileName + "'");
+                var userInProfile = ole.Query<UserModel>("SELECT * FROM dba_users WHERE profile = '" + _profileName + "'");
+                ViewBag.ProfileName = _profileName;
                 return PartialView(userInProfile);
             }
                 

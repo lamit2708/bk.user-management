@@ -79,6 +79,7 @@ namespace BK.UserManagement.Web.Controllers
 
             try
             {
+
                 using (var con = new OracleConnection())
                 {
                     con.ConnectionString = "Data Source=localhost/orclbk;Persist Security Info=True;User ID=" + username + ";Password=" + password + ";";
