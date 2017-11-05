@@ -20,7 +20,7 @@ namespace BK.UserManagement.Web.Controllers
         }
 
         
-        public IActionResult Index()
+        public IActionResult ListUserRole()
         {
 
             using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
@@ -29,6 +29,38 @@ namespace BK.UserManagement.Web.Controllers
                 return View(userRole);
             }
         }
+       
+        public IActionResult Index()
+        {
+
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                var listRole = ole.Query<RoleSysPrivsModel>("SELECT * FROM ROLE_SYS_PRIVS");
+                return View(listRole);
+            }
+        }
+
+        public IActionResult EditRoleSysPrivs(string id)
+        {
+            var roleSysPrivsViewModel = new RoleSysPrivsViewModel();
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                var roleCreateProfile = ole.Query<RoleSysPrivsModel>($"select * from ROLE_SYS_PRIVS where role='{id}' and PRIVILEGE='CREATE PROFILE'").FirstOrDefault();
+                if (roleCreateProfile != null)
+                {
+                    roleSysPrivsViewModel.CreateProfile = true;
+                }
+
+                var roleCreateSession = ole.Query<RoleSysPrivsModel>($"select * from ROLE_SYS_PRIVS where role='{id}' and PRIVILEGE='CREATE SESSION'").FirstOrDefault();
+                if (roleCreateSession != null)
+               {
+                    roleSysPrivsViewModel.CreateSession = true;
+                }
+
+                return View(roleSysPrivsViewModel);
+            }
+        }
+
         [HttpGet]
         public IActionResult Create()
         {

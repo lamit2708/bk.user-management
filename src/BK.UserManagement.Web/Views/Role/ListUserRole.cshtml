@@ -1,5 +1,5 @@
 @using BK.UserManagement.Web.Models
-@model IEnumerable<RoleSysPrivsModel>
+@model IEnumerable<UserRoleModel>
     @{
         ViewData["Title"] = "Index";
         Layout = "~/Views/Shared/_Layout.cshtml";
@@ -8,7 +8,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            List Role
+            List Role User
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Role</a></li>
@@ -21,15 +21,16 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
-
+ 
                     <!-- /.box-header -->
                     <div class="box-body">
                         <table id="tbl_user" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>ROLE</th>
-                                    <th>PRIVILEGE</th>
+                                    <th>GRANTEE</th>
+                                    <th>GRANTED_ROLE</th>
                                     <th>ADMIN_OPTION</th>
+                                    <th>DEFAULT_ROLE</th>
                                    
                                     <th>Features</th>
 
@@ -39,25 +40,27 @@
 
 
 
-                                @foreach (var r in Model)
+                                @foreach (var u in Model)
                                 {
                                     <tr>
-                                        <td>@r.ROLE</td>
-                                        <td>@r.PRIVILEGE</td>
-                                        <td>@r.ADMIN_OPTION</td>
+                                        <td>@u.GRANTEE</td>
+                                        <td>@u.GRANTED_ROLE </td>
+                                        <td>@u.ADMIN_OPTION</td>
+                                        <td>@u.DEFAULT_ROLE</td>
                                         
                                         <td>
-                                            <button type="button" class="btnDelete btn btn-danger pull-right">
+                                            <button 
+                                                    type="button" class="btnDelete btn btn-danger pull-right">
                                                 <i class="fa fa-remove"></i> Delete
                                             </button>
-
-                                            @*@Html.ActionLink("Edit", "Edit", new { id=u.ROLE})*@
-                                            <button type="button" data-role-name="@r.ROLE"
+                                           
+                                            @*@Html.ActionLink("Edit", "Edit", new { id=u.GRANTEE})*@
+                                            <button type="button" data-user-id="@u.GRANTEE" data-user-name="@u.GRANTEE"
                                                     class="btnEdit btn btn-success pull-right" style="margin-right: 5px;">
                                                 <i class="fa fa-edit"></i> Edit
                                             </button>
 
-
+                                            
 
                                         </td>
                                     </tr>
@@ -65,6 +68,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <th>User Name</th>
                                     <th>Features</th>
                                 </tr>
                             </tfoot>
@@ -81,16 +85,16 @@
     <!-- /.content -->
 
 
-    @section Scripts {
+@section Scripts {
 
-        <script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function () {
 
             $('.btnEdit').click(function (e) {
                 //var userId = $(this).data('userId');
-                var roleName = $(this).data('roleName');
+                var username = $(this).data('userName');
                 //console.log($(this).data());
-                location.href = '@Url.Content("~/Role/EditRoleSysPrivs/")' + roleName;
+                location.href = '@Url.Content("~/User/Edit/")' + username;
             });
             $('.btnDelete').click(function (e)
             {
@@ -111,10 +115,10 @@
             });
 
         });
-        </script>
+    </script>
 
-        <!-- page script -->
-        <script>
+    <!-- page script -->
+    <script>
         $(function () {
             //$('#example1').DataTable()
             $('#tbl_user').DataTable({
@@ -126,8 +130,8 @@
                 'autoWidth': false
             })
         })
-        </script>
+    </script>
 
+    
 
-
-    }
+}

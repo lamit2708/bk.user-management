@@ -1,0 +1,46 @@
+@using BK.UserManagement.Web.Models.RoleViewModels
+@model RoleSysPrivsViewModel
+@{
+    ViewData["Title"] = "EditRoleSysPrivs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="login-box">
+    
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg">Edit ROLE_SYS_PRIVS</p>
+        <form asp-controller="Account" asp-action="Login" method="post" asp-route-returnurl="@ViewData["ReturnUrl"]">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="checkbox icheck">
+                        <label>
+                            <input type="checkbox" asp-for="CreateProfile" checked="@Model.CreateProfile">  @Html.DisplayNameFor(m => m.CreateProfile)
+                        </label>
+                    </div>
+                    <div class="checkbox icheck">
+                        <label>
+                            <input type="checkbox" asp-for="CreateSession" checked="@Model.CreateSession">  @Html.DisplayNameFor(m => m.CreateSession)
+                        </label>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat pull-right">Save</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+
+    </div>
+    <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
+
+
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+

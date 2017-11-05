@@ -8,5 +8,8 @@ namespace BK.UserManagement.Web.Models.UserViewModels
     public class TablespaceModel
     {
         public string TABLESPACE_NAME { get; set; }
+
+
+
     }
 }
