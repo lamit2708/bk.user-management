@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/css/AdminLTE.min.css" />
+        <link rel="stylesheet" href="~/css/bootstrap-editable.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -17,6 +18,7 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/css/AdminLTE.min.css" />
+        <link rel="stylesheet" href="~/css/bootstrap-editable.css" />
     </environment>
     <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
@@ -81,7 +83,7 @@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a asp-controller="Account" asp-action="Index" class="btn btn-primary btn-flat">Account</a>
+                                        <a asp-controller="Account" asp-action="Logon" class="btn btn-primary btn-flat">Account</a>
                                     </div>
                                     <div class="pull-right">
 
@@ -118,7 +120,7 @@
                 <!-- Sidebar Menu -->
                 <ul class="sidebar-menu" data-widget="tree">
                     <!-- Optionally, you can add icons to the links -->
-                    <li><a class="menu_account" asp-controller="Account" asp-action="Index"><i class="fa fa-user"></i> <span>Account</span></a></li>
+                    <li><a class="menu_account" asp-controller="Account" asp-action="Logon" ><i class="fa fa-user"></i> <span>Account</span></a></li>
                     <li class="treeview">
                         <a href="#">
                             <i class="fa fa-users"></i> <span>User</span>
@@ -152,7 +154,7 @@
                     <!-- Menu Profile-->
                     <li class="treeview">
                         <a href="#">
-                            <i class="fa fa-shield"></i> <span>Profile</span>
+                            <i class="fa fa-file"></i> <span>Profile</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
@@ -271,6 +273,9 @@
         immediately after the control sidebar -->
         <div class="control-sidebar-bg"></div>
     </div>
+
+    <div id="ModalView"></div>
+
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
@@ -302,9 +307,9 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="~/js/bootstrap-editable.js"></script>
         <script src="~/js/adminlte.min.js" asp-append-version="true"></script>
-
-
+        
         <!-- DataTables -->
         <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
         <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
@@ -330,6 +335,9 @@
             $('ul.treeview-menu a').filter(function () {
                 return this.href == url;
             }).closest('.treeview').addClass('active');
+
+            //$('.DLimit').Editable();
+
         });
     </script>
 </body>

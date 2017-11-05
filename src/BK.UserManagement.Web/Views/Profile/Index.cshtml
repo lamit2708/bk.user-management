@@ -11,7 +11,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Profile</a></li>
-        <li class="active><a href="#">Index</a></li>
+        <li class="active"><a href="#">Index</a></li>
 
     </ol>
 </section>
@@ -22,17 +22,23 @@
             <div class="box">
 
                 <!-- /.box-header -->
+                <div class="box-header">
+                    @*<h3 class="box-title">User List</h3>*@
+
+                    <button type="button" class="btnAdd btn btn-primary pull-left"
+                            onclick="location.href='@Url.Action("Add", "Profile")';">
+                        <i class="fa fa-plus"></i> Add New Profile
+                    </button>
+                </div>
+
                 <div class="box-body">
                     <table id="tbl_user" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>RPROFILE</th>
-                                <th>RESOURCE_NAME</th>
-                                <th>RESOURCE_TYPE</th>
-                                <th>LIMIT</th>
+                                <th>PROFILE</th>
+                                <th>NUMBER OF ASSIGNED USERS</th>
 
-                                <th>Features</th>
-
+                                <th><span class="pull-right">Features</span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -43,22 +49,27 @@
                             {
                                 <tr>
                                     <td>@u.PROFILE</td>
-                                    <td>@u.RESOURCE_NAME </td>
-                                    <td>@u.RESOURCE_TYPE</td>
-                                    <td>@u.LIMIT </td>
+                                    <td>@u.NOOFUSER
 
-
+                                        @Html.ActionLink(" [Show List]", "ViewUserInProfile", "Profile", new { _profileName = u.PROFILE }, new { @class = "UserListLink" })
+                                                                           
+                                    </td>
                                     <td>
-                                        <button type="button" class="btnDelete btn btn-danger pull-right">
+                                       
+
+                                        
+
+                                        <button type="button" class="btnDelete btn btn-danger pull-right" style="margin-right: 5px;" onclick="location.href='@Url.Action("Delete", "Profile")';">
                                             <i class="fa fa-remove"></i> Delete
                                         </button>
 
-                                        <button type="button"
-                                                class="btnEdit btn btn-success pull-right" style="margin-right: 5px;">
+                                        <button type="button" class="btnEdit btn btn-success pull-right" style="margin-right: 5px;" onclick="location.href='@Url.Action("Edit", "Profile",new {_profileName = u.PROFILE })';">
                                             <i class="fa fa-edit"></i> Edit
                                         </button>
 
-
+                                        <button type="button" class="btnView btn btn-primary pull-right" style="margin-right: 5px;" onclick="location.href='@Url.Action("ViewProfile", "Profile",new {_profileName = u.PROFILE })';">
+                                            <i class="fa fa-list"></i> View
+                                        </button>
                                     </td>
                                 </tr>
                             }
@@ -66,8 +77,8 @@
 
                         <tfoot>
                             <tr>
-                                <th>Profile Name</th>
-                                <th>Features</th>
+                                @*<th>Profile Name</th>
+                                <th>Features</th>*@
                             </tr>
                         </tfoot>
                     </table>
@@ -85,38 +96,8 @@
 
 @section Scripts {
 
+       <!-- page script -->
     <script type="text/javascript">
-        $(document).ready(function () {
-
-            $('.btnEdit').click(function (e) {
-                //var userId = $(this).data('userId');
-                var username = $(this).data('userName');
-                //console.log($(this).data());
-                location.href = '@Url.Content("~/User/Edit/")' + username;
-            });
-            $('.btnDelete').click(function (e)
-            {
-                var userId = $(this).data('userId');
-                var username = $(this).data('userName');
-                if (userId > 100 && userId < 2147483638) {
-
-                    //console.log(username);
-                    //console.log('@Url.Content("~/User/Delete/")' + username)
-                    location.href = '@Url.Content("~/User/Delete/")' + username;
-
-                } else {
-
-                    alert("Can not delete the user "+username+"/"+userId+"!\r\n Your have not privileges to delete the user with id <100. ");
-
-                }
-
-            });
-
-        });
-    </script>
-
-    <!-- page script -->
-    <script>
         $(function () {
             //$('#example1').DataTable()
             $('#tbl_user').DataTable({
@@ -128,6 +109,25 @@
                 'autoWidth': false
             })
         })
+
+        $(document).on("click", "a.UserListLink", function () {
+            console.log(this.href)
+            $.ajax({
+                url: this.href,
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    console.log($('#ModelView'))
+                    $('#ModalView').html(result).find('.modal').modal({
+                        show: true
+                    });
+                    console.log($('#ModelView').find('.modal'))
+                }
+            });
+
+            return false;
+        });
+
     </script>
 
 
