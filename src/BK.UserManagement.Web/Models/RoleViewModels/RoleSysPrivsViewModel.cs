@@ -16,7 +16,7 @@ namespace BK.UserManagement.Web.Models.RoleViewModels
         [Display(Name = "CREATE SESSION")]
         public bool CreateSession { get; set; } = false;
 
-
+           
 
 
     }

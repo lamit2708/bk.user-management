@@ -56,7 +56,7 @@ namespace BK.UserManagement.Web.Controllers
                {
                     roleSysPrivsViewModel.CreateSession = true;
                 }
-
+                     
                 return View(roleSysPrivsViewModel);
             }
         }

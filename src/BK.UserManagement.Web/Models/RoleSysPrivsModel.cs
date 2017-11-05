@@ -10,6 +10,6 @@ namespace BK.UserManagement.Web.Models
         public string ROLE { get; set; }
         public string PRIVILEGE { get; set; }
         public string ADMIN_OPTION { get; set; }
-
+       
     }
 }
