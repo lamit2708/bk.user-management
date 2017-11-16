@@ -147,6 +147,7 @@
                         <ul class="treeview-menu">
                             <li><a class="menu_create_role" asp-controller="Role" asp-action="Create">Create Role</a></li>
                             <li><a class="menu_grant_role" asp-controller="Role" asp-action="Grant">Edit Role</a></li>
+                            <li><a class="menu_list_role_user" asp-controller="Role" asp-action="ListUserRole">Roles Of User</a></li>
                             <li><a class="menu_list_role" asp-controller="Role" asp-action="Index">List Role</a></li>
                         </ul>
                     </li>
@@ -176,7 +177,7 @@
                         </a>
                         <ul class="treeview-menu">
                             <li><a class="menu_create_Profile" asp-controller="Sys" asp-action="Index">DBA_SYS_PRIVS</a></li>
-                            <li><a class="menu_grant_Profile" asp-controller="Sys" asp-action="ListTabPrivs">DBA_TAB_PRIVS</a></li>
+                            <li><a class="menu_grant_Profile" asp-controller="Sys" asp-action="ListTablePrivs">DBA_TAB_PRIVS</a></li>
                             
                         </ul>
                     </li>
@@ -337,7 +338,7 @@
             }).closest('.treeview').addClass('active');
 
             //$('.DLimit').Editable();
-
+          
         });
     </script>
 </body>
