@@ -24,9 +24,9 @@ namespace BK.UserManagement.Web.Controllers
 
         public IActionResult Index()
         {
-            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            using (var ole = new OracleConnection(config.GetConnectionString("PhucConnection")))
             {
-                var listProfile = ole.Query<ProfileModel>("SELECT u.profile as PROFILE,count(u.username) AS NOOFUSER FROM dba_users u GROUP BY u.profile");
+                var listProfile = ole.Query<ProfileModel>("select p.profile as PROFILE,count(u.username) AS NOOFUSER from dba_users u RIGHT OUTER join(select DISTINCT profile from dba_profiles) p ON p.profile = u.profile GROUP BY p.profile");
                 return View(listProfile);
             }
         }
@@ -35,7 +35,7 @@ namespace BK.UserManagement.Web.Controllers
         [HttpGet]
         public IActionResult ViewProfile(string _profileName)
         {
-            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            using (var ole = new OracleConnection(config.GetConnectionString("PhucConnection")))
             {
                 var profileResource = ole.Query<ProfileResource>("SELECT * FROM dba_profiles where Profile = '" + _profileName + "'");
                 ViewBag.ProfileName = _profileName;
@@ -46,7 +46,7 @@ namespace BK.UserManagement.Web.Controllers
         [HttpGet]
         public IActionResult ViewUserInProfile(string _profileName)
         {
-            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            using (var ole = new OracleConnection(config.GetConnectionString("PhucConnection")))
             {
                 var userInProfile = ole.Query<UserModel>("SELECT * FROM dba_users WHERE profile = '" + _profileName + "'");
                 ViewBag.ProfileName = _profileName;
@@ -57,7 +57,7 @@ namespace BK.UserManagement.Web.Controllers
 
         public ActionResult EditResource(string pk, string value, string name)
         {
-            using (var conn = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            using (var conn = new OracleConnection(config.GetConnectionString("PhucConnection")))
             {
                 conn.Open();
                 OracleCommand cmd = conn.CreateCommand();
@@ -66,23 +66,16 @@ namespace BK.UserManagement.Web.Controllers
 
                 cmd.ExecuteNonQuery();
                 return new StatusCodeResult(200);
-            }
-
-
-
-            //var dev = db.tblDevice_Model.Find(pk);
-            //if (dev != null)
-            //{
-            //    dev.ModelName = value;
-            //    db.SaveChanges();
-            //    return new HttpStatusCodeResult(HttpStatusCode.OK);
-            //}
-            //else
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
-            
+            } 
         }
+
+        [HttpGet]
+        public IActionResult AddNewProfile()
+        {
+            return View();
+        }
+
+
 
     }
 }
