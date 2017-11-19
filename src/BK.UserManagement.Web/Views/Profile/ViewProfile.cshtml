@@ -48,7 +48,7 @@
                                     @{
                                         var pk = u.Profile + "-" + u.Resource_Name;
                                     }
-                                    <td><a href="#" class="DLimit" data-type="text" data-pk=pk data-url=@Url.Action("EditLimit", "Profile") data-title="Enter Model Name">@u.Limit</a></td>
+                                    <td><a href="#" class="DLimit" data-type="text" data-pk=@u.Resource_Name data-url=@Url.Action("EditLimit", "Profile") data-title="Enter Model Name">@u.Limit</a></td>
                                 </tr>
                             }
                         </tbody>
@@ -74,6 +74,14 @@
 @section Scripts {
 
     <!-- page script -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('a[class=DLimit]').editable();
+        });
+    </script>
+            
+
+
     <script>
         $(function () {
             //$('#example1').DataTable()
@@ -87,10 +95,12 @@
             })
         })
 
-        //$('.DLimit').Editable();
+        
 
 
     </script>
+
+
 
 
 

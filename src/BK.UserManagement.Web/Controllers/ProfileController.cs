@@ -62,7 +62,7 @@ namespace BK.UserManagement.Web.Controllers
                 conn.Open();
                 OracleCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = $@"ALTER PROFILE {pk} LIMIT {pk} {value}";
+                cmd.CommandText = $@"ALTER PROFILE {name} LIMIT {pk} {value}";
 
                 cmd.ExecuteNonQuery();
                 return new StatusCodeResult(200);
@@ -75,7 +75,31 @@ namespace BK.UserManagement.Web.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult AddNewProfile(ProfileModel pm)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    using (var conn = new OracleConnection(config.GetConnectionString("PhucConnection")))
+                    {
+                        conn.Open();
+                        OracleCommand cmd = conn.CreateCommand();
+                        cmd.CommandText = $@"CREATE PROFILE {pm.PROFILE.ToUpper()} LIMIT";
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
 
+            }
+
+
+            return RedirectToAction(nameof(UserController.Index), "Profile");
+        }
 
     }
 }

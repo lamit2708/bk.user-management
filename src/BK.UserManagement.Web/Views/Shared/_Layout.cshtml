@@ -24,7 +24,7 @@
     <!-- Ionicons -->
     <link rel="stylesheet" href="~/lib/Ionicons/css/ionicons.min.css">
     <link rel="stylesheet" href="~/css/skins/skin-blue.min.css">
-
+    <link rel="stylesheet" href="~/css/bootstrap-editable.css" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -280,9 +280,10 @@
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        
         <script src="~/js/site.js" asp-append-version="true"></script>
         <script src="~/js/adminlte.min.js" asp-append-version="true"></script>
-
+        <script src="~/js/bootstrap-editable.js"></script>
 
 
         <!-- DataTables -->
@@ -308,7 +309,6 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
-        <script src="~/js/bootstrap-editable.js"></script>
         <script src="~/js/adminlte.min.js" asp-append-version="true"></script>
         
         <!-- DataTables -->
@@ -321,7 +321,7 @@
     </environment>
 
     @RenderSection("Scripts", required: false)
-    <script>
+    <script type="text/javascript">
         $(document).ready(function () {
 
             var url = window.location;
@@ -340,6 +340,8 @@
             //$('.DLimit').Editable();
           
         });
+
+
     </script>
 </body>
 </html>
