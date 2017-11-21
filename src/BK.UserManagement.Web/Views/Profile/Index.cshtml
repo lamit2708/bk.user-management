@@ -55,11 +55,8 @@
                                                                            
                                     </td>
                                     <td>
-                                       
 
-                                        
-
-                                        <button type="button" class="btnDelete btn btn-danger pull-right" style="margin-right: 5px;" onclick="location.href='@Url.Action("Delete", "Profile")';">
+                                        <button type="button" class="btnDelete btn btn-danger pull-right" style="margin-right: 5px;" onclick="location.href='@Url.Action("DeleteProfile", "Profile",new {_profileName = u.PROFILE })';">
                                             <i class="fa fa-remove"></i> Delete
                                         </button>
 

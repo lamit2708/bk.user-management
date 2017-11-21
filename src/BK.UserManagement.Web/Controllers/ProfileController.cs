@@ -97,9 +97,38 @@ namespace BK.UserManagement.Web.Controllers
 
             }
 
-
             return RedirectToAction(nameof(UserController.Index), "Profile");
         }
+
+        [HttpGet]
+        public IActionResult DeleteProfile(string _profileName)
+        {
+            ViewBag.ProfileName = _profileName;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Delete(string _profileName)
+        {
+            try
+            {
+                using (var conn = new OracleConnection(config.GetConnectionString("PhucConnection")))
+                {
+                    conn.Open();
+                    OracleCommand cmd = conn.CreateCommand();
+                    cmd.CommandText = $@"DROP PROFILE {_profileName} CASCADE";
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+
+            return RedirectToAction("Index");
+        }
+
 
     }
 }
