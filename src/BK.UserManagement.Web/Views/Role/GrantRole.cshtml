@@ -1,16 +1,16 @@
 @using BK.UserManagement.Web.Models.RoleViewModels
-@model RoleSysPrivsViewModel
-
+@model GrantRoleViewModel
 @{
-    ViewData["Title"] = "EditRoleSysPrivs";
+    ViewData["Title"] = "GranRole";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 
 <div>
 
     <!-- /.login-logo -->
     <div>
-        <p class="login-box-msg"> Edit ROLE_SYS_PRIVS</p>
+        <p class="login-box-msg"> GRANT ROLE</p>
         <form asp-controller="Role" asp-action="EditRoleSysPrivs" method="post" asp-route-returnurl="@ViewData["ReturnUrl"]">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="row">
@@ -285,4 +285,8 @@
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
+
+
+
+
 

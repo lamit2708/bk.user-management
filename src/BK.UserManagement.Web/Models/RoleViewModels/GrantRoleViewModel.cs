@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace BK.UserManagement.Web.Models.RoleViewModels
 {
-    public class RoleSysPrivsViewModel
+    public class GrantRoleViewModel
     {
+
         [Required]
         [Display(Name = "USER")]
         public string User { get; set; }
@@ -144,5 +145,6 @@ namespace BK.UserManagement.Web.Models.RoleViewModels
         [Required]
         [Display(Name = "ADMIN OPTION")]
         public bool DropUserAdminOption { get; set; } = false;
+
     }
 }
