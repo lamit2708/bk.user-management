@@ -8,7 +8,7 @@ namespace BK.UserManagement.Web.Models
     public class RoleModel
     {
         public string ROLE { get; set; }
-        public string PASSWORD { get; set; }
-        public string AUTHENTICAT{ get; set; }
+        public string PASSWORD_REQUIRED { get; set; }
+        public string AUTHENTICATION_TYPE { get; set; }
     }
 }

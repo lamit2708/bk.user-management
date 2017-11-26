@@ -30,8 +30,8 @@
                             <thead>
                                 <tr>
                                     <th>ROLE</th>
-                                    <th>PASSWORD</th>
-                                    <th>AUTHENTICAT</th>
+                                    <th>PASSWORD_REQUIRED</th>
+                                    <th>AUTHENTICATION_TYPE</th>
                                    
                                     <th>Features</th>
 
@@ -45,27 +45,19 @@
                                 {
                                     <tr>
                                         <td>@r.ROLE</td>
-                                        <td>@r.PASSWORD</td>
-                                        <td>@r.AUTHENTICAT</td>
+                                        <td>@r.PASSWORD_REQUIRED</td>
+                                        <td>@r.AUTHENTICATION_TYPE</td>
                                         
                                         <td>
                                             <button type="button" class="btnDelete btn btn-danger pull-right">
                                                 <i class="fa fa-remove"></i> Delete
                                             </button>
-                                            @*@Html.ActionLink("Edit", "Edit", new { id=u.ROLE})*@
+                                        
                                             <button type="button" data-role-name="@r.ROLE"
                                                     class="btnEdit btn btn-success pull-right" style="margin-right: 5px;">
                                                 <i class="fa fa-edit"></i> Edit
                                             </button>
-
-                                            @*@Html.ActionLink("Grant", "Grant", new { id=u.ROLE})*@
-                                            <button type="button" data-role-name="@r.ROLE"
-                                                    class="btnGrant btn btn-success pull-right" style="margin-right: 5px;">
-                                                <i class="fa fa-grant"></i> Grant
-                                            </button>
-
-
-
+                                         
                                         </td>
                                     </tr>
                                 }
@@ -91,20 +83,12 @@
     @section Scripts {
 
         <script type="text/javascript">
-        $(document).ready(function () {
-
-            $('.btnGrant').click(function (e) {
-                //var userId = $(this).data('userId');
-                var roleName = $(this).data('roleName');
-                //console.log($(this).data());
-                location.href = '@Url.Content("~/Role/GrantRole/")' + roleName;
-            });
+        
              $('.btnEdit').click(function (e) {
-                //var userId = $(this).data('userId');
-                var roleName = $(this).data('roleName');
-                //console.log($(this).data());
-                location.href = '@Url.Content("~/Role/EditRoleSysPrivs/")' + roleName;
+                var roleName = $(this).data('roleName');       
+                location.href = '@Url.Content("~/Role/EditRole/")' + roleName;
             });
+
             $('.btnDelete').click(function (e)
             {
                 var userId = $(this).data('userId');
@@ -123,7 +107,7 @@
 
             });
 
-        });
+       
         </script>
 
         <!-- page script -->
