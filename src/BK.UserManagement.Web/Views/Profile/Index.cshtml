@@ -114,11 +114,9 @@
                 type: 'GET',
                 cache: false,
                 success: function (result) {
-                    console.log($('#ModelView'))
                     $('#ModalView').html(result).find('.modal').modal({
                         show: true
                     });
-                    console.log($('#ModelView').find('.modal'))
                 }
             });
 
