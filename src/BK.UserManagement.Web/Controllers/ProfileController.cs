@@ -20,7 +20,15 @@ namespace BK.UserManagement.Web.Controllers
             config = iconfig;
         }
 
-
+        public bool profileExist(string _name)
+        {
+            using (var ole = new OracleConnection(config.GetConnectionString("PhucConnection")))
+            {
+                var nProfile = ole.Query("select * from dba_profiles Where profile = '" + _name.ToUpper() + "'").Count();
+                if (nProfile > 0) return true;
+            }
+            return false;
+        }
 
         public IActionResult Index()
         {
@@ -82,12 +90,21 @@ namespace BK.UserManagement.Web.Controllers
             {
                 try
                 {
-                    using (var conn = new OracleConnection(config.GetConnectionString("PhucConnection")))
+                    //check if profile exist
+                    if (profileExist(pm.PROFILE))
                     {
-                        conn.Open();
-                        OracleCommand cmd = conn.CreateCommand();
-                        cmd.CommandText = $@"CREATE PROFILE {pm.PROFILE.ToUpper()} LIMIT";
-                        cmd.ExecuteNonQuery();
+                        ViewBag.Message = "Profile already exist. Please try again";
+                        return View();
+                    }
+                    else
+                    {
+                        using (var conn = new OracleConnection(config.GetConnectionString("PhucConnection")))
+                        {
+                            conn.Open();
+                            OracleCommand cmd = conn.CreateCommand();
+                            cmd.CommandText = $@"CREATE PROFILE {pm.PROFILE.ToUpper()} LIMIT";
+                            cmd.ExecuteNonQuery();
+                        }
                     }
                 }
                 catch (Exception e)
