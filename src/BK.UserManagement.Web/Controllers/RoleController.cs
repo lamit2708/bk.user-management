@@ -19,7 +19,22 @@ namespace BK.UserManagement.Web.Controllers
             config = iconfig;
         }
 
+        // Role
+        public IActionResult Index()
+        {
+
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                var listRole = ole.Query<RoleModel>("SELECT * FROM DBA_ROLES");
+                return View(listRole);
+            }
+        }
+
+
         
+
+        //List User Role
+
         public IActionResult ListUserRole()
         {
 
@@ -29,14 +44,23 @@ namespace BK.UserManagement.Web.Controllers
                 return View(userRole);
             }
         }
-       
-        public IActionResult Index()
+
+        [HttpGet]
+        public IActionResult EditRole()
+        {
+
+            return View();
+        }
+
+
+        // List Role Sys Privs
+        public IActionResult ListRoleSysPrivs()
         {
 
             using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
             {
-                var listRole = ole.Query<RoleSysPrivsModel>("SELECT * FROM ROLE_SYS_PRIVS");
-                return View(listRole);
+                var roleSys = ole.Query<RoleSysPrivsModel>("SELECT * FROM ROLE_SYS_PRIVS");
+                return View(roleSys);
             }
         }
 
@@ -290,7 +314,7 @@ namespace BK.UserManagement.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    throw e;
+                  
                 }
 
             }

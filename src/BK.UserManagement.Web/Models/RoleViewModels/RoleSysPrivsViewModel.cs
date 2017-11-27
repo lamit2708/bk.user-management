@@ -144,6 +144,5 @@ namespace BK.UserManagement.Web.Models.RoleViewModels
         [Required]
         [Display(Name = "ADMIN OPTION")]
         public bool DropUserAdminOption { get; set; } = false;
-
     }
 }
