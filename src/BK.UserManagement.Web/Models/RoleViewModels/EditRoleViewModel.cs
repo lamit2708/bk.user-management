@@ -8,10 +8,12 @@ namespace BK.UserManagement.Web.Models.RoleViewModels
 {
     public class EditRoleViewModel
     {
-      
+
+        public RoleModel Role { get; set; }
+
         [Required]
         [Display(Name = "Role Name")]
-        public string RoleName { get; set; }
+        public string _RoleName { get; set; }
 
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]

@@ -1,5 +1,7 @@
 @using BK.UserManagement.Web.Models
 @model IEnumerable<RoleSysPrivsModel>
+
+
     @{
         ViewData["Title"] = "Index";
         Layout = "~/Views/Shared/_Layout.cshtml";
@@ -53,14 +55,11 @@
                                                 <i class="fa fa-remove"></i> Delete
                                             </button>
 
-                                            @*@Html.ActionLink("Edit", "Edit", new { id=u.ROLE})*@
+                                          
                                             <button type="button" data-role-name="@rs.ROLE"
                                                     class="btnEdit btn btn-success pull-right" style="margin-right: 5px;">
-                                                <i class="fa fa-edit"></i> Edit
-                                            </button>
-
-
-
+                                                <i class="fa fa-edit"></i> Grant & Revoke
+                                            </button>                                                                                       
                                         </td>
                                     </tr>
                                 }

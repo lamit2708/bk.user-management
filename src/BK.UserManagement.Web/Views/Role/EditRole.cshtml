@@ -15,13 +15,13 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <form asp-controller="Role" asp-action="Create" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                    <form asp-controller="Role" asp-action="EditRole" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-group">
-                            <label asp-for="RoleName" class="col-md-2 control-label"></label>
+                            <label asp-for="_RoleName" class="col-md-2 control-label"></label>
                             <div class="col-md-10">
-                                <input asp-for="RoleName" class="form-control" />
-                                <span asp-validation-for="RoleName" class="text-danger"></span>
+                                <input  asp-for="_RoleName" class="form-control"  />
+                                <span asp-validation-for="_RoleName" class="text-danger" ></span>
                             </div>
                         </div>
                         <div class="form-group">

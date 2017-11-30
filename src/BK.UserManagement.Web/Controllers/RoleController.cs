@@ -19,7 +19,7 @@ namespace BK.UserManagement.Web.Controllers
             config = iconfig;
         }
 
-        // Role
+        // Show List Role
         public IActionResult Index()
         {
 
@@ -29,9 +29,67 @@ namespace BK.UserManagement.Web.Controllers
                 return View(listRole);
             }
         }
+        // Edit Pass Role
+        [HttpGet]
+        public IActionResult EditRole()
+        {
+
+            return View();
+        }
 
 
-        
+        [HttpPost]
+        public IActionResult EditRole(EditRoleViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    using (var conn = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+                    {
+                        conn.Open();
+                        OracleCommand cmd = conn.CreateCommand();
+
+                        if (!String.IsNullOrWhiteSpace(model.Password))
+                        {
+                            cmd.CommandText = $"ALTER ROLE {model._RoleName} IDENTIFIED BY {model.Password} ";
+                            cmd.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            cmd.CommandText = $"ALTER ROLE {model._RoleName} NOT IDENTIFIED";
+
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        return RedirectToAction("Index", "Role");
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+
+            }
+
+            return RedirectToAction(nameof(RoleController.Index), "Role");
+        }
+
+        // DELETE ROLE
+
+
+
+        // List Role Role Privs
+
+        public IActionResult ListRoleRolePrivs()
+        {
+
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                var listRoleRole = ole.Query<RoleRolePrivsModel>("SELECT * FROM ROLE_ROLE_PRIVS");
+                return View(listRoleRole);
+            }
+        }
 
         //List User Role
 
@@ -40,17 +98,13 @@ namespace BK.UserManagement.Web.Controllers
 
             using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
             {
-                var userRole = ole.Query<UserRoleModel>("SELECT * FROM dba_role_privs");
+                var userRole = ole.Query<UserRoleModel>("SELECT * FROM DBA_ROLE_PRIVS");
                 return View(userRole);
             }
+            
         }
 
-        [HttpGet]
-        public IActionResult EditRole()
-        {
-
-            return View();
-        }
+        
 
 
         // List Role Sys Privs
@@ -293,9 +347,7 @@ namespace BK.UserManagement.Web.Controllers
                     using (var conn = new OracleConnection(config.GetConnectionString("DefaultConnection")))
                     {
                         conn.Open();
-                        OracleCommand cmd = conn.CreateCommand();
-                        //var user = ole.Query<UserModel>($"ALTER USER\"{model.Username.ToUpper()}\" IDENTIFIED BY \"{model.Password}\"");
-                       
+                        OracleCommand cmd = conn.CreateCommand();                       
                        
                         if (!String.IsNullOrWhiteSpace(model.Password))
                         {

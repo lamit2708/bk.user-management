@@ -9,7 +9,7 @@ namespace BK.UserManagement.Web.Models.RoleViewModels
     public class RoleSysPrivsViewModel
     {
         [Required]
-        [Display(Name = "USER")]
+        [Display(Name = "ROLE NAME")]
         public string User { get; set; }
 
         [Required]
