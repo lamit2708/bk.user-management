@@ -1,0 +1,35 @@
+@model BK.UserManagement.Web.Models.ProfileModel
+
+@{
+    ViewData["Title"] = "DeleteTest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>DeleteTest</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ProfileModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PROFILE)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PROFILE)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NOOFUSER)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NOOFUSER)
+        </dd>
+    </dl>
+    
+    <form asp-action="DeleteTest">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>

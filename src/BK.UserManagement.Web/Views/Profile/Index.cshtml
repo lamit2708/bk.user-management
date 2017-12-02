@@ -26,7 +26,7 @@
                     @*<h3 class="box-title">User List</h3>*@
 
                     <button type="button" class="btnAdd btn btn-primary pull-left"
-                            onclick="location.href='@Url.Action("Add", "Profile")';">
+                            onclick="location.href='@Url.Action("AddNewProfile", "Profile")';">
                         <i class="fa fa-plus"></i> Add New Profile
                     </button>
                 </div>
@@ -55,11 +55,8 @@
                                                                            
                                     </td>
                                     <td>
-                                       
 
-                                        
-
-                                        <button type="button" class="btnDelete btn btn-danger pull-right" style="margin-right: 5px;" onclick="location.href='@Url.Action("Delete", "Profile")';">
+                                        <button type="button" class="btnDelete btn btn-danger pull-right" style="margin-right: 5px;" onclick="location.href='@Url.Action("DeleteProfile", "Profile",new {_profileName = u.PROFILE })';">
                                             <i class="fa fa-remove"></i> Delete
                                         </button>
 
@@ -117,11 +114,9 @@
                 type: 'GET',
                 cache: false,
                 success: function (result) {
-                    console.log($('#ModelView'))
                     $('#ModalView').html(result).find('.modal').modal({
                         show: true
                     });
-                    console.log($('#ModelView').find('.modal'))
                 }
             });
 

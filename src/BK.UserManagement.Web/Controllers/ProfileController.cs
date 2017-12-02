@@ -20,13 +20,21 @@ namespace BK.UserManagement.Web.Controllers
             config = iconfig;
         }
 
-
+        public bool profileExist(string _name)
+        {
+            using (var ole = new OracleConnection(config.GetConnectionString("PhucConnection")))
+            {
+                var nProfile = ole.Query("select * from dba_profiles Where profile = '" + _name.ToUpper() + "'").Count();
+                if (nProfile > 0) return true;
+            }
+            return false;
+        }
 
         public IActionResult Index()
         {
-            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            using (var ole = new OracleConnection(config.GetConnectionString("PhucConnection")))
             {
-                var listProfile = ole.Query<ProfileModel>("SELECT u.profile as PROFILE,count(u.username) AS NOOFUSER FROM dba_users u GROUP BY u.profile");
+                var listProfile = ole.Query<ProfileModel>("select p.profile as PROFILE,count(u.username) AS NOOFUSER from dba_users u RIGHT OUTER join(select DISTINCT profile from dba_profiles) p ON p.profile = u.profile GROUP BY p.profile");
                 return View(listProfile);
             }
         }
@@ -35,7 +43,7 @@ namespace BK.UserManagement.Web.Controllers
         [HttpGet]
         public IActionResult ViewProfile(string _profileName)
         {
-            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            using (var ole = new OracleConnection(config.GetConnectionString("PhucConnection")))
             {
                 var profileResource = ole.Query<ProfileResource>("SELECT * FROM dba_profiles where Profile = '" + _profileName + "'");
                 ViewBag.ProfileName = _profileName;
@@ -46,7 +54,7 @@ namespace BK.UserManagement.Web.Controllers
         [HttpGet]
         public IActionResult ViewUserInProfile(string _profileName)
         {
-            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            using (var ole = new OracleConnection(config.GetConnectionString("PhucConnection")))
             {
                 var userInProfile = ole.Query<UserModel>("SELECT * FROM dba_users WHERE profile = '" + _profileName + "'");
                 ViewBag.ProfileName = _profileName;
@@ -57,32 +65,87 @@ namespace BK.UserManagement.Web.Controllers
 
         public ActionResult EditResource(string pk, string value, string name)
         {
-            using (var conn = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            using (var conn = new OracleConnection(config.GetConnectionString("PhucConnection")))
             {
                 conn.Open();
                 OracleCommand cmd = conn.CreateCommand();
 
-                cmd.CommandText = $@"ALTER PROFILE {pk} LIMIT {pk} {value}";
+                cmd.CommandText = $@"ALTER PROFILE {name} LIMIT {pk} {value}";
 
                 cmd.ExecuteNonQuery();
                 return new StatusCodeResult(200);
+            } 
+        }
+
+        [HttpGet]
+        public IActionResult AddNewProfile()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddNewProfile(ProfileModel pm)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    //check if profile exist
+                    if (profileExist(pm.PROFILE))
+                    {
+                        ViewBag.Message = "Profile already exist. Please try again";
+                        return View();
+                    }
+                    else
+                    {
+                        using (var conn = new OracleConnection(config.GetConnectionString("PhucConnection")))
+                        {
+                            conn.Open();
+                            OracleCommand cmd = conn.CreateCommand();
+                            cmd.CommandText = $@"CREATE PROFILE {pm.PROFILE.ToUpper()} LIMIT";
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+            }
+
+            return RedirectToAction(nameof(UserController.Index), "Profile");
+        }
+
+        [HttpGet]
+        public IActionResult DeleteProfile(string _profileName)
+        {
+            ViewBag.ProfileName = _profileName;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Delete(string _profileName)
+        {
+            try
+            {
+                using (var conn = new OracleConnection(config.GetConnectionString("PhucConnection")))
+                {
+                    conn.Open();
+                    OracleCommand cmd = conn.CreateCommand();
+                    cmd.CommandText = $@"DROP PROFILE {_profileName} CASCADE";
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
 
 
-
-            //var dev = db.tblDevice_Model.Find(pk);
-            //if (dev != null)
-            //{
-            //    dev.ModelName = value;
-            //    db.SaveChanges();
-            //    return new HttpStatusCodeResult(HttpStatusCode.OK);
-            //}
-            //else
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
-            
+            return RedirectToAction("Index");
         }
+
 
     }
 }

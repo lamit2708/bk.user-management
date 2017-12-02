@@ -1,5 +1,7 @@
 @using BK.UserManagement.Web.Models
-@model IEnumerable<RoleModel>
+@model IEnumerable<RoleSysPrivsModel>
+
+
     @{
         ViewData["Title"] = "Index";
         Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,11 +12,11 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            List Role
+            List Role Sys Privs
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Role</a></li>
-            <li class="active><a href="#">Index</a></li>
+            <li class="active><a href="#">ListRoleSysPrivs</a></li>
 
         </ol>
     </section>
@@ -30,9 +32,9 @@
                             <thead>
                                 <tr>
                                     <th>ROLE</th>
-                                    <th>PASSWORD_REQUIRED</th>
-                                    <th>AUTHENTICATION_TYPE</th>
-                                   
+                                    <th>PRIVILEGE</th>
+                                    <th>ADMIN_OPTION</th>
+
                                     <th>Features</th>
 
                                 </tr>
@@ -41,24 +43,23 @@
 
 
 
-                                @foreach (var r in Model)
+                                @foreach (var rs in Model)
                                 {
                                     <tr>
-                                        <td>@r.ROLE</td>
-                                        <td>@r.PASSWORD_REQUIRED</td>
-                                        <td>@r.AUTHENTICATION_TYPE</td>
-                                        
+                                        <td>@rs.ROLE</td>
+                                        <td>@rs.PRIVILEGE</td>
+                                        <td>@rs.ADMIN_OPTION</td>
+
                                         <td>
-                                            <button type="button" data-role-name="@r.ROLE" 
-                                                    class="btnDelete btn btn-danger pull-right">
+                                            <button type="button" class="btnDelete btn btn-danger pull-right">
                                                 <i class="fa fa-remove"></i> Delete
                                             </button>
-                                        
-                                            <button type="button" data-role-name="@r.ROLE" 
+
+                                          
+                                            <button type="button" data-role-name="@rs.ROLE"
                                                     class="btnEdit btn btn-success pull-right" style="margin-right: 5px;">
-                                                <i class="fa fa-edit"></i> Edit
-                                            </button>
-                                         
+                                                <i class="fa fa-edit"></i> Grant & Revoke
+                                            </button>                                                                                       
                                         </td>
                                     </tr>
                                 }
@@ -84,22 +85,35 @@
     @section Scripts {
 
         <script type="text/javascript">
+        $(document).ready(function () {
 
             $('.btnEdit').click(function (e) {
+                //var userId = $(this).data('userId');
                 var roleName = $(this).data('roleName');
-                location.href = '@Url.Content("~/Role/EditRole/")' + roleName;
+                //console.log($(this).data());
+                location.href = '@Url.Content("~/Role/EditRoleSysPrivs/")' + roleName;
+            });
+            $('.btnDelete').click(function (e)
+            {
+                var userId = $(this).data('userId');
+                var username = $(this).data('userName');
+                if (userId > 100 && userId < 2147483638) {
+
+                    //console.log(username);
+                    //console.log('@Url.Content("~/User/Delete/")' + username)
+                    location.href = '@Url.Content("~/User/Delete/")' + username;
+
+                } else {
+
+                    alert("Can not delete the user "+username+"/"+userId+"!\r\n Your have not privileges to delete the user with id <100. ");
+
+                }
+
             });
 
-            $('.btnDelete').click(function (e) {
-                //     var roleID = $(this).data('roleId');
-                var roleName = $(this).data('roleName');
-                location.href = '@Url.Content("~/Role/DeleteRole/")' + roleName;
-                
-            });
-
-
+        });
         </script>
-       
+
         <!-- page script -->
         <script>
         $(function () {

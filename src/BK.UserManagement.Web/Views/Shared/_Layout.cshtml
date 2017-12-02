@@ -24,7 +24,7 @@
     <!-- Ionicons -->
     <link rel="stylesheet" href="~/lib/Ionicons/css/ionicons.min.css">
     <link rel="stylesheet" href="~/css/skins/skin-blue.min.css">
-
+    <link rel="stylesheet" href="~/css/bootstrap-editable.css" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -145,9 +145,12 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a class="menu_create_role" asp-controller="Role" asp-action="Create">Create Role</a></li>
-                            <li><a class="menu_grant_role" asp-controller="Role" asp-action="Grant">Edit Role</a></li>
                             <li><a class="menu_list_role" asp-controller="Role" asp-action="Index">List Role</a></li>
+                            <li><a class="menu_create_role" asp-controller="Role" asp-action="Create">Create Role</a></li>
+                            <li><a class="menu_list_role_role_privs" asp-controller="Role" asp-action="ListRoleRolePrivs">List Role Role Privs</a></li>                             
+                            <li><a class="menu_list_role_sys_privs" asp-controller="Role" asp-action="ListRoleSysPrivs">List Role Sys Privs</a></li>
+                            <li><a class="menu_list_role_user" asp-controller="Role" asp-action="ListUserRole">Roles Of User</a></li>
+                            
                         </ul>
                     </li>
 
@@ -160,9 +163,7 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a class="menu_create_Profile" asp-controller="Profile" asp-action="Create">Create Profile</a></li>
-                            <li><a class="menu_grant_Profile" asp-controller="Profile" asp-action="Grant">Edit Profile</a></li>
-                            <li><a class="menu_list_Profile" asp-controller="Profile" asp-action="Index">List Profile</a></li>
+                            <li><a class="menu_list_Profile" asp-controller="Profile" asp-action="Index">Manage Profile</a></li>
                         </ul>
                     </li>
 
@@ -176,7 +177,7 @@
                         </a>
                         <ul class="treeview-menu">
                             <li><a class="menu_create_Profile" asp-controller="Sys" asp-action="Index">DBA_SYS_PRIVS</a></li>
-                            <li><a class="menu_grant_Profile" asp-controller="Sys" asp-action="ListTabPrivs">DBA_TAB_PRIVS</a></li>
+                            <li><a class="menu_grant_Profile" asp-controller="Sys" asp-action="ListTablePrivs">DBA_TAB_PRIVS</a></li>
                             
                         </ul>
                     </li>
@@ -279,9 +280,10 @@
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        
         <script src="~/js/site.js" asp-append-version="true"></script>
         <script src="~/js/adminlte.min.js" asp-append-version="true"></script>
-
+        <script src="~/js/bootstrap-editable.js"></script>
 
 
         <!-- DataTables -->
@@ -307,7 +309,6 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
-        <script src="~/js/bootstrap-editable.js"></script>
         <script src="~/js/adminlte.min.js" asp-append-version="true"></script>
         
         <!-- DataTables -->
@@ -320,7 +321,7 @@
     </environment>
 
     @RenderSection("Scripts", required: false)
-    <script>
+    <script type="text/javascript">
         $(document).ready(function () {
 
             var url = window.location;
@@ -337,8 +338,10 @@
             }).closest('.treeview').addClass('active');
 
             //$('.DLimit').Editable();
-
+          
         });
+
+
     </script>
 </body>
 </html>

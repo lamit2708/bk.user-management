@@ -25,5 +25,13 @@ namespace BK.UserManagement.Web.Controllers
                 return View(sysPrivs);
             }
         }
+        public IActionResult ListTablePrivs()
+        {
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                var sysPrivs = ole.Query<TabPrivsModel>("select * from sys.DBA_TAB_PRIVS");
+                return View(sysPrivs);
+            }
+        }
     }
 }
