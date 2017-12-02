@@ -51,13 +51,14 @@
                                              <button type="button" class="btnDelete btn btn-danger pull-right">
                                                 <i class="fa fa-remove"></i> Delete
                                             </button>
-                                         -->   
+                                         
 
 
                                             <button type="button" data-role-name="@rr.ROLE"
-                                                    class="btnEdit btn btn-success pull-right" style="margin-right: 5px;">
-                                                <i class="fa fa-edit"></i> Grant
+                                                    class="btnGrantRoleToRole btn btn-success pull-right" style="margin-right: 5px;">
+                                                <i class="fa fa-edit"></i> Grant Role to Role
                                             </button>
+                                             -->   
                                         </td>
                                     </tr>
                                 }
@@ -85,11 +86,11 @@
         <script type="text/javascript">
         $(document).ready(function () {
 
-            $('.btnEdit').click(function (e) {
+            $('.btnGrantRoleToRole').click(function (e) {
                 //var userId = $(this).data('userId');
                 var roleName = $(this).data('roleName');
                 //console.log($(this).data());
-                location.href = '@Url.Content("~/Role/EditRoleSysPrivs/")' + roleName;
+                location.href = '@Url.Content("~/Role/GrantRoleToRole/")' + roleName;
             });
             $('.btnDelete').click(function (e)
             {

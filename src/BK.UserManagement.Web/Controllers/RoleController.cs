@@ -8,6 +8,7 @@ using Oracle.ManagedDataAccess.Client;
 using BK.UserManagement.Web.Models;
 using Dapper;
 using BK.UserManagement.Web.Models.RoleViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BK.UserManagement.Web.Controllers
 {
@@ -31,10 +32,16 @@ namespace BK.UserManagement.Web.Controllers
         }
         // Edit Pass Role
         [HttpGet]
-        public IActionResult EditRole()
+        public IActionResult EditRole(string id)
         {
 
-            return View();
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                var role = ole.Query<RoleModel>($"SELECT * FROM DBA_ROLES WHERE ROLE='{id}'").FirstOrDefault();
+                var result = new EditRoleViewModel() { Role = role };
+                return View(result);
+            }
+           
         }
 
 
@@ -52,12 +59,12 @@ namespace BK.UserManagement.Web.Controllers
 
                         if (!String.IsNullOrWhiteSpace(model.Password))
                         {
-                            cmd.CommandText = $"ALTER ROLE {model._RoleName} IDENTIFIED BY {model.Password} ";
+                            cmd.CommandText = $"ALTER ROLE {model.RoleName} IDENTIFIED BY {model.Password} ";
                             cmd.ExecuteNonQuery();
                         }
                         else
                         {
-                            cmd.CommandText = $"ALTER ROLE {model._RoleName} NOT IDENTIFIED";
+                            cmd.CommandText = $"ALTER ROLE {model.RoleName} NOT IDENTIFIED";
 
                             cmd.ExecuteNonQuery();
                         }
@@ -67,7 +74,7 @@ namespace BK.UserManagement.Web.Controllers
                 }
                 catch (Exception e)
                 {
-
+                    throw e;
                 }
 
             }
@@ -76,8 +83,44 @@ namespace BK.UserManagement.Web.Controllers
         }
 
         // DELETE ROLE
+        [HttpGet]
+        public IActionResult Delete(string id)
+        {
+            using (var conn = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                var role = conn.Query<RoleModel>($"DROP ROLE \"{id.ToUpper()}\"");//id is USERNAME here
+                //return RedirectToAction("Edit", "User", new { @id = id });
+                return RedirectToAction(nameof(RoleController.Index), "Role");
+                //return View();
+            }
+        }
 
+        // Grant Role to Role
 
+        [HttpGet]
+        public IActionResult GrantRoleRole(string id)
+        {
+
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                GrantRoleToRoleViewModel vmGrantRoleToRole = new GrantRoleToRoleViewModel();
+
+                vmGrantRoleToRole.Role = id;
+
+                var roleList = ole.Query<RoleListModel>("SELECT ROLE FROM DBA_ROLES");
+                vmGrantRoleToRole.Roles = roleList.Select(x =>
+                                  new SelectListItem()
+                                  {
+                                      Text = x.ROLE.ToString(),
+                                      Value = x.ROLE.ToString()
+                                  });
+
+                
+
+                return View(vmGrantRoleToRole);
+            }
+
+        }
 
         // List Role Role Privs
 
@@ -87,9 +130,25 @@ namespace BK.UserManagement.Web.Controllers
             using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
             {
                 var listRoleRole = ole.Query<RoleRolePrivsModel>("SELECT * FROM ROLE_ROLE_PRIVS");
+
+
                 return View(listRoleRole);
             }
         }
+
+       
+
+
+
+
+
+
+
+
+
+
+
+
 
         //List User Role
 
@@ -287,7 +346,8 @@ namespace BK.UserManagement.Web.Controllers
                 EditSysPrivs(model.User, "ALTER USER", model.AlterUser, model.AlterUserAdminOption);
                 EditSysPrivs(model.User, "DROP USER", model.DropUser, model.DropUserAdminOption);
             }
-            return View(model);
+            //  return View(model);
+            return RedirectToAction(nameof(RoleController.ListRoleSysPrivs), "Role");
         }
         // Ham xu ly quyen he thong
         private void EditSysPrivs(string user,string privsName, bool grant, bool adminOption)
@@ -371,7 +431,7 @@ namespace BK.UserManagement.Web.Controllers
 
             }
 
-            return RedirectToAction(nameof(UserController.Index), "User");
+            return RedirectToAction(nameof(RoleController.Index), "Role");
         }
     }
 }

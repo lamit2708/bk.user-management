@@ -46,6 +46,7 @@ namespace BK.UserManagement.Web.Controllers
 
                 vmEditUser.User = ole.Query<UserModel>("SELECT * FROM dba_users u WHERE u.USERNAME = :Username", new { Username = id })
                     .FirstOrDefault();
+
                 var tablespaces = ole.Query<TablespaceModel>("SELECT TABLESPACE_NAME FROM SYS.DBA_TABLESPACES");
                 vmEditUser.Tablespaces = tablespaces.Select(x =>
                                   new SelectListItem()
