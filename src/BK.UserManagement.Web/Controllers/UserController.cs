@@ -245,8 +245,8 @@ PROFILE  { model.ProfileName}";
             using (var conn = new OracleConnection(config.GetConnectionString("DefaultConnection")))
             {
                 var user = conn.Query<UserModel>($"DROP USER \"{id.ToUpper()}\"");//id is USERNAME here
-                return RedirectToAction("Edit", "User", new { @id = id });
-
+                //return RedirectToAction("Edit", "User", new { @id = id });
+                return RedirectToAction(nameof(UserController.Index), "User");
                 //return View();
             }
         }
