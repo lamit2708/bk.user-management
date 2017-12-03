@@ -55,18 +55,39 @@
                                                                            
                                     </td>
                                     <td>
+                                        @if (u.PROFILE != "DEFAULT" & u.PROFILE != "MONITORING_PROFILE")
+                                        {
+                                            <button type="button" class="btnDelete btn btn-danger pull-right" style="margin-right: 5px;" onclick="location.href='@Url.Action("DeleteProfile", "Profile", new { _profileName = u.PROFILE })';">
+                                                <i class="fa fa-remove"></i> Delete
+                                            </button>
 
-                                        <button type="button" class="btnDelete btn btn-danger pull-right" style="margin-right: 5px;" onclick="location.href='@Url.Action("DeleteProfile", "Profile",new {_profileName = u.PROFILE })';">
-                                            <i class="fa fa-remove"></i> Delete
-                                        </button>
+                                            <button type="button" class="btnEdit btn btn-success pull-right" style="margin-right: 5px;" onclick="location.href='@Url.Action("Edit", "Profile", new { _profileName = u.PROFILE })';">
+                                                <i class="fa fa-edit"></i> Edit
+                                            </button>
+                                            @Html.ActionLink(" Reset", "ResetProfile", "Profile", new { _profileName = u.PROFILE }, new { @class = "btnView btn btn-warning pull-right UserListLink glyphicon glyphicon-refresh", @style = "margin-right: 5px;" })
+                                            @*<button type="button" class="btnView btn btn-warning pull-right " style="margin-right: 5px;" onclick="location.href='@Url.Action("ResetProfile", "Profile",new {_profileName = u.PROFILE })';">
+                                                <i class="fa fa-list"></i> Reset Default
+                                            </button>*@
+                                        }
+                                        else
+                                        {
+                                            <button type="button" class="btnDelete btn btn-danger pull-right disabled" style="margin-right: 5px;">
+                                                <i class="fa fa-remove"></i> Delete
+                                            </button>
 
-                                        <button type="button" class="btnEdit btn btn-success pull-right" style="margin-right: 5px;" onclick="location.href='@Url.Action("Edit", "Profile",new {_profileName = u.PROFILE })';">
-                                            <i class="fa fa-edit"></i> Edit
-                                        </button>
-
+                                            <button type="button" class="btnEdit btn btn-success pull-right disabled" style="margin-right: 5px;">
+                                                <i class="fa fa-edit"></i> Edit
+                                            </button>
+                                            @Html.ActionLink(" Reset", "ResetProfile", "Profile", new { _profileName = u.PROFILE }, new { @class = "btnView btn btn-warning pull-right UserListLink glyphicon glyphicon-refresh disabled", @style = "margin-right: 5px;" })
+                                            @*<button type="button" class="btnView btn btn-warning pull-right disabled" style="margin-right: 5px;">
+                                                <i class="fa fa-list"></i> Reset Default
+                                            </button>*@
+                                        }
+                                        
                                         <button type="button" class="btnView btn btn-primary pull-right" style="margin-right: 5px;" onclick="location.href='@Url.Action("ViewProfile", "Profile",new {_profileName = u.PROFILE })';">
                                             <i class="fa fa-list"></i> View
                                         </button>
+                                        
                                     </td>
                                 </tr>
                             }
@@ -108,6 +129,22 @@
         })
 
         $(document).on("click", "a.UserListLink", function () {
+            console.log(this.href)
+            $.ajax({
+                url: this.href,
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $('#ModalView').html(result).find('.modal').modal({
+                        show: true
+                    });
+                }
+            });
+
+            return false;
+        });
+
+        $(document).on("click", "a.ResetDefaultLink", function () {
             console.log(this.href)
             $.ajax({
                 url: this.href,

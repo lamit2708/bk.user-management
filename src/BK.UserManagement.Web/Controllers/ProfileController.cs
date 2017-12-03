@@ -146,6 +146,15 @@ namespace BK.UserManagement.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public IActionResult ResetProfile(string _profileName)
+        {
+            ViewBag.Profile = _profileName;
+            return PartialView();
+
+        }
+
+
 
     }
 }

@@ -27,7 +27,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <table id="tbl_user" class="table table-bordered table-hover">
+                        <table id="datatable" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>GRANTEE</th>
@@ -40,28 +40,15 @@
 
                                 </tr>
                             </thead>
-                            <tbody>
-
-
-
-                                @foreach (var s in Model)
-                                {
-                                    <tr>
-                                        <td>@s.GRANTEE</td>
-                                        <td>@s.OWNER</td>
-                                        <td>@s.TABLE_NAME</td>
-                                        <td>@s.GRANTOR</td>
-                                        <td>@s.PRIVILEGE</td>
-                                        <td>@s.GRANTABLE</td>
-
-
-                                    </tr>
-                                }
-                            </tbody>
+                            
                             <tfoot>
                                 <tr>
-                                    <th>User Name</th>
-                                    <th>Features</th>
+                                    <th>GRANTEE</th>
+                                    <th>OWNER</th>
+                                    <th>TABLE_NAME</th>
+                                    <th>GRANTOR</th>
+                                    <th>PRIVILEGE</th>
+                                    <th>GRANTABLE</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -88,6 +75,63 @@
 
         <script type="text/javascript">
         $(document).ready(function () {
+            oTable = $('#datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                //filter: true,
+                ordering: true,
+                paging: true,
+                searching: true,
+                filter: true,
+                paginType: "full_numbers",
+                pageLength: 10,
+                ajax: {
+                    url: '/Sys/ListTablePrivsAjax',
+                    type: 'POST'
+
+                },
+                columns: [     
+                    { "data": "grantee" },
+                    { "data": "owner" },
+                    { "data": "tablE_NAME" },
+                    { "data": "grantor" },
+                    { "data": "privilege" },
+                    { "data": "grantable" }
+
+                ], initComplete: function () {
+                    var api = this.api();
+                    $('.dataTables_filter input')
+                        .off('.DT')
+                        .on('keyup.DT', function (e) {
+                            if (e.keyCode == 13) {
+                                api.search(this.value).draw();
+                            }
+                        });
+
+                    //$('.datefield').each(function (i, el) {
+                    //    var txt = $(el).text();
+                    //    var dateStr = moment.unix(parseInt(txt) / 1000).format("DD-MM-YYYY");
+                    //    //var date = new Date(parseInt(txt));
+                    //    $(el).text(dateStr);
+                    //});
+                },
+
+            });
+
+            $.fn.dataTable.ext.errMode = function (settings, helpPage, message) {
+                console.log(message);
+            };
+            $(document).on('click', '.btnEdit', function () {
+                var id = $(this).data('userId');
+                location.href = '@Url.Content("~/Staffs/Add/")' + id.toUpperCase();
+            });
+             $(document).on('click', '.btnDelete', function () {
+                var userId = $(this).data('userId');
+                var username = $(this).data('userName');
+                if (confirm("Are your sure to delete customer " + username + " ?")) {
+                    location.href = '@Url.Content("~/Staffs/DeleteAsync/")' + userId;
+                }
+            });
 
             $('.btnEdit').click(function (e) {
                 //var userId = $(this).data('userId');
@@ -113,27 +157,9 @@
 
             });
 
-        });
-        </script>
 
-        <!-- page script -->
-        <script>
-        $(function () {
-            //$('#example1').DataTable()
-            $('#tbl_user').DataTable({
-                'paging': true,
-                'lengthChange': true,
-                'searching': true,
-                'ordering': true,
-                'info': true,
-                'autoWidth': false
-            })
-        })
-        </script>
+           
 
-        <!-- Menu Active -->
-        <script type="text/javascript">
-        $(document).ready(function () {
             $('a.menu_user').closest('li').addClass('active');
             //$('a.menu_multilevel').closest('li').addClass('active');
             //$('a.menu_level1').closest('li').addClass('active');
