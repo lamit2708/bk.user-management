@@ -8,6 +8,7 @@
                         &times;
                     </button>
                     <h4 class="modal-title"><b>List of users has profile @ViewBag.ProfileName </b></h4>
+                    <h5>(Click on username to Edit)</h5>
                 </div>
                 <div class="modal-body">
                     <table id="tbl_user" class="table table-bordered table-hover">
@@ -30,25 +31,7 @@
                             @foreach (var u in Model)
                             {
                                 <tr>
-                                    @*<td>@u.USER_ID</td>*@
-                                    <td>@u.USERNAME</td>
-                                    @*<td>@u.DEFAULT_TABLESPACE</td>
-                                    <td>@u.TEMPORARY_TABLESPACE</td>
-                                    <td>@u.PROFILE</td>
-                                    <td>@u.ACCOUNT_STATUS</td>
-                                    <td>
-                                        <button data-user-id="@u.USER_ID"
-                                                data-user-name="@u.USERNAME" type="button" class="btnDelete btn btn-danger pull-right">
-                                            <i class="fa fa-remove"></i> Delete
-                                        </button>
-                                        @Html.ActionLink("Edit", "Edit", new { id=u.USER_ID})
-                                        <button type="button" data-user-id="@u.USER_ID" data-user-name="@u.USERNAME"
-                                                class="btnEdit btn btn-success pull-right" style="margin-right: 5px;">
-                                            <i class="fa fa-edit"></i> Edit
-                                        </button>
-
-
-                                    </td>*@
+                                    <td>@Html.ActionLink(u.USERNAME,"Edit","User",new {id = u.USERNAME })</td>
                                 </tr>
                             }
                         </tbody>
