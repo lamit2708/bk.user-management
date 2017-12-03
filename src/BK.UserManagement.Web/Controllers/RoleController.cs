@@ -122,6 +122,35 @@ namespace BK.UserManagement.Web.Controllers
 
         }
 
+        [HttpPost]
+        public IActionResult GrantRoleRole(GrantRoleToRoleViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    using (var conn = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+                    {
+                        conn.Open();
+                        OracleCommand cmd = conn.CreateCommand();
+                        cmd.CommandText = $"GRANT {model.Role} TO {model.GrantedRole} ";
+                        cmd.ExecuteNonQuery();
+
+                        return RedirectToAction("ListRoleRolePrivs", "Role");
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+
+            }
+
+            return RedirectToAction(nameof(RoleController.ListRoleRolePrivs), "Role");
+        }
+
+
+
         // List Role Role Privs
 
         public IActionResult ListRoleRolePrivs()
