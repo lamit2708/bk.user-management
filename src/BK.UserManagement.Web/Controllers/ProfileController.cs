@@ -22,7 +22,7 @@ namespace BK.UserManagement.Web.Controllers
 
         public bool profileExist(string _name)
         {
-            using (var ole = new OracleConnection(config.GetConnectionString("PhucConnection")))
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
             {
                 var nProfile = ole.Query("select * from dba_profiles Where profile = '" + _name.ToUpper() + "'").Count();
                 if (nProfile > 0) return true;
@@ -32,7 +32,7 @@ namespace BK.UserManagement.Web.Controllers
 
         public IActionResult Index()
         {
-            using (var ole = new OracleConnection(config.GetConnectionString("PhucConnection")))
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
             {
                 var listProfile = ole.Query<ProfileModel>("select p.profile as PROFILE,count(u.username) AS NOOFUSER from dba_users u RIGHT OUTER join(select DISTINCT profile from dba_profiles) p ON p.profile = u.profile GROUP BY p.profile");
                 return View(listProfile);
@@ -43,7 +43,7 @@ namespace BK.UserManagement.Web.Controllers
         [HttpGet]
         public IActionResult ViewProfile(string _profileName)
         {
-            using (var ole = new OracleConnection(config.GetConnectionString("PhucConnection")))
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
             {
                 var profileResource = ole.Query<ProfileResource>("SELECT * FROM dba_profiles where Profile = '" + _profileName + "'");
                 ViewBag.ProfileName = _profileName;
@@ -54,7 +54,7 @@ namespace BK.UserManagement.Web.Controllers
         [HttpGet]
         public IActionResult ViewUserInProfile(string _profileName)
         {
-            using (var ole = new OracleConnection(config.GetConnectionString("PhucConnection")))
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
             {
                 var userInProfile = ole.Query<UserModel>("SELECT * FROM dba_users WHERE profile = '" + _profileName + "'");
                 ViewBag.ProfileName = _profileName;
@@ -65,7 +65,7 @@ namespace BK.UserManagement.Web.Controllers
 
         public ActionResult EditResource(string pk, string value, string name)
         {
-            using (var conn = new OracleConnection(config.GetConnectionString("PhucConnection")))
+            using (var conn = new OracleConnection(config.GetConnectionString("DefaultConnection")))
             {
                 conn.Open();
                 OracleCommand cmd = conn.CreateCommand();
@@ -98,7 +98,7 @@ namespace BK.UserManagement.Web.Controllers
                     }
                     else
                     {
-                        using (var conn = new OracleConnection(config.GetConnectionString("PhucConnection")))
+                        using (var conn = new OracleConnection(config.GetConnectionString("DefaultConnection")))
                         {
                             conn.Open();
                             OracleCommand cmd = conn.CreateCommand();
@@ -129,7 +129,7 @@ namespace BK.UserManagement.Web.Controllers
         {
             try
             {
-                using (var conn = new OracleConnection(config.GetConnectionString("PhucConnection")))
+                using (var conn = new OracleConnection(config.GetConnectionString("DefaultConnection")))
                 {
                     conn.Open();
                     OracleCommand cmd = conn.CreateCommand();

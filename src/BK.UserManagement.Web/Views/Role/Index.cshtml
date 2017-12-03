@@ -48,17 +48,23 @@
                                         <td>@r.PASSWORD_REQUIRED</td>
                                         <td>@r.AUTHENTICATION_TYPE</td>
                                         
-                                        <td>
-                                            <button type="button" data-role-name="@r.ROLE" 
-                                                    class="btnDelete btn btn-danger pull-right">
-                                                <i class="fa fa-remove"></i> Delete
+                                        <td>         
+                                            <button type="button" data-role-name="@r.ROLE"
+                                                    class="btnGrantRoleRole btn btn-success pull-right" style="margin-right: 5px;">
+                                                <i class="fa fa-edit"></i> GrantRoleRole
                                             </button>
-                                        
-                                            <button type="button" data-role-name="@r.ROLE" 
+
+                                            <button type="button" data-role-name="@r.ROLE"
+                                                    class="btnGrantSysPrivs btn btn-success pull-right" style="margin-right: 5px;">
+                                                <i class="fa fa-edit"></i> GrantSysPrivs
+                                            </button>
+
+                                            <button type="button" data-role-name="@r.ROLE"
                                                     class="btnEdit btn btn-success pull-right" style="margin-right: 5px;">
                                                 <i class="fa fa-edit"></i> Edit
                                             </button>
-                                         
+
+
                                         </td>
                                     </tr>
                                 }
@@ -85,6 +91,17 @@
 
         <script type="text/javascript">
 
+            $('.btnGrantRoleRole').click(function (e) {
+                var roleName = $(this).data('roleName');
+                location.href = '@Url.Content("~/Role/GrantRoleRole/")' + roleName;
+            });
+
+                        $('.btnGrantSysPrivs').click(function (e) {
+                var roleName = $(this).data('roleName');
+                location.href = '@Url.Content("~/Role/EditRoleSysPrivs/")' + roleName;
+            });
+
+
             $('.btnEdit').click(function (e) {
                 var roleName = $(this).data('roleName');
                 location.href = '@Url.Content("~/Role/EditRole/")' + roleName;
@@ -93,8 +110,8 @@
             $('.btnDelete').click(function (e) {
                 //     var roleID = $(this).data('roleId');
                 var roleName = $(this).data('roleName');
-                location.href = '@Url.Content("~/Role/DeleteRole/")' + roleName;
-                
+                location.href = '@Url.Content("~/Role/Delete/")' + roleName;
+
             });
 
 

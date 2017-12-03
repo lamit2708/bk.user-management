@@ -1,22 +1,17 @@
 @using BK.UserManagement.Web.Models
-@model IEnumerable<RoleSysPrivsModel>
-
-
+@model IEnumerable<ListRolePrivsUserModel>
     @{
-        ViewData["Title"] = "Index";
-        Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "ListRolePrivsUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     }
-
-
-
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            List Role Sys Privs
+            User System Privilege Table
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Role</a></li>
-            <li class="active><a href="#">ListRoleSysPrivs</a></li>
+            <li><a href="#"><i class="fa fa-dashboard"></i> System</a></li>
+            <li class="active><a href="#">DBA_SYS_PRIVS</a></li>
 
         </ol>
     </section>
@@ -25,7 +20,11 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
+                    <div class="box-header">
+                        @*<h3 class="box-title">User List</h3>*@
 
+
+                    </div>
                     <!-- /.box-header -->
                     <div class="box-body">
                         <table id="tbl_user" class="table table-bordered table-hover">
@@ -33,35 +32,29 @@
                                 <tr>
                                     <th>ROLE</th>
                                     <th>PRIVILEGE</th>
-                                    <th>ADMIN_OPTION</th>
+                                    <th>GRANTEE</th>
 
-                                    <th>Features</th>
 
                                 </tr>
                             </thead>
                             <tbody>
 
+                                GRAN
 
-
-                                @foreach (var rs in Model)
-                                {
+                                @foreach (var s in Model)
+                            {
                                     <tr>
-                                        <td>@rs.ROLE</td>
-                                        <td>@rs.PRIVILEGE</td>
-                                        <td>@rs.ADMIN_OPTION</td>
+                                        <td>@s.ROLE</td>
+                                        <td>@s.PRIVILEGE</td>
+                                        <td>@s.GRANTEE</td>
 
-                                        <td>
-                                          
-                                            <button type="button" data-role-name="@rs.ROLE"
-                                                    class="btnEdit btn btn-success pull-right" style="margin-right: 5px;">
-                                                <i class="fa fa-edit"></i> Grant & Revoke
-                                            </button>                                                                                       
-                                        </td>
+
                                     </tr>
-                                }
+                            }
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <th>User Name</th>
                                     <th>Features</th>
                                 </tr>
                             </tfoot>
@@ -77,7 +70,14 @@
     </section>
     <!-- /.content -->
 
+    <environment names="Development">
 
+
+    </environment>
+    <environment names="Staging,Production">
+
+
+    </environment>
     @section Scripts {
 
         <script type="text/javascript">
@@ -85,9 +85,9 @@
 
             $('.btnEdit').click(function (e) {
                 //var userId = $(this).data('userId');
-                var roleName = $(this).data('roleName');
+                var username = $(this).data('userName');
                 //console.log($(this).data());
-                location.href = '@Url.Content("~/Role/EditRoleSysPrivs/")' + roleName;
+                location.href = '@Url.Content("~/User/Edit/")' + username;
             });
             $('.btnDelete').click(function (e)
             {
@@ -112,18 +112,32 @@
 
         <!-- page script -->
         <script>
-        $(function () {
-            //$('#example1').DataTable()
-            $('#tbl_user').DataTable({
-                'paging': true,
-                'lengthChange': true,
-                'searching': true,
-                'ordering': true,
-                'info': true,
-                'autoWidth': false
+            $(function () {
+                //$('#example1').DataTable()
+                $('#tbl_user').DataTable({
+                    'paging': true,
+                    'lengthChange': true,
+                    'searching': true,
+                    'ordering': true,
+                    'info': true,
+                    'autoWidth': false
+                })
             })
-        })
         </script>
+
+        <!-- Menu Active -->
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('a.menu_user').closest('li').addClass('active');
+                //$('a.menu_multilevel').closest('li').addClass('active');
+                //$('a.menu_level1').closest('li').addClass('active');
+
+            });
+        </script>
+
+
+
+
 
 
 
