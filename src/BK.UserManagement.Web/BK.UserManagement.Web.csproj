@@ -37,6 +37,7 @@
     <Folder Include="Data\" />
     <Folder Include="Views\Sys\" />
     <Folder Include="Views\User\" />
+    <Folder Include="wwwroot\lib\jquery\dist\" />
   </ItemGroup>
 
   <ItemGroup>
