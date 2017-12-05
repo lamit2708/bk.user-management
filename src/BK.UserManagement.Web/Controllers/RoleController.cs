@@ -88,8 +88,8 @@ namespace BK.UserManagement.Web.Controllers
         {
             using (var conn = new OracleConnection(config.GetConnectionString("DefaultConnection")))
             {
-                var role = conn.Query<RoleModel>($"DROP ROLE \"{id.ToUpper()}\"");//id is USERNAME here
-                //return RedirectToAction("Edit", "User", new { @id = id });
+                var role = conn.Query<RoleModel>($"DROP ROLE \"{id.ToUpper()}\"");
+                
                 return RedirectToAction(nameof(RoleController.Index), "Role");
                 //return View();
             }
