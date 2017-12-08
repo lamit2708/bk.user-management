@@ -10,7 +10,7 @@ namespace BK.UserManagement.Web.Models.RoleViewModels
     {
         [Required]
         [Display(Name = "ROLE NAME")]
-        public string User { get; set; }
+        public string Role { get; set; }
 
         [Required]
         [Display(Name = "CREATE PROFILE")]

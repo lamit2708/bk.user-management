@@ -59,7 +59,7 @@
                                       
                                         <button type="button" data-role-name="@r.ROLE"                                              
                                             class="btnDelete btn btn-danger pull-right">
-                                            <i class="fa fa-edit"></i> Delete
+                                            <i class="fa fa-edit"></i> Drop
                                         </button>
 <!--
                                         <button type="button" data-role-name="@r.ROLE"
@@ -71,7 +71,10 @@
                                                 class="btnGrantSysPrivs btn btn-success pull-right" style="margin-right: 5px;">
                                             <i class="fa fa-edit"></i> GrantSysPrivs
                                         </button>
-
+                                        <button type="button" data-role-name="@r.ROLE"
+                                                class="btnGrantToUser btn btn-warning pull-right" style="margin-right: 5px;">
+                                            <i class="fa fa-edit"></i> GrantToUser
+                                        </button>
                                         <button type="button" data-role-name="@r.ROLE"
                                                 class="btnEdit btn btn-success pull-right" style="margin-right: 5px;">
                                             <i class="fa fa-edit"></i> Edit
@@ -132,7 +135,10 @@
                     location.href = '@Url.Content("~/Role/Index")';
                 }
             });
-
+             $('.btnGrantToUser').click(function (e) {
+                var rolename = $(this).data('roleName');
+                location.href = '@Url.Content("~/Sys/GrantRoleToUser/")' + rolename;
+            });
     </script>
 
     <!-- page script -->

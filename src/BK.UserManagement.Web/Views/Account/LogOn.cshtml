@@ -21,15 +21,16 @@
 
 <!-- Main content -->
 <section class="content">
-    <div class="row">
-        <div class=" col-md-6">
-            <div class="box box-warning">
-                <div class="box-header with-border">
-                    @*<h3 class="box-title">General Elements</h3>*@
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <form role="form" asp-controller="User" asp-action="Edit" asp-route-returnurl="@ViewData["ReturnUrl"]" class="form-horizontal">
+    <form role="form" asp-controller="Account" asp-action="Logon" asp-route-returnurl="@ViewData["ReturnUrl"]" class="form-horizontal">
+        <div class="row">
+            <div class=" col-md-6">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        @*<h3 class="box-title">General Elements</h3>*@
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-group">
                             <label asp-for="UserId" class="col-md-4 control-label"></label>
@@ -64,46 +65,52 @@
                         <div class="form-group">
                             <label asp-for="DefaultTablespaceName" class="col-md-4 control-label"></label>
                             <div class="col-md-8">
-                                <select asp-for="DefaultTablespaceName" asp-items="@Model.Tablespaces"
-                                        class="form-control select2" style="width: 100%;" disabled></select>
+                                @*<select asp-for="DefaultTablespaceName" asp-items="@Model.Tablespaces"
+                                    class="form-control select2" style="width: 100%;" disabled></select>*@
+                                <input class="form-control" value="@Model.DefaultTablespaceName" disabled />
+                                <input type="hidden" asp-for="DefaultTablespaceName">
 
                             </div>
                         </div>
                         <div class="form-group">
                             <label asp-for="TemporaryTablespaceName" class="col-md-4 control-label"></label>
                             <div class="col-md-8">
-                                <select asp-for="TemporaryTablespaceName" asp-items="@Model.Tablespaces"
-                                        class="form-control select2" style="width: 100%;" disabled></select>
-
+                                @*<select asp-for="TemporaryTablespaceName" asp-items="@Model.Tablespaces"
+                                    class="form-control select2" style="width: 100%;" disabled></select>*@
+                                <input class="form-control" value="@Model.TemporaryTablespaceName" disabled />
+                                <input type="hidden" asp-for="TemporaryTablespaceName">
                             </div>
                         </div>
                         <div class="form-group">
                             <label asp-for="ProfileName" class="col-md-4 control-label"></label>
                             <div class="col-md-8">
-                                <select asp-for="ProfileName" asp-items="@Model.Profiles"
-                                        class="form-control select2" style="width: 100%;" disabled></select>
-
+                                @*<select asp-for="ProfileName" asp-items="@Model.Profiles"
+                                    class="form-control select2" style="width: 100%;" disabled></select>*@
+                                <input class="form-control" value="@Model.ProfileName" disabled />
+                                <input type="hidden" asp-for="ProfileName">
                             </div>
                         </div>
                         <div class="form-group">
                             <label asp-for="AccountStatus" class="col-md-4 control-label"></label>
                             <div class="col-md-8">
-                                <select asp-for="AccountStatus" asp-items="@Model.AccoutStatusList"
-                                        class="form-control select2" style="width: 100%;" disabled></select>
+                                @*<select asp-for="AccountStatus" asp-items="@Model.AccoutStatusList"
+                                    class="form-control select2" style="width: 100%;" disabled></select>*@
+                                <input class="form-control" value="@Model.AccountStatus" disabled />
+                                <input type="hidden" asp-for="AccountStatus">
 
                             </div>
                             @*<div class="col-md-3">
-                                <button type="button" data-user-name="@Model.User.USERNAME"
-                                         class="btnLock btn btn-warning pull-right" style="margin-right: 5px;">
-                                     <i class="fa fa-lock"></i> Lock
-                                 </button>
-                                 <button type="button" data-user-name="@Model.User.USERNAME"
-                                         class="btnUnlock btn btn-warning pull-right" style="margin-right: 5px;">
-                                     <i class="fa fa-unlock"></i> Unlock
-                                 </button>
-                            </div>*@
+                                    <button type="button" data-user-name="@Model.User.USERNAME"
+                                             class="btnLock btn btn-warning pull-right" style="margin-right: 5px;">
+                                         <i class="fa fa-lock"></i> Lock
+                                     </button>
+                                     <button type="button" data-user-name="@Model.User.USERNAME"
+                                             class="btnUnlock btn btn-warning pull-right" style="margin-right: 5px;">
+                                         <i class="fa fa-unlock"></i> Unlock
+                                     </button>
+                                </div>*@
                         </div>
-                       
+
                         <div class="form-group">
                             <div class="col-md-offset-4 col-md-7">
                                 <button type="submit"
@@ -116,48 +123,87 @@
                                 </button>
                             </div>
                         </div>
-                    </form>
+
+                    </div>
+                    <!-- /.box-body -->
                 </div>
-                <!-- /.box-body -->
+                <!-- /.box -->
             </div>
-            <!-- /.box -->
-        </div>
 
 
-        <div class="col-md-6">
-            <div class="box  box-warning">
-                <div class="box-header  with-border">
-                    <h3 class="box-title">Quota List</h3>
+            <div class="col-md-6">
+                <div class="box  box-warning">
+                    
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label asp-for="FirstName" class="col-md-4 control-label"></label>
+                            <div class="col-md-8">
+                                <input asp-for="FirstName" class="form-control" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="LastName" class="col-md-4 control-label"></label>
+                            <div class="col-md-8">
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Address" class="col-md-4 control-label"></label>
+                            <div class="col-md-8">
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Phone" class="col-md-4 control-label"></label>
+                            <div class="col-md-8">
+                                <input asp-for="Phone" class="form-control" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Email" class="col-md-4 control-label"></label>
+                            <div class="col-md-8">
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header  with-border">
+                        <h3 class="box-title">Quota List</h3>
 
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body table-responsive no-padding">
-                    <table class="table table-hover">
-                        <tr>
-                            <th>TABLESPACE_NAME</th>
-                            <th>BYTES</th>
-                            <th>MAX_BYTES</th>
-                        </tr>
-                        @foreach (var u in Model.QuotaList)
-                        {
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
                             <tr>
-                                <td>@u.TABLESPACE_NAME</td>
-                                <td>@u.BYTES</td>
-                                <td>@u.MAX_BYTES</td>
+                                <th>TABLESPACE_NAME</th>
+                                <th>BYTES</th>
+                                <th>MAX_BYTES</th>
                             </tr>
-                        }
-                    </table>
-                    <hr />
+                            @foreach (var u in Model.QuotaList)
+                            {
+                                <tr>
+                                    <td>@u.TABLESPACE_NAME</td>
+                                    <td>@u.BYTES</td>
+                                    <td>@u.MAX_BYTES</td>
+                                </tr>
+                            }
+                        </table>
+                        <hr />
 
 
 
 
+                    </div>
+                    <!-- /.box-body -->
                 </div>
-                <!-- /.box-body -->
+                <!-- /.box -->
             </div>
-            <!-- /.box -->
         </div>
-    </div>
+    </form>
 </section>
 
 @section Scripts {
@@ -167,7 +213,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             // Active Menu
-            $('.menu_user').parent().addClass('active').closest('.treeview').addClass('active');
+            //$('.menu_user').parent().addClass('active').closest('.treeview').addClass('active');
              $('.btnUnlock').click(function (e) {
                 //var userId = $(this).data('userId');
                 var username = $(this).data('userName');
@@ -182,12 +228,12 @@
             });
              var accountStatus = "@Model.AccountStatus";
              if (accountStatus == 'OPEN' || accountStatus == 'EXPIRED') {
-                 console.log(123);
+                 
                  $('.btnUnlock').addClass('hidden');
 
              } else {
                  $('.btnLock').addClass('hidden');
-                 console.log(456);
+                 
              }
         });
     </script>

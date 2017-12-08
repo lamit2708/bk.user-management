@@ -88,16 +88,15 @@ namespace BK.UserManagement.Web.Controllers
             try
             {
 
-                using (var con = new OracleConnection())
-                {
-
-                    con.ConnectionString = String.Format(config.GetConnectionString("UserConnection"), dataSource, username, password);
-                    con.Open();
-
-                    return true;
-                }
+                var con = new OracleConnection();
+                con.ConnectionString = String.Format(config.GetConnectionString("UserConnection"), dataSource, username, password);
+                con.Open();
+                con.Close();
+                con.Dispose();
+                return true;
+                
             }
-            catch 
+            catch(Exception e)
             {
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 return false;
@@ -186,35 +185,71 @@ namespace BK.UserManagement.Web.Controllers
 
                 vmEditUser.User = ole.Query<UserModel>("SELECT * FROM sys.dba_users WHERE USERNAME = :Username", new { Username = username.ToUpper() })
                     .FirstOrDefault();
-                var tablespaces = ole.Query<TablespaceModel>("SELECT TABLESPACE_NAME FROM SYS.DBA_TABLESPACES");
-                vmEditUser.Tablespaces = tablespaces.Select(x =>
-                                  new SelectListItem()
-                                  {
-                                      Text = x.TABLESPACE_NAME.ToString(),
-                                      Value = x.TABLESPACE_NAME.ToString()
-                                  });
+                var userInfo = ole.Query<UserInfoModel>("SELECT * FROM sys.dba_user_info u WHERE u.USERNAME = :Username", new { Username = username.ToUpper() })
+                    .FirstOrDefault();
+                if(userInfo == null)
+                {
+                    ole.Query<int>($@"INSERT INTO sys.dba_user_info (USERNAME) VALUES ('{ username.ToUpper()}')");
+                    userInfo = new UserInfoModel();
+                }
+                vmEditUser.FirstName = userInfo.FIRST_NAME;
+                vmEditUser.LastName = userInfo.LAST_NAME;
+                vmEditUser.Phone = userInfo.PHONE;
+                vmEditUser.Email = userInfo.EMAIL;
+                vmEditUser.Address = userInfo.ADDRESS;
+                
 
                 vmEditUser.DefaultTablespaceName = vmEditUser.User.DEFAULT_TABLESPACE;
                 vmEditUser.TemporaryTablespaceName = vmEditUser.User.TEMPORARY_TABLESPACE;
-                var profiles = ole.Query<ProfileModel>("SELECT DISTINCT PROFILE FROM SYS.DBA_PROFILES");
-                vmEditUser.Profiles = profiles.Select(x =>
-                                    new SelectListItem()
-                                    {
-                                        Text = x.PROFILE.ToString(),
-                                        Value = x.PROFILE.ToString()
-                                    });
+                
                 vmEditUser.ProfileName = vmEditUser.User.PROFILE;
-                var accountStatusList = new List<SelectListItem>();
-                accountStatusList.Add(new SelectListItem() { Text = "OPEN", Value = "0" });
-                accountStatusList.Add(new SelectListItem() { Text = "PASSWORD EXPIRED", Value = "EXPIRED" });
-                accountStatusList.Add(new SelectListItem() { Text = "LOCKED", Value = "LOCKED" });
-                accountStatusList.Add(new SelectListItem() { Text = "EXPIRED & LOCKED", Value = "EXPIRED & LOCKED" });
-                vmEditUser.AccoutStatusList = accountStatusList;
                 vmEditUser.AccountStatus = vmEditUser.User.ACCOUNT_STATUS;
                 vmEditUser.QuotaList = ole.Query<QuotaModel>($"SELECT TABLESPACE_NAME, BYTES, MAX_BYTES FROM SYS.DBA_TS_QUOTAS WHERE USERNAME = '{vmEditUser.User.USERNAME}'");
                 return View(vmEditUser);
             }
 
+        }
+        [HttpPost]
+        public IActionResult Logon(EditUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    using (var conn = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+                    {
+                        conn.Open();
+                        OracleCommand cmd = conn.CreateCommand();
+                        //var user = ole.Query<UserModel>($"ALTER USER\"{model.Username.ToUpper()}\" IDENTIFIED BY \"{model.Password}\"");
+                        if (!String.IsNullOrWhiteSpace(model.Password))
+                        {
+                            cmd.CommandText = $"ALTER USER {model.Username.ToUpper()} IDENTIFIED BY {model.Password}";
+                            cmd.ExecuteNonQuery();
+                        }
+                        cmd.CommandText = $@"
+UPDATE sys.dba_user_info
+SET FIRST_NAME = '{model.FirstName}', 
+LAST_NAME = '{model.LastName}', 
+ADDRESS = '{model.Address}', 
+PHONE = '{model.Phone}', 
+EMAIL = '{model.Email}'
+WHERE USERNAME = '{model.Username.ToUpper()}'";
+                        cmd.ExecuteNonQuery();
+
+                        //return View(vmEditUser);
+                        //return RedirectToAction("Edit", "User", new { @id = model.Username });
+                        //return RedirectToAction(nameof(AccountController.Logon), "Account");
+                        //return RedirectToLocal(returnUrl);
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+            }
+
+            return RedirectToAction(nameof(AccountController.Logon), "Account");
         }
     }
 }

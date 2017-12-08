@@ -46,7 +46,13 @@ namespace BK.UserManagement.Web.Controllers
 
                 vmEditUser.User = ole.Query<UserModel>("SELECT * FROM dba_users u WHERE u.USERNAME = :Username", new { Username = id })
                     .FirstOrDefault();
-
+                var userInfo = ole.Query<UserInfoModel>("SELECT * FROM sys.dba_user_info u WHERE u.USERNAME = :Username", new { Username = id })
+                    .FirstOrDefault();
+                vmEditUser.FirstName = userInfo.FIRST_NAME;
+                vmEditUser.LastName = userInfo.LAST_NAME;
+                vmEditUser.Phone = userInfo.PHONE;
+                vmEditUser.Email = userInfo.EMAIL;
+                vmEditUser.Address = userInfo.ADDRESS;
                 var tablespaces = ole.Query<TablespaceModel>("SELECT TABLESPACE_NAME FROM SYS.DBA_TABLESPACES");
                 vmEditUser.Tablespaces = tablespaces.Select(x =>
                                   new SelectListItem()
@@ -104,7 +110,11 @@ namespace BK.UserManagement.Web.Controllers
                         cmd.ExecuteNonQuery();
                         cmd.CommandText = $@"
 UPDATE sys.dba_user_info
-SET FIRST_NAME = '{model.FirstName}', LAST_NAME = '{model.LastName}', ADDRESS = '{model.Address}', PHONE = '{model.Phone}', EMAIL = '{model.Email}'
+SET FIRST_NAME = '{model.FirstName}', 
+LAST_NAME = '{model.LastName}', 
+ADDRESS = '{model.Address}', 
+PHONE = '{model.Phone}', 
+EMAIL = '{model.Email}'
 WHERE USERNAME = '{model.Username.ToUpper()}'";
                         cmd.ExecuteNonQuery();
                         if (model.Quota !=0)

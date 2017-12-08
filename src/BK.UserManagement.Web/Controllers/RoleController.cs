@@ -195,7 +195,7 @@ namespace BK.UserManagement.Web.Controllers
         public IActionResult EditRoleSysPrivs(string id)
         {
             var roleSysPrivsViewModel = new RoleSysPrivsViewModel();
-            roleSysPrivsViewModel.User = id;
+            roleSysPrivsViewModel.Role = id;
             using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
             {
                 var roleCreateProfile = ole.Query<RoleSysPrivsModel>($"select * from ROLE_SYS_PRIVS where role='{id}' and PRIVILEGE='CREATE PROFILE'").FirstOrDefault();
@@ -339,25 +339,25 @@ namespace BK.UserManagement.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                EditSysPrivs(model.User, "CREATE PROFILE", model.CreateProfile, model.CreateProfileAdminOption);
-                EditSysPrivs(model.User, "ALTER PROFILE", model.AlterProfile, model.AlterProfileAdminOption);
-                EditSysPrivs(model.User, "DROP PROFILE", model.DropProfile, model.DropProfileAdminOption);
-                EditSysPrivs(model.User, "CREATE ROLE", model.CreateRole, model.CreateRoleAdminOption);
-                EditSysPrivs(model.User, "ALTER ANY ROLE", model.AlterAnyRole, model.AlterAnyRoleAdminOption);
-                EditSysPrivs(model.User, "DROP ANY ROLE", model.DropAnyRole, model.DropAnyRoleAdminOption);
-                EditSysPrivs(model.User, "GRANT ANY ROLE", model.GrantAnyRole, model.GrantAnyRoleAdminOption);
-                EditSysPrivs(model.User, "CREATE SESSION", model.CreateSession, model.CreateSessionAdminOption);
-                EditSysPrivs(model.User, "CREATE ANY TABLE", model.CreateAnyTable, model.CreateAnyTableAdminOption);
-                EditSysPrivs(model.User, "ALTER ANY TABLE", model.AlterAnyTable, model.AlterAnyTableAdminOption);
-                EditSysPrivs(model.User, "DROP ANY TABLE", model.DropAnyTable, model.DropAnyTableAdminOption);
-                EditSysPrivs(model.User, "SELECT ANY TABLE", model.SelectAnyTable, model.SelectAnyTableAdminOption);
-                EditSysPrivs(model.User, "DELETE ANY TABLE", model.DeleteAnyTable, model.DeleteAnyTableAdminOption);
-                EditSysPrivs(model.User, "INSERT ANY TABLE", model.InsertAnyTable, model.InsertAnyTableAdminOption);
-                EditSysPrivs(model.User, "UPDATE ANY TABLE", model.UpdateAnyTable, model.UpdateAnyTableAdminOption);
-                EditSysPrivs(model.User, "CREATE TABLE", model.CreateTable, model.CreateTableAdminOption);
-                EditSysPrivs(model.User, "CREATE USER", model.CreateUser, model.CreateUserAdminOption);
-                EditSysPrivs(model.User, "ALTER USER", model.AlterUser, model.AlterUserAdminOption);
-                EditSysPrivs(model.User, "DROP USER", model.DropUser, model.DropUserAdminOption);
+                EditSysPrivs(model.Role, "CREATE PROFILE", model.CreateProfile, model.CreateProfileAdminOption);
+                EditSysPrivs(model.Role, "ALTER PROFILE", model.AlterProfile, model.AlterProfileAdminOption);
+                EditSysPrivs(model.Role, "DROP PROFILE", model.DropProfile, model.DropProfileAdminOption);
+                EditSysPrivs(model.Role, "CREATE ROLE", model.CreateRole, model.CreateRoleAdminOption);
+                EditSysPrivs(model.Role, "ALTER ANY ROLE", model.AlterAnyRole, model.AlterAnyRoleAdminOption);
+                EditSysPrivs(model.Role, "DROP ANY ROLE", model.DropAnyRole, model.DropAnyRoleAdminOption);
+                EditSysPrivs(model.Role, "GRANT ANY ROLE", model.GrantAnyRole, model.GrantAnyRoleAdminOption);
+                EditSysPrivs(model.Role, "CREATE SESSION", model.CreateSession, model.CreateSessionAdminOption);
+                EditSysPrivs(model.Role, "CREATE ANY TABLE", model.CreateAnyTable, model.CreateAnyTableAdminOption);
+                EditSysPrivs(model.Role, "ALTER ANY TABLE", model.AlterAnyTable, model.AlterAnyTableAdminOption);
+                EditSysPrivs(model.Role, "DROP ANY TABLE", model.DropAnyTable, model.DropAnyTableAdminOption);
+                EditSysPrivs(model.Role, "SELECT ANY TABLE", model.SelectAnyTable, model.SelectAnyTableAdminOption);
+                EditSysPrivs(model.Role, "DELETE ANY TABLE", model.DeleteAnyTable, model.DeleteAnyTableAdminOption);
+                EditSysPrivs(model.Role, "INSERT ANY TABLE", model.InsertAnyTable, model.InsertAnyTableAdminOption);
+                EditSysPrivs(model.Role, "UPDATE ANY TABLE", model.UpdateAnyTable, model.UpdateAnyTableAdminOption);
+                EditSysPrivs(model.Role, "CREATE TABLE", model.CreateTable, model.CreateTableAdminOption);
+                EditSysPrivs(model.Role, "CREATE USER", model.CreateUser, model.CreateUserAdminOption);
+                EditSysPrivs(model.Role, "ALTER USER", model.AlterUser, model.AlterUserAdminOption);
+                EditSysPrivs(model.Role, "DROP USER", model.DropUser, model.DropUserAdminOption);
             }
             //  return View(model);
             return RedirectToAction(nameof(RoleController.ListRoleSysPrivs), "Role");
