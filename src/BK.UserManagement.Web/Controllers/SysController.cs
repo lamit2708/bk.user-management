@@ -8,6 +8,8 @@ using Oracle.ManagedDataAccess.Client;
 using BK.UserManagement.Web.Models;
 using Dapper;
 using BK.UserManagement.Web.Models.DataTableViewModels;
+using BK.UserManagement.Web.Models.RoleViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BK.UserManagement.Web.Controllers
 {
@@ -90,15 +92,71 @@ select b.*
             
             
         }
-        public IActionResult GrantRoleToUser()
+        [HttpGet]
+        public IActionResult GrantRoleToUser(string id, [FromQuery] string username)
         {
             using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
             {
-                var sysPrivs = ole.Query<ListRolePrivsUserModel>(@"SELECT r.ROLE,r.PRIVILEGE, u.GRANTEE 
-                                                            FROM sys.ROLE_SYS_PRIVS r
-                                                            INNER JOIN sys.DBA_ROLE_PRIVS u
-                                                            ON r.ROLE = u.GRANTED_ROLE");
-                return View(sysPrivs);
+                
+                var vmGrantRoleToUser = new GrantRoleToUserViewModel();
+                vmGrantRoleToUser.GrantedRole = id;
+                var users = ole.Query<string>(@"SELECT DISTINCT USERNAME FROM sys.dba_users");
+                vmGrantRoleToUser.Users = users.Select(x =>
+                {
+                    return new SelectListItem()
+                    {
+                        Text = x,
+                        Value = x
+                    };
+                });
+                vmGrantRoleToUser.Username = username;
+                return View(vmGrantRoleToUser);
+            }
+
+        }
+
+        [HttpPost]
+        public IActionResult GrantRoleToUser(GrantRoleToUserViewModel model)
+        {
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                ole.Query<string>($@"GRANT {model.GrantedRole} TO {model.Username}");
+
+                return RedirectToAction(nameof(SysController.ListRolePrivsUser), "Sys");
+            }
+
+        }
+
+        [HttpGet]
+        public IActionResult RevokeRoleFromUser(string id, [FromQuery] string username)
+        {
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+
+                var vmGrantRoleToUser = new GrantRoleToUserViewModel();
+                vmGrantRoleToUser.GrantedRole = id;
+                var users = ole.Query<string>(@"SELECT DISTINCT USERNAME FROM sys.dba_users");
+                vmGrantRoleToUser.Users = users.Select(x =>
+                {
+                    return new SelectListItem()
+                    {
+                        Text = x,
+                        Value = x
+                    };
+                });
+                vmGrantRoleToUser.Username = username;
+                return View(vmGrantRoleToUser);
+            }
+
+        }
+
+        [HttpPost]
+        public IActionResult RevokeRoleFromUser(GrantRoleToUserViewModel model)
+        {
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                ole.Query<string>($@"REVOKE {model.GrantedRole} FROM {model.Username}");
+                return RedirectToAction(nameof(SysController.ListRolePrivsUser), "Sys");
             }
 
         }

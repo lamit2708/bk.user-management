@@ -31,8 +31,6 @@
                                     <th>GRANTED_ROLE</th>
                                     <th>ADMIN_OPTION</th>
                                     <th>DEFAULT_ROLE</th>
-                                   
-                                    <th>Features</th>
 
                                 </tr>
                             </thead>
@@ -48,28 +46,16 @@
                                         <td>@u.ADMIN_OPTION</td>
                                         <td>@u.DEFAULT_ROLE</td>
                                         
-                                        <td>
-                                            <button 
-                                                    type="button" class="btnDelete btn btn-danger pull-right">
-                                                <i class="fa fa-remove"></i> Delete
-                                            </button>
-                                           
-                                            @*@Html.ActionLink("Edit", "Edit", new { id=u.GRANTEE})*@
-                                            <button type="button" data-user-id="@u.GRANTEE" data-user-name="@u.GRANTEE"
-                                                    class="btnEdit btn btn-success pull-right" style="margin-right: 5px;">
-                                                <i class="fa fa-edit"></i> Edit
-                                            </button>
-
-                                            
-
-                                        </td>
+                                       
                                     </tr>
                                 }
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th>User Name</th>
-                                    <th>Features</th>
+                                    <th>GRANTEE</th>
+                                    <th>GRANTED_ROLE</th>
+                                    <th>ADMIN_OPTION</th>
+                                    <th>DEFAULT_ROLE</th>
                                 </tr>
                             </tfoot>
                         </table>

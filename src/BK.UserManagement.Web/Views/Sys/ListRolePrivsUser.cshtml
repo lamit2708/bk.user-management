@@ -1,129 +1,129 @@
 @using BK.UserManagement.Web.Models
 @model IEnumerable<ListRolePrivsUserModel>
-    @{
+@{
     ViewData["Title"] = "ListRolePrivsUser";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    }
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            Role System Privileges Of Users
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> System</a></li>
-            <li class="active><a href="#">List Role Sys Privs Of Users</a></li>
+}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Role System Privileges Of Users
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> System</a></li>
+        <li class="active"><a href="#">List Role Sys Privs Of Users</a></li>
 
-        </ol>
-    </section>
-    <!-- Main content -->
-    <section class="content">
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="box">
-                    <div class="box-header">
-                        @*<h3 class="box-title">User List</h3>*@
-
-
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <table id="tbl_user" class="table table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ROLE</th>
-                                    <th>PRIVILEGE</th>
-                                    <th>GRANTEE</th>
-                                    <th>Features</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                GRAN
-
-                                @foreach (var s in Model)
-                            {
-                                    <tr>
-                                        <td>@s.ROLE</td>
-                                        <td>@s.PRIVILEGE</td>
-                                        <td>@s.GRANTEE</td>
-                                        <td>
-                                            <button type="button" data-role-name="@s.ROLE"
-                                                    class="btnEdit btn btn-success pull-right" style="margin-right: 5px;">
-                                                <i class="fa fa-edit"></i> Grant/Revoke To User
-                                            </button>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    @*<h3 class="box-title">User List</h3>*@
 
 
-                                        </td>
-                                    </tr>
-                            }
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>ROLE</th>
-                                    <th>PRIVILEGE</th>
-                                    <th>GRANTEE</th>
-                                    <th>Features</th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                    <!-- /.box-body -->
                 </div>
-                <!-- /.box -->
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="tbl_user" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>ROLE</th>
+                                <th>PRIVILEGE</th>
+                                <th>GRANTEE</th>
+                                <th>Features</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var s in Model)
+                            {
+                                <tr>
+                                    <td>@s.ROLE</td>
+                                    <td>@s.PRIVILEGE</td>
+                                    <td>@s.GRANTEE</td>
+                                    <td>
+                                        <button type="button" data-role-name="@s.ROLE" data-user-name="@s.GRANTEE"
+                                                class="btnRevoke btn btn-danger pull-right" style="margin-right: 5px;">
+                                            <i class="fa fa-edit"></i> Revoke From User
+                                        </button>
+                                        <button type="button" data-role-name="@s.ROLE" data-user-name="@s.GRANTEE"
+                                                class="btnGrant btn btn-success pull-right" style="margin-right: 5px;">
+                                            <i class="fa fa-edit"></i> Grant To User
+                                        </button>
+
+
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>ROLE</th>
+                                <th>PRIVILEGE</th>
+                                <th>GRANTEE</th>
+                                <th>Features</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.box-body -->
             </div>
-            <!-- /.col -->
+            <!-- /.box -->
         </div>
-        <!-- /.row -->
-    </section>
-    <!-- /.content -->
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
 
-    <environment names="Development">
-
-
-    </environment>
-    <environment names="Staging,Production">
+<environment names="Development">
 
 
-    </environment>
-    @section Scripts {
+</environment>
+<environment names="Staging,Production">
 
-        <script type="text/javascript">
+
+</environment>
+@section Scripts {
+
+    <script type="text/javascript">
         $(document).ready(function () {
 
-            $('.btnEdit').click(function (e) {
+            $('.btnGrant').click(function (e) {
                 var rolename = $(this).data('roleName');
-                location.href = '@Url.Content("~/Sys/GrantRoleToUser/")' + rolename;
+                var username = $(this).data('userName');
+                location.href = '@Url.Content("~/Sys/GrantRoleToUser/")' + rolename+'?username='+username;
             });
-           
+            $('.btnRevoke').click(function (e) {
+                var rolename = $(this).data('roleName');
+                var username = $(this).data('userName');
+                location.href = '@Url.Content("~/Sys/RevokeRoleFromUser/")' + rolename+'?username='+username;
+            });
 
         });
-        </script>
+    </script>
 
-        <!-- page script -->
-        <script>
-            $(function () {
-                //$('#example1').DataTable()
-                $('#tbl_user').DataTable({
-                    'paging': true,
-                    'lengthChange': true,
-                    'searching': true,
-                    'ordering': true,
-                    'info': true,
-                    'autoWidth': false
-                })
+    <!-- page script -->
+    <script>
+        $(function () {
+            //$('#example1').DataTable()
+            $('#tbl_user').DataTable({
+                'paging': true,
+                'lengthChange': true,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
             })
-        </script>
+        })
+    </script>
 
-        <!-- Menu Active -->
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('a.menu_user').closest('li').addClass('active');
-                //$('a.menu_multilevel').closest('li').addClass('active');
-                //$('a.menu_level1').closest('li').addClass('active');
-
-            });
-        </script>
+  
 
 
 
@@ -131,4 +131,4 @@
 
 
 
-    }
+}

@@ -65,7 +65,7 @@
                             <label asp-for="DefaultTablespaceName" class="col-md-4 control-label"></label>
                             <div class="col-md-8">
                                 <select asp-for="DefaultTablespaceName" asp-items="@Model.Tablespaces"
-                                        class="form-control select2" style="width: 100%;"></select>
+                                        class="form-control select2" style="width: 100%;" disabled></select>
 
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                             <label asp-for="TemporaryTablespaceName" class="col-md-4 control-label"></label>
                             <div class="col-md-8">
                                 <select asp-for="TemporaryTablespaceName" asp-items="@Model.Tablespaces"
-                                        class="form-control select2" style="width: 100%;"></select>
+                                        class="form-control select2" style="width: 100%;" disabled></select>
 
                             </div>
                         </div>
@@ -81,43 +81,31 @@
                             <label asp-for="ProfileName" class="col-md-4 control-label"></label>
                             <div class="col-md-8">
                                 <select asp-for="ProfileName" asp-items="@Model.Profiles"
-                                        class="form-control select2" style="width: 100%;"></select>
+                                        class="form-control select2" style="width: 100%;" disabled></select>
 
                             </div>
                         </div>
                         <div class="form-group">
                             <label asp-for="AccountStatus" class="col-md-4 control-label"></label>
-                            <div class="col-md-5">
+                            <div class="col-md-8">
                                 <select asp-for="AccountStatus" asp-items="@Model.AccoutStatusList"
                                         class="form-control select2" style="width: 100%;" disabled></select>
 
                             </div>
-                            <div class="col-md-3">
+                            @*<div class="col-md-3">
                                 <button type="button" data-user-name="@Model.User.USERNAME"
-                                        class="btnLock btn btn-warning pull-right" style="margin-right: 5px;">
-                                    <i class="fa fa-lock"></i> Lock
-                                </button>
-                                <button type="button" data-user-name="@Model.User.USERNAME"
-                                        class="btnUnlock btn btn-warning pull-right" style="margin-right: 5px;">
-                                    <i class="fa fa-unlock"></i> Unlock
-                                </button>
-                            </div>
+                                         class="btnLock btn btn-warning pull-right" style="margin-right: 5px;">
+                                     <i class="fa fa-lock"></i> Lock
+                                 </button>
+                                 <button type="button" data-user-name="@Model.User.USERNAME"
+                                         class="btnUnlock btn btn-warning pull-right" style="margin-right: 5px;">
+                                     <i class="fa fa-unlock"></i> Unlock
+                                 </button>
+                            </div>*@
                         </div>
+                       
                         <div class="form-group">
-                            <label asp-for="Quota" class="col-md-4 control-label"></label>
-                            <div class="col-md-3">
-                                <input asp-for="Quota" type="text" class="form-control" placeholder="MB" />
-
-                            </div>
-                            <label class="col-md-1 control-label">ON</label>
-                            <div class="col-md-4">
-                                <select asp-for="QuotaTablespace" asp-items="@Model.Tablespaces"
-                                        class="form-control select2" style="width: 100%;"></select>
-
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-4 col-md-8">
+                            <div class="col-md-offset-4 col-md-7">
                                 <button type="submit"
                                         class="btnSave btn btn-success pull-left" style="margin-right: 5px;">
                                     <i class="fa fa-save"></i> Save

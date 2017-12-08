@@ -1,0 +1,72 @@
+@using BK.UserManagement.Web.Models.RoleViewModels
+@model GrantRoleToUserViewModel
+@{
+    ViewData["Title"] = "GrantRoleUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Grant Role to User
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Role</a></li>
+        <li class="active">GrantRoleToUser</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class=" col-md-12">
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <form role="form" asp-controller="Sys" asp-action="RevokeRoleFromUser" asp-route-returnurl="@ViewData["ReturnUrl"]" class="form-horizontal">
+                        <div class="col-md-6">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Revoke</label>
+                                <div class="col-md-9">
+                                    <input class="form-control" value="@Model.GrantedRole" disabled />
+                                    <input asp-for="GrantedRole" class="form-control hidden" />
+                                    <span asp-validation-for="GrantedRole" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">From</label>
+                                <div class="col-md-9">
+                                    <select asp-for="Username" asp-items="@Model.Users"
+                                            class="form-control select2"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-4 col-md-8">
+                                    <button type="submit"
+                                            class="btnSave btn btn-danger pull-left" style="margin-right: 5px;">
+                                        <i class="fa fa-save"></i> Revoke
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Active Menu
+            $('.menu_list_role_sys_privs_users').parent().addClass('active').closest('.treeview').addClass('active');
+            //Initialize Select2 Elements
+            $('.select2').select2()
+
+        });
+    </script>
+}
+
+

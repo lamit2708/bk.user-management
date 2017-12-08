@@ -293,3 +293,5 @@ __pycache__/
 /.vs/slnx.sqlite
 /.vs/ProjectSettings.json
 /.vs/config/applicationhost.config
+/src/BK.UserManagement.Web/ScaffoldingReadMe.txt
+/src/BK.UserManagement.Web/appsettings.Development.json

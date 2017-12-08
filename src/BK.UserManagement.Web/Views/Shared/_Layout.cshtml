@@ -9,8 +9,11 @@
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
-        <link rel="stylesheet" href="~/css/AdminLTE.min.css" />
+        
         <link rel="stylesheet" href="~/css/bootstrap-editable.css" />
+        <!-- Select2 -->
+        <link rel="stylesheet" href="~/lib/select2/dist/css/select2.css">
+        <link rel="stylesheet" href="~/css/AdminLTE.min.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -19,7 +22,10 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/css/AdminLTE.min.css" />
         <link rel="stylesheet" href="~/css/bootstrap-editable.css" />
+        <!-- Select2 -->
+        <link rel="stylesheet" href="../../bower_components/select2/dist/css/select2.min.css">
     </environment>
+
     <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="~/lib/Ionicons/css/ionicons.min.css">
@@ -129,8 +135,8 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a class="menu_add" asp-controller="User" asp-action="Add">Add User</a></li>
-                            <li><a class="menu_user" asp-controller="User" asp-action="Index">List User</a></li>s
+                            <li><a class="menu_add_user" asp-controller="User" asp-action="Add">Add User</a></li>
+                            <li><a class="menu_list_user" asp-controller="User" asp-action="Index">List User</a></li>s
                         </ul>
                     </li>
                     <!--
@@ -145,12 +151,12 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
+                            <li><a class="menu_create_role" asp-controller="Role" asp-action="Create">Add Role</a></li> 
                             <li><a class="menu_list_role" asp-controller="Role" asp-action="Index">List Role</a></li>
-                      <!--  <li><a class="menu_create_role" asp-controller="Role" asp-action="Create">Create Role</a></li>-->     
-                       <!--  <li><a class="menu_list_role_role_privs" asp-controller="Role" asp-action="ListRoleRolePrivs">List Role Role Privs</a></li> -->                                 
                             <li><a class="menu_list_role_sys_privs" asp-controller="Role" asp-action="ListRoleSysPrivs">List Role Sys Privs </a></li>
                             <li><a class="menu_list_role_object_privs" asp-controller="Role" asp-action="ListRoleObjectPrivs">List Role Object Privs</a></li>
-                       <!-- <li><a class="menu_list_role_user" asp-controller="Role" asp-action="ListUserRole">Roles Of User</a></li> -->    
+                            <li><a class="menu_list_role_role_privs" asp-controller="Role" asp-action="ListRoleRolePrivs">List Role Role Privs</a></li>   
+                              
                             
                         </ul>
                     </li>
@@ -164,6 +170,7 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
+                            <li><a class="menu_create_profile" asp-controller="Profile" asp-action="AddNewProfile">Add Profile</a></li> 
                             <li><a class="menu_list_Profile" asp-controller="Profile" asp-action="Index">Manage Profile</a></li>
                         </ul>
                     </li>
@@ -177,9 +184,10 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a class="menu_create_Profile" asp-controller="Sys" asp-action="Index">List Sys Privs Of Users</a></li>
-                            <li><a class="menu_grant_Profile" asp-controller="Sys" asp-action="ListTablePrivs">List Object Privs Of Users</a></li>
-                            <li><a class="menu_grant_Profile" asp-controller="Sys" asp-action="ListRolePrivsUser">List Role Sys Privs Of users</a></li>
+                            <li><a class="menu_list_sys_privs_users" asp-controller="Sys" asp-action="Index">List Sys Privs Of Users</a></li>
+                            <li><a class="menu_list_object_privs_users" asp-controller="Sys" asp-action="ListTablePrivs">List Object Privs Of Users</a></li>
+                            <li><a class="menu_list_role_sys_privs_users" asp-controller="Sys" asp-action="ListRolePrivsUser">List Role Sys Privs Of Users</a></li>
+                            <li><a class="menu_list_roles_user" asp-controller="Role" asp-action="ListUserRole">List Roles Of Users</a></li>  
                         </ul>
                     </li>
                  <!--
@@ -294,7 +302,8 @@
         <script src="~/lib/jquery-slimscroll/jquery.slimscroll.min.js"></script>
         <!-- FastClick -->
         <script src="~/lib/fastclick/lib/fastclick.js"></script>
-
+        <!-- Select2 -->
+        <script src="~/lib/select2/dist/js/select2.full.js"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="~/js/jquery-1.10.2.js"></script>
@@ -321,8 +330,10 @@
         <!-- FastClick -->
         <script src="~/lib/fastclick/lib/fastclick.js"></script>
         <script src="~/js/bootstrap-editable.js"></script>
+        <!-- Select2 -->
+        <script src="~/lib/select2/dist/js/select2.full.min.js"></script>
     </environment>
-
+   
     @RenderSection("Scripts", required: false)
     <script type="text/javascript">
         $(document).ready(function () {

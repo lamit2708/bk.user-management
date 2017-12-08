@@ -47,7 +47,7 @@
                                         <td>@rr.ADMIN_OPTION</td>
 
                                         <td>
-                                         <!--
+                                         
                                              <button type="button" class="btnDelete btn btn-danger pull-right">
                                                 <i class="fa fa-remove"></i> Delete
                                             </button>
@@ -58,13 +58,17 @@
                                                     class="btnGrantRoleToRole btn btn-success pull-right" style="margin-right: 5px;">
                                                 <i class="fa fa-edit"></i> Grant Role to Role
                                             </button>
-                                             -->   
+                                                
                                         </td>
                                     </tr>
                                 }
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <th>ROLE</th>
+                                    <th>GRANTED_ROLE</th>
+                                    <th>ADMIN_OPTION</th>
+
                                     <th>Features</th>
                                 </tr>
                             </tfoot>
@@ -90,7 +94,7 @@
                 //var userId = $(this).data('userId');
                 var roleName = $(this).data('roleName');
                 //console.log($(this).data());
-                location.href = '@Url.Content("~/Role/GrantRoleToRole/")' + roleName;
+                location.href = '@Url.Content("~/Role/GrantRoleRole/")' + roleName;
             });
             $('.btnDelete').click(function (e)
             {
