@@ -34,7 +34,7 @@
 
 
 
-                    <button type="button" class="btnAdd btn btn-primary pull-left"
+                    <button type="button" class="btnAdd btn btn-success pull-left"
                             onclick="location.href='@Url.Action("AddNewProfile", "Profile")';">
                         <i class="fa fa-plus"></i> Add New Profile
                     </button>
@@ -82,15 +82,8 @@
                                             </button>*@
                                         }
                                         
-
-                                        @if (u.PROFILE != "DEFAULT" & u.PROFILE != "MONITORING_PROFILE")
-                                        {
                                             @Html.ActionLink(" View", "ViewProfile", "Profile", new { _profileName = u.PROFILE }, new { @class = "btnView btn btn-primary pull-right", @style = "margin-right: 5px;" })
-                                        }
-                                        else
-                                        {
-                                            @Html.ActionLink(" View", "ViewProfile", "Profile", new { _profileName = u.PROFILE }, new { @class = "btnView btn btn-primary pull-right disabled", @style = "margin-right: 5px;" })
-                                        }
+
                                     </td>
                                 </tr>
                             }
@@ -132,21 +125,21 @@
             })
         })
 
-        $(document).on("click", "a.UserListLink", function () {
-            console.log(this.href)
-            $.ajax({
-                url: this.href,
-                type: 'GET',
-                cache: false,
-                success: function (result) {
-                    $('#ModalView').html(result).find('.modal').modal({
-                        show: true
-                    });
-                }
-            });
+        //$(document).on("click", "a.UserListLink", function () {
+        //    console.log(this.href)
+        //    $.ajax({
+        //        url: this.href,
+        //        type: 'GET',
+        //        cache: false,
+        //        success: function (result) {
+        //            $('#ModalView').html(result).find('.modal').modal({
+        //                show: true
+        //            });
+        //        }
+        //    });
 
-            return false;
-        });
+        //    return false;
+        //});
 
         $(document).on("click", "a.ResetDefaultLink", function () {
             console.log(this.href)

@@ -85,7 +85,7 @@ namespace BK.UserManagement.Web.Controllers
             {
                 var userInProfile = ole.Query<UserModel>("SELECT * FROM dba_users WHERE profile = '" + _profileName + "'");
                 ViewBag.ProfileName = _profileName;
-                return PartialView(userInProfile);
+                return View(userInProfile);
             }
                 
         }
