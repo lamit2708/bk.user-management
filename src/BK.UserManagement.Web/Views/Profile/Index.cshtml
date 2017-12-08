@@ -69,9 +69,6 @@
                                         {
                                             @Html.ActionLink(" Delete", "DeleteProfile", "Profile", new { _profileName = u.PROFILE }, new { @class = "btnDelete btn btn-danger pull-right", @style = "margin-right: 5px;" })
 
-                                            @Html.ActionLink(" Edit", "Edit", "Profile", new { _profileName = u.PROFILE }, new { @class = "btnEdit btn btn-success pull-right", @style = "margin-right: 5px;" })
-
-                                            @Html.ActionLink(" Reset", "ResetProfile", "Profile", new { _profileName = u.PROFILE }, new { @class = "btnView btn btn-warning pull-right UserListLink", @style = "margin-right: 5px;" })
                                             @*<button type="button" class="btnView btn btn-warning pull-right " style="margin-right: 5px;" onclick="location.href='@Url.Action("ResetProfile", "Profile",new {_profileName = u.PROFILE })';">
                                                 <i class="fa fa-list"></i> Reset Default
                                             </button>*@
@@ -80,15 +77,11 @@
                                         {
                                             @Html.ActionLink(" Delete", "DeleteProfile", "Profile", new { _profileName = u.PROFILE }, new { @class = "btnDelete btn btn-danger pull-right disabled", @style = "margin-right: 5px;" })
 
-                                            @Html.ActionLink(" Edit", "Edit", "Profile", new { _profileName = u.PROFILE }, new { @class = "btnEdit btn btn-success pull-right disabled", @style = "margin-right: 5px;" })
-
-                                            @Html.ActionLink(" Reset", "ResetProfile", "Profile", new { _profileName = u.PROFILE }, new { @class = "btnView btn btn-warning pull-right UserListLink disabled", @style = "margin-right: 5px;" })
                                             @*<button type="button" class="btnView btn btn-warning pull-right disabled" style="margin-right: 5px;">
                                                 <i class="fa fa-list"></i> Reset Default
                                             </button>*@
                                         }
                                         
-                                        @Html.ActionLink(" Copy", "CopyProfile", "Profile", new { _profileName = u.PROFILE }, new { @class = "btnView btn btn-info pull-right", @style = "margin-right: 5px;" })
 
                                         @if (u.PROFILE != "DEFAULT" & u.PROFILE != "MONITORING_PROFILE")
                                         {
