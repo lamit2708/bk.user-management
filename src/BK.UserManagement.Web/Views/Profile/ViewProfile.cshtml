@@ -11,7 +11,7 @@
     </h1>
 
     <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Profile</a></li>
+        <li><a href="#"><i class="fa fa-dashboard"></i>@Html.ActionLink(" Profile","Index","Profile")</a></li>
         <li class="active">View Profile</li>
     </ol>
 </section>
@@ -79,6 +79,7 @@
                 'searching': true,
                 'ordering': true,
                 'info': true,
+                'pageLength':25,
                 'autoWidth': false
             })
         })
