@@ -21,15 +21,17 @@
 
 <!-- Main content -->
 <section class="content">
-    <div class="row">
-        <div class=" col-md-6">
-            <div class="box box-warning">
-                <div class="box-header with-border">
-                    @*<h3 class="box-title">General Elements</h3>*@
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <form role="form" asp-controller="User" asp-action="Edit" asp-route-returnurl="@ViewData["ReturnUrl"]" class="form-horizontal">
+    <form role="form" asp-controller="User" asp-action="Edit" asp-route-returnurl="@ViewData["ReturnUrl"]" class="form-horizontal">
+        <div class="row">
+            <div class=" col-md-6">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        @*<h3 class="box-title">General Elements</h3>*@
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+
+
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-group">
                             <label asp-for="UserId" class="col-md-4 control-label"></label>
@@ -128,48 +130,88 @@
                                 </button>
                             </div>
                         </div>
-                    </form>
+
+                    </div>
+                    <!-- /.box-body -->
                 </div>
-                <!-- /.box-body -->
+                <!-- /.box -->
             </div>
-            <!-- /.box -->
-        </div>
 
 
-        <div class="col-md-6">
-            <div class="box  box-warning">
-                <div class="box-header  with-border">
-                    <h3 class="box-title">Quota List</h3>
+            <div class="col-md-6">
+                <div class="box  box-warning">
+                    <div class="box-header  with-border">
+
+                       
+
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label asp-for="FirstName" class="col-md-4 control-label"></label>
+                            <div class="col-md-8">
+                                <input asp-for="FirstName" class="form-control" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="LastName" class="col-md-4 control-label"></label>
+                            <div class="col-md-8">
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Address" class="col-md-4 control-label"></label>
+                            <div class="col-md-8">
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Phone" class="col-md-4 control-label"></label>
+                            <div class="col-md-8">
+                                <input asp-for="Phone" class="form-control" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Email" class="col-md-4 control-label"></label>
+                            <div class="col-md-8">
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
                     
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body table-responsive no-padding">
-                    <table class="table table-hover">
-                        <tr>
-                            <th>TABLESPACE_NAME</th>
-                            <th>BYTES</th>
-                            <th>MAX_BYTES</th>
-                        </tr>
-                        @foreach (var u in Model.QuotaList)
-                        {
+                    <div class="box-header  with-border">
+                        <h2 class="box-title"><b>Quota Table</b></h2>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
                             <tr>
-                                <td>@u.TABLESPACE_NAME</td>
-                                <td>@u.BYTES</td>
-                                <td>@u.MAX_BYTES</td>
+                                <th>TABLESPACE_NAME</th>
+                                <th>BYTES</th>
+                                <th>MAX_BYTES</th>
                             </tr>
-                        }
-                    </table>
-                    <hr/>
-                    
-                        
-                        
-                        
+                            @foreach (var u in Model.QuotaList)
+                            {
+                                <tr>
+                                    <td>@u.TABLESPACE_NAME</td>
+                                    <td>@u.BYTES</td>
+                                    <td>@u.MAX_BYTES</td>
+                                </tr>
+                            }
+                        </table>
+                        <hr />
+
+                    </div>
+                    <!-- /.box-body -->
                 </div>
-                <!-- /.box-body -->
+                <!-- /.box -->
             </div>
-            <!-- /.box -->
         </div>
-    </div>
+    </form>
 </section>
 
 @section Scripts {
