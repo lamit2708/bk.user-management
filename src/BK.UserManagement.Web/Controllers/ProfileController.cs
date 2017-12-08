@@ -131,31 +131,41 @@ namespace BK.UserManagement.Web.Controllers
                 //check user current login is Granted *** need update ***
                 ViewBag.Message = "You don't have permission to this action. Please contact administrator.";
 
-
-                try
+                if (isGranted("CREATE PROFILE", HttpContext.User.Identity.Name))
                 {
+                    try
+                    {
 
-                    //check if profile exist
-                    if (profileExist(pm.PROFILE))
-                    {
-                        ViewBag.Message = "Profile already exist. Please try again";
-                        return View();
-                    }
-                    else
-                    {
-                        using (var conn = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+                        //check if profile exist
+                        if (profileExist(pm.PROFILE))
                         {
-                            conn.Open();
-                            OracleCommand cmd = conn.CreateCommand();
-                            cmd.CommandText = $@"CREATE PROFILE {pm.PROFILE.ToUpper()} LIMIT";
-                            cmd.ExecuteNonQuery();
+                            ViewBag.Message = "Profile already exist. Please try again";
+                            return View();
+                        }
+                        else
+                        {
+                            connString = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication).Value;
+                            using (var conn = new OracleConnection(connString))
+                            {
+                                conn.Open();
+                                OracleCommand cmd = conn.CreateCommand();
+                                cmd.CommandText = $@"CREATE PROFILE {pm.PROFILE.ToUpper()} LIMIT";
+                                cmd.ExecuteNonQuery();
+                            }
                         }
                     }
+                    catch (Exception e)
+                    {
+                        throw e;
+                    }
                 }
-                catch (Exception e)
+                else
                 {
-                    throw e;
+                    //"You don't have permission to this action. Please contact administrator.";
+                    return RedirectToAction("NoPermit"); // 
                 }
+
+                
 
             }
 
@@ -172,7 +182,7 @@ namespace BK.UserManagement.Web.Controllers
         public IActionResult DeleteProfile(string _profileName)
         {
             //check user current login is Granted *** need update ***
-            if (isGranted("DELETE PROFILE", HttpContext.User.Identity.Name))
+            if (isGranted("DROP PROFILE", HttpContext.User.Identity.Name))
             {
                 ViewBag.ProfileName = _profileName;
                 return View();
@@ -186,24 +196,33 @@ namespace BK.UserManagement.Web.Controllers
         [HttpPost]
         public IActionResult Delete(string _profileName)
         {
-           
-            try
+            //check user current login is Granted *** need update ***
+            if (isGranted("DROP PROFILE", HttpContext.User.Identity.Name))
             {
-                using (var conn = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+                try
                 {
-                    conn.Open();
-                    OracleCommand cmd = conn.CreateCommand();
-                    cmd.CommandText = $@"DROP PROFILE {_profileName} CASCADE";
-                    cmd.ExecuteNonQuery();
+                    connString = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication).Value;
+                    using (var conn = new OracleConnection(connString))
+                    {
+                        conn.Open();
+                        OracleCommand cmd = conn.CreateCommand();
+                        cmd.CommandText = $@"DROP PROFILE {_profileName} CASCADE";
+                        cmd.ExecuteNonQuery();
+                    }
                 }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+
+                return RedirectToAction("Index");
             }
-            catch (Exception e)
+            else
             {
-                throw e;
+                return RedirectToAction("NoPermit"); // 
             }
-
-
-            return RedirectToAction("Index");
+            
         }
 
         [HttpGet]
@@ -229,15 +248,26 @@ namespace BK.UserManagement.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(string _profileName)
+        public IActionResult Edit(string _profileName,string _resourceName)
         {
-            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            if (isGranted("ALTER PROFILE", HttpContext.User.Identity.Name))
             {
-                var profileResource = ole.Query<ProfileResource>("SELECT * FROM dba_profiles where Profile = '" + _profileName + "'");
-                ViewBag.ProfileName = _profileName;
-                return View(profileResource);
+                connString = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication).Value;
+                using (var conn = new OracleConnection(connString))
+                {
+                    var profileResource = conn.Query<ProfileResource>("SELECT * FROM dba_profiles where Profile = '" + _profileName + "' AND RESOURCE_NAME = '" + _resourceName + "'").FirstOrDefault();
+                    ViewBag.ProfileName = _profileName;
+                    return View(profileResource);
+                }
             }
+            else
+            {
+                return RedirectToAction("NoPermit"); // 
+            }
+            
         }
+
+        
 
     }
 }
