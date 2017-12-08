@@ -15,11 +15,11 @@
         <form asp-controller="Account" asp-action="Login"  method="post" asp-route-returnurl="@ViewData["ReturnUrl"]">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group has-feedback">
-                <input type="text" asp-for="Server" class="form-control" value="192.168.169.129"  placeholder="Server">
+                <input type="text" asp-for="Server" class="form-control" value="192.168.3.133"  placeholder="Server">
                 <span class="glyphicon glyphicon-object-align-bottom form-control-feedback" ></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="text" asp-for="Sid" class="form-control" value="orcl"  placeholder="Sid">
+                <input type="text" asp-for="Sid" class="form-control" value="orcl.localdomain"  placeholder="Sid">
                 <span class="glyphicon glyphicon-list form-control-feedback" ></span>
             </div>
             <div class="form-group has-feedback">

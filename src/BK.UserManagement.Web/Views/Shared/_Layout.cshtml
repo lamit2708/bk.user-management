@@ -155,6 +155,21 @@
                         </ul>
                     </li>
 
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-shield"></i> <span>Privilege</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a class="menu_list_role" asp-controller="Privilege" asp-action="Index">List Privilege</a></li>
+                            <li><a class="menu_list_role_sys_privs" asp-controller="Privilege" asp-action="GrantSysPrivs">Grant Sys Privs </a></li>
+                            <li><a class="menu_list_role_object_privs" asp-controller="Privilege" asp-action="GrantSysPrivs">Grant Role Privs</a></li>
+
+                        </ul>
+                    </li>
+
                     <!-- Menu Profile-->
                     <li class="treeview">
                         <a href="#">

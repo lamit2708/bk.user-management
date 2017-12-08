@@ -1,27 +1,38 @@
 @model IEnumerable<BK.UserManagement.Web.Models.UserModel>
 
-<div class="modal fade">
-        <div class="modal-dialog" style="width:460px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                    <h4 class="modal-title"><b>List of users has profile @ViewBag.ProfileName </b></h4>
-                    <h5>(Click on username to Edit)</h5>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        User in profile: @ViewBag.ProfileName
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Profile</a></li>
+        <li class="active"><a href="#">Index</a></li>
+
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <!-- /.box-header -->
+                <div class="box-header">
+                    
                 </div>
-                <div class="modal-body">
-                    <table id="tbl_user" class="table table-bordered table-hover">
+
+                <div class="box-body">
+                    <table id="tbl_userIn" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                @*<th>ID</th>*@
-                                <th>User Name</th>
-                                @*<th>Default Tablespace</th>
-                                <th>Temporary Tablespace</th>
-                                <th>Profile</th>
-                                <th>Account Status</th>
-                                <th>Features</th>*@
-
+                                <th>Username</th>
+                                <th><span class="pull-right">Features</span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -31,18 +42,58 @@
                             @foreach (var u in Model)
                             {
                                 <tr>
-                                    <td>@Html.ActionLink(u.USERNAME,"Edit","User",new {id = u.USERNAME })</td>
+                                    <td>
+                                        @u.USERNAME
+                                    </td>
+
+                                    <td>
+
+                                    </td>
                                 </tr>
                             }
                         </tbody>
+
                         <tfoot>
                             <tr>
-                                @*<th>ID</th>*@
-                                <th>User Name</th>
+                                @*<th>Profile Name</th>
+                                    <th>Features</th>*@
                             </tr>
                         </tfoot>
                     </table>
                 </div>
+                <!-- /.box-body -->
             </div>
+            <!-- /.box -->
         </div>
+        <!-- /.col -->
     </div>
+    <!-- /.row -->
+
+    <div>
+        <i class="fa fa-backward"></i><a asp-action="Index"> Back to List</a>
+    </div>
+
+</section>
+<!-- /.content -->
+
+
+
+
+@section Scripts {
+
+    <!-- page script -->
+    <script type="text/javascript">
+        $(function () {
+            //$('#example1').DataTable()
+            $('#tbl_userIn').DataTable({
+                'paging': true,
+                'lengthChange': true,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'pageLength': 25,
+                'autoWidth': false       
+            })
+        })
+    </script>
+}
