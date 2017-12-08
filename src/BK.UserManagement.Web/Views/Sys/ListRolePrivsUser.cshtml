@@ -7,11 +7,11 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            User System Privilege Table
+            Role System Privileges Of Users
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> System</a></li>
-            <li class="active><a href="#">DBA_SYS_PRIVS</a></li>
+            <li class="active><a href="#">List Role Sys Privs Of Users</a></li>
 
         </ol>
     </section>
@@ -33,7 +33,7 @@
                                     <th>ROLE</th>
                                     <th>PRIVILEGE</th>
                                     <th>GRANTEE</th>
-
+                                    <th>Features</th>
 
                                 </tr>
                             </thead>
@@ -47,14 +47,22 @@
                                         <td>@s.ROLE</td>
                                         <td>@s.PRIVILEGE</td>
                                         <td>@s.GRANTEE</td>
+                                        <td>
+                                            <button type="button" data-role-name="@s.ROLE"
+                                                    class="btnEdit btn btn-success pull-right" style="margin-right: 5px;">
+                                                <i class="fa fa-edit"></i> Grant/Revoke To User
+                                            </button>
 
 
+                                        </td>
                                     </tr>
                             }
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th>User Name</th>
+                                    <th>ROLE</th>
+                                    <th>PRIVILEGE</th>
+                                    <th>GRANTEE</th>
                                     <th>Features</th>
                                 </tr>
                             </tfoot>
@@ -84,28 +92,10 @@
         $(document).ready(function () {
 
             $('.btnEdit').click(function (e) {
-                //var userId = $(this).data('userId');
-                var username = $(this).data('userName');
-                //console.log($(this).data());
-                location.href = '@Url.Content("~/User/Edit/")' + username;
+                var rolename = $(this).data('roleName');
+                location.href = '@Url.Content("~/Sys/GrantRoleToUser/")' + rolename;
             });
-            $('.btnDelete').click(function (e)
-            {
-                var userId = $(this).data('userId');
-                var username = $(this).data('userName');
-                if (userId > 100 && userId < 2147483638) {
-
-                    //console.log(username);
-                    //console.log('@Url.Content("~/User/Delete/")' + username)
-                    location.href = '@Url.Content("~/User/Delete/")' + username;
-
-                } else {
-
-                    alert("Can not delete the user "+username+"/"+userId+"!\r\n Your have not privileges to delete the user with id <100. ");
-
-                }
-
-            });
+           
 
         });
         </script>

@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BK.UserManagement.Web.Controllers
 {
+    
     public class AccountController : Controller
     {
 
@@ -172,6 +173,7 @@ namespace BK.UserManagement.Web.Controllers
         //        ModelState.AddModelError(string.Empty, error.Description);
         //    }
         //}
+        [Authorize]
         [HttpGet]
         public IActionResult Logon()
         {
