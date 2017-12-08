@@ -48,7 +48,8 @@ namespace BK.UserManagement.Web.Controllers
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, model.Username),
-                       
+                        new Claim(ClaimTypes.Authentication, String.Format(config.GetConnectionString("UserConnection"), model.Server + "/" + model.Sid, model.Username, model.Password)),
+
                     };
 
                     var userIdentity = new ClaimsIdentity(claims, "login");
