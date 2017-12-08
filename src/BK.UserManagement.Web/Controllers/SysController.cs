@@ -34,7 +34,6 @@ namespace BK.UserManagement.Web.Controllers
                 return View(sysPrivs);
             }
 
-
         }
         public IActionResult ListRolePrivsUser()
         {
@@ -90,6 +89,18 @@ select b.*
             
             
             
+        }
+        public IActionResult GrantRoleToUser()
+        {
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                var sysPrivs = ole.Query<ListRolePrivsUserModel>(@"SELECT r.ROLE,r.PRIVILEGE, u.GRANTEE 
+                                                            FROM sys.ROLE_SYS_PRIVS r
+                                                            INNER JOIN sys.DBA_ROLE_PRIVS u
+                                                            ON r.ROLE = u.GRANTED_ROLE");
+                return View(sysPrivs);
+            }
+
         }
     }
 

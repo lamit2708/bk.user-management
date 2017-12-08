@@ -1,0 +1,31 @@
+
+@{
+    ViewData["Title"] = "DeleteProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class=" col-md-12">
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                    @*<h3 class="box-title">General Elements</h3>*@
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    
+                        <div class="form-horizontal">
+                            <h2>You don't have permission to do this action. Please contact administrator.</h2>
+                            <hr />
+                            <h4>Click @Html.ActionLink("here","Index") to return</h4>
+                            @*<i class="fa fa-backward"></i>*@
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

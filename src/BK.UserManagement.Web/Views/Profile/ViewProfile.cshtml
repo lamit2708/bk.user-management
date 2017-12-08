@@ -11,7 +11,7 @@
     </h1>
 
     <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Profile</a></li>
+        <li><a href="#"><i class="fa fa-dashboard"></i>@Html.ActionLink(" Profile","Index","Profile")</a></li>
         <li class="active">View Profile</li>
     </ol>
 </section>
@@ -33,6 +33,7 @@
                                 <th>RESOURCE_NAME</th>
                                 <th>RESOURCE_TYPE</th>
                                 <th>LIMIT</th>
+                                <th>Feature</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,6 +46,21 @@
                                     <td>@u.Resource_Name</td>
                                     <td>@u.Resource_Type</td>
                                     <td>@u.Limit</td>
+                                    @if (u.Resource_Name == "SESSIONS_PER_USER" | u.Resource_Name == "CONNECT_TIME" | u.Resource_Name == "IDLE_TIME")
+                                    {
+                                        <td>@Html.ActionLink(" Edit", "Edit", "Profile", new { _profileName = ViewBag.ProfileName, _resourceName = u.Resource_Name }, new { @class = "btnEdit btn btn-warning", @style = "margin-right: 5px;" })</td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <button type="button" class="btnEdit btn btn-default disabled" style="margin-right: 5px;">
+                                                Edit
+                                            </button>
+                                        </td>
+                                        
+                                        
+                                    }
+                                    
                                 </tr>
                             }
                         </tbody>
@@ -79,15 +95,11 @@
                 'searching': true,
                 'ordering': true,
                 'info': true,
+                'pageLength':25,
                 'autoWidth': false
             })
         })
     </script>
-
-
-
-
-
 }
 
 

@@ -23,76 +23,120 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <form asp-controller="User" asp-action="Add" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-                        <div asp-validation-summary="All" class="text-danger"></div>
-                        <div class="form-group">
-                            <label asp-for="Username" class="col-md-2 control-label"></label>
-                            <div class="col-md-10">
-                                <input asp-for="Username" class="form-control" />
-                                <span asp-validation-for="Username" class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="Username" class="col-md-3 control-label"></label>
+                                    <div class="col-md-9">
+                                        <input asp-for="Username" class="form-control" />
+                                        <span asp-validation-for="Username" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Password" class="col-md-3 control-label"></label>
+                                    <div class="col-md-9">
+                                        <input asp-for="Password" class="form-control" />
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ConfirmPassword" class="col-md-3 control-label"></label>
+                                    <div class="col-md-9">
+                                        <input asp-for="ConfirmPassword" class="form-control" />
+                                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DefaultTablespaceName" class="col-md-3 control-label"></label>
+                                    <div class="col-md-9">
+                                        <select asp-for="DefaultTablespaceName" asp-items="@Model.Tablespaces"
+                                                class="form-control select2" style="width: 100%;"></select>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="TemporaryTablespaceName" class="col-md-3 control-label"></label>
+                                    <div class="col-md-9">
+                                        <select asp-for="TemporaryTablespaceName" asp-items="@Model.Tablespaces"
+                                                class="form-control select2" style="width: 100%;"></select>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ProfileName" class="col-md-3 control-label"></label>
+                                    <div class="col-md-9">
+                                        <select asp-for="ProfileName" asp-items="@Model.Profiles"
+                                                class="form-control select2" style="width: 100%;"></select>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Quota" class="col-md-3 control-label"></label>
+
+                                    <div class="col-md-9">
+                                        <input asp-for="Quota" type="text" class="form-control" placeholder="MB" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">On Tablespace</label>
+                                    <div class="col-md-9">
+                                        <select asp-for="QuotaTablespace" asp-items="@Model.Tablespaces"
+                                                class="form-control select2" style="width: 100%;"></select>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Password" class="col-md-2 control-label"></label>
-                            <div class="col-md-10">
-                                <input asp-for="Password" class="form-control" />
-                                <span asp-validation-for="Password" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="ConfirmPassword" class="col-md-2 control-label"></label>
-                            <div class="col-md-10">
-                                <input asp-for="ConfirmPassword" class="form-control" />
-                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="DefaultTablespaceName" class="col-md-2 control-label"></label>
-                            <div class="col-md-10">
-                                <select asp-for="DefaultTablespaceName" asp-items="@Model.Tablespaces"
-                                        class="form-control select2" style="width: 100%;"></select>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="FirstName" class="col-md-3 control-label"></label>
+                                    <div class="col-md-9">
+                                        <input asp-for="FirstName" class="form-control" />
+                                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="LastName" class="col-md-3 control-label"></label>
+                                    <div class="col-md-9">
+                                        <input asp-for="LastName" class="form-control" />
+                                        <span asp-validation-for="LastName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Address" class="col-md-3 control-label"></label>
+                                    <div class="col-md-9">
+                                        <input asp-for="Address" class="form-control" />
+                                        <span asp-validation-for="Address" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Phone" class="col-md-3 control-label"></label>
+                                    <div class="col-md-9">
+                                        <input asp-for="Phone" class="form-control" />
+                                        <span asp-validation-for="Phone" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Email" class="col-md-3 control-label"></label>
+                                    <div class="col-md-9">
+                                        <input asp-for="Email" class="form-control" />
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="TemporaryTablespaceName" class="col-md-2 control-label"></label>
-                            <div class="col-md-10">
-                                <select asp-for="TemporaryTablespaceName" asp-items="@Model.Tablespaces"
-                                        class="form-control select2" style="width: 100%;"></select>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-9">
+                                    <button type="submit" class="btn btn-success">Add User</button>
+                                </div>
+                            </div>
+                        </div>
 
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="ProfileName" class="col-md-2 control-label"></label>
-                            <div class="col-md-10">
-                                <select asp-for="ProfileName" asp-items="@Model.Profiles"
-                                        class="form-control select2" style="width: 100%;"></select>
-
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Quota" class="col-md-2 control-label"></label>
-
-                            <div class="col-md-10">
-                                <input asp-for="Quota" type="text" class="form-control" placeholder="MB" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">On Tablespace</label>
-                            <div class="col-md-10">
-                                <select asp-for="QuotaTablespace" asp-items="@Model.Tablespaces"
-                                        class="form-control select2" style="width: 100%;"></select>
-                            </div>
-
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <button type="submit" class="btn btn-success">Add User</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
+    </div>
     </div>
 </section>
 @section Scripts {

@@ -102,6 +102,11 @@ namespace BK.UserManagement.Web.Controllers
                         cmd.ExecuteNonQuery();
                         cmd.CommandText = $"ALTER USER {model.Username.ToUpper()} PROFILE {model.ProfileName}";
                         cmd.ExecuteNonQuery();
+                        cmd.CommandText = $@"
+UPDATE sys.dba_user_info
+SET FIRST_NAME = '{model.FirstName}', LAST_NAME = '{model.LastName}', ADDRESS = '{model.Address}', PHONE = '{model.Phone}', EMAIL = '{model.Email}'
+WHERE USERNAME = '{model.Username.ToUpper()}'";
+                        cmd.ExecuteNonQuery();
                         if (model.Quota !=0)
                         {
                             cmd.CommandText = $"ALTER USER {model.Username.ToUpper()} QUOTA {model.Quota}M ON {model.QuotaTablespace}";
@@ -169,6 +174,8 @@ DEFAULT TABLESPACE {model.DefaultTablespaceName}
 PROFILE  { model.ProfileName}";
                     cmd.ExecuteNonQuery();
                     cmd.CommandText = $@"GRANT CONNECT TO ""{ model.Username.ToUpper()}""";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = $@"INSERT INTO sys.dba_user_info (USERNAME, FIRST_NAME, LAST_NAME, ADDRESS, PHONE, EMAIL) VALUES ('{ model.Username.ToUpper()}','{ model.FirstName}','{model.LastName}','{model.Address}','{model.Phone}','{model.Email}')";
                     cmd.ExecuteNonQuery();
 
                     if (model.Quota != 0)

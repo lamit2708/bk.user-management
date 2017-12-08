@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BK.UserManagement.Web.Controllers
 {
+    
     public class AccountController : Controller
     {
 
@@ -48,7 +49,8 @@ namespace BK.UserManagement.Web.Controllers
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, model.Username),
-                       
+                        new Claim(ClaimTypes.Authentication, String.Format(config.GetConnectionString("UserConnection"), model.Server + "/" + model.Sid, model.Username, model.Password)),
+
                     };
 
                     var userIdentity = new ClaimsIdentity(claims, "login");
@@ -171,6 +173,7 @@ namespace BK.UserManagement.Web.Controllers
         //        ModelState.AddModelError(string.Empty, error.Description);
         //    }
         //}
+        [Authorize]
         [HttpGet]
         public IActionResult Logon()
         {

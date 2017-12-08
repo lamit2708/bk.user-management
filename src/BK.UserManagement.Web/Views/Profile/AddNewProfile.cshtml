@@ -26,9 +26,8 @@
 
                             @if (ViewBag.Message != null)
                             {
-
                                 <div class="alert alert-warning alert-dismissible">
-                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
                                     <h4><i class="icon fa fa-warning"></i> Alert!</h4>
                                     @ViewBag.Message
                                 </div>
@@ -55,7 +54,7 @@
     </div>
 
     <div>
-        <a asp-action="Index">Back to List</a>
+        <i class="fa fa-backward"></i><a asp-action="Index"> Back to List</a>
     </div>
 
 </section>

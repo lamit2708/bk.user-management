@@ -164,21 +164,7 @@ namespace BK.UserManagement.Web.Controllers
                 return View(listRoleRole);
             }
         }
-
-       
-
-
-
-
-
-
-
-
-
-
-
-
-
+   
         //List User Role
 
         public IActionResult ListUserRole()
@@ -193,8 +179,6 @@ namespace BK.UserManagement.Web.Controllers
         }
 
         
-
-
         // List Role Sys Privs
         public IActionResult ListRoleSysPrivs()
         {
@@ -462,5 +446,18 @@ namespace BK.UserManagement.Web.Controllers
 
             return RedirectToAction(nameof(RoleController.Index), "Role");
         }
+
+        //List Role Object Privs Table
+        public IActionResult ListRoleObjectPrivs()
+        {
+
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                var roleObject = ole.Query<ListRoleObjectPrivs>("SELECT * FROM ROLE_TAB_PRIVS");
+                return View(roleObject);
+            }
+        }
+
+
     }
 }

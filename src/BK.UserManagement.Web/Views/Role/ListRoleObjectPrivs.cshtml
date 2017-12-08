@@ -1,0 +1,133 @@
+
+    @{
+        ViewData["Title"] = "ListRoleObjectPrivs";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            List Role Object Privs
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Role</a></li>
+            <li class="active><a href="#">ListRoleObjectPrivs</a></li>
+
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="tbl_user" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ROLE</th>
+                                    <th>OWNER</th>
+                                    <th>TABLE_NAME</th>
+                                    <th>COLUMN_NAME</th>
+                                    <th>PRIVILEGE</th>
+                                    <th>GRANTABLE</th>
+                                    
+                                    <th>Features</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var rob in Model)
+                                {
+                                    <tr>
+                                        <td>@rob.ROLE</td>
+                                        <td>@rob.OWNER</td>
+                                        <td>@rob.TABLE_NAME</td>
+                                        <td>@rob.COLUMN_NAME</td>
+                                        <td>@rob.PRIVILEGE</td>
+                                        <td>@rob.GRANTABLE</td>
+
+                                        <td>
+
+                                            <button type="button" data-role-name="@rob.ROLE"
+                                                    class="btnEdit btn btn-success pull-right" style="margin-right: 5px;">
+                                                <i class="fa fa-edit"></i> Grant & Revoke
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Features</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+
+
+    @section Scripts {
+
+        <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('.btnEdit').click(function (e) {
+                //var userId = $(this).data('userId');
+                var roleName = $(this).data('roleName');
+                //console.log($(this).data());
+                location.href = '@Url.Content("~/Role/EditRoleSysPrivs/")' + roleName;
+            });
+            $('.btnDelete').click(function (e)
+            {
+                var userId = $(this).data('userId');
+                var username = $(this).data('userName');
+                if (userId > 100 && userId < 2147483638) {
+
+                    //console.log(username);
+                    //console.log('@Url.Content("~/User/Delete/")' + username)
+                    location.href = '@Url.Content("~/User/Delete/")' + username;
+
+                } else {
+
+                    alert("Can not delete the user "+username+"/"+userId+"!\r\n Your have not privileges to delete the user with id <100. ");
+
+                }
+
+            });
+
+        });
+        </script>
+
+        <!-- page script -->
+        <script>
+            $(function () {
+                //$('#example1').DataTable()
+                $('#tbl_user').DataTable({
+                    'paging': true,
+                    'lengthChange': true,
+                    'searching': true,
+                    'ordering': true,
+                    'info': true,
+                    'autoWidth': false
+                })
+            })
+        </script>
+
+
+
+    }
+
+
+
+

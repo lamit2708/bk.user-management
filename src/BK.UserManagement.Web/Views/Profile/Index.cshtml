@@ -20,10 +20,19 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
-
+                @if (ViewBag.Message != null)
+                {
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
+                        <h4><i class="icon fa fa-warning"></i> Alert!</h4>
+                        @ViewBag.Message
+                    </div>
+                }
                 <!-- /.box-header -->
                 <div class="box-header">
                     @*<h3 class="box-title">User List</h3>*@
+
+
 
                     <button type="button" class="btnAdd btn btn-primary pull-left"
                             onclick="location.href='@Url.Action("AddNewProfile", "Profile")';">
@@ -48,7 +57,8 @@
                             @foreach (var u in Model)
                             {
                                 <tr>
-                                    <td>@u.PROFILE</td>
+                                    <td>@u.PROFILE
+                                    </td>
                                     <td>@u.NOOFUSER
 
                                         @Html.ActionLink(" [Show List]", "ViewUserInProfile", "Profile", new { _profileName = u.PROFILE }, new { @class = "UserListLink" })
@@ -57,37 +67,30 @@
                                     <td>
                                         @if (u.PROFILE != "DEFAULT" & u.PROFILE != "MONITORING_PROFILE")
                                         {
-                                            <button type="button" class="btnDelete btn btn-danger pull-right" style="margin-right: 5px;" onclick="location.href='@Url.Action("DeleteProfile", "Profile", new { _profileName = u.PROFILE })';">
-                                                <i class="fa fa-remove"></i> Delete
-                                            </button>
+                                            @Html.ActionLink(" Delete", "DeleteProfile", "Profile", new { _profileName = u.PROFILE }, new { @class = "btnDelete btn btn-danger pull-right", @style = "margin-right: 5px;" })
 
-                                            <button type="button" class="btnEdit btn btn-success pull-right" style="margin-right: 5px;" onclick="location.href='@Url.Action("Edit", "Profile", new { _profileName = u.PROFILE })';">
-                                                <i class="fa fa-edit"></i> Edit
-                                            </button>
-                                            @Html.ActionLink(" Reset", "ResetProfile", "Profile", new { _profileName = u.PROFILE }, new { @class = "btnView btn btn-warning pull-right UserListLink glyphicon glyphicon-refresh", @style = "margin-right: 5px;" })
                                             @*<button type="button" class="btnView btn btn-warning pull-right " style="margin-right: 5px;" onclick="location.href='@Url.Action("ResetProfile", "Profile",new {_profileName = u.PROFILE })';">
                                                 <i class="fa fa-list"></i> Reset Default
                                             </button>*@
                                         }
                                         else
                                         {
-                                            <button type="button" class="btnDelete btn btn-danger pull-right disabled" style="margin-right: 5px;">
-                                                <i class="fa fa-remove"></i> Delete
-                                            </button>
+                                            @Html.ActionLink(" Delete", "DeleteProfile", "Profile", new { _profileName = u.PROFILE }, new { @class = "btnDelete btn btn-danger pull-right disabled", @style = "margin-right: 5px;" })
 
-                                            <button type="button" class="btnEdit btn btn-success pull-right disabled" style="margin-right: 5px;">
-                                                <i class="fa fa-edit"></i> Edit
-                                            </button>
-                                            @Html.ActionLink(" Reset", "ResetProfile", "Profile", new { _profileName = u.PROFILE }, new { @class = "btnView btn btn-warning pull-right UserListLink glyphicon glyphicon-refresh disabled", @style = "margin-right: 5px;" })
                                             @*<button type="button" class="btnView btn btn-warning pull-right disabled" style="margin-right: 5px;">
                                                 <i class="fa fa-list"></i> Reset Default
                                             </button>*@
                                         }
                                         
-                                        <button type="button" class="btnView btn btn-primary pull-right" style="margin-right: 5px;" onclick="location.href='@Url.Action("ViewProfile", "Profile",new {_profileName = u.PROFILE })';">
-                                            <i class="fa fa-list"></i> View
-                                        </button>
-                                        
+
+                                        @if (u.PROFILE != "DEFAULT" & u.PROFILE != "MONITORING_PROFILE")
+                                        {
+                                            @Html.ActionLink(" View", "ViewProfile", "Profile", new { _profileName = u.PROFILE }, new { @class = "btnView btn btn-primary pull-right", @style = "margin-right: 5px;" })
+                                        }
+                                        else
+                                        {
+                                            @Html.ActionLink(" View", "ViewProfile", "Profile", new { _profileName = u.PROFILE }, new { @class = "btnView btn btn-primary pull-right disabled", @style = "margin-right: 5px;" })
+                                        }
                                     </td>
                                 </tr>
                             }
@@ -124,6 +127,7 @@
                 'searching': true,
                 'ordering': true,
                 'info': true,
+                'pageLength':25,
                 'autoWidth': false
             })
         })
