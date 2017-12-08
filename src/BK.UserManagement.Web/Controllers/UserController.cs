@@ -46,8 +46,14 @@ namespace BK.UserManagement.Web.Controllers
 
                 vmEditUser.User = ole.Query<UserModel>("SELECT * FROM dba_users u WHERE u.USERNAME = :Username", new { Username = id })
                     .FirstOrDefault();
-                var userInfo = ole.Query<UserInfoModel>("SELECT * FROM sys.dba_user_info u WHERE u.USERNAME = :Username", new { Username = id })
-                    .FirstOrDefault();
+                var userInfo = ole.Query<UserInfoModel>("SELECT * FROM sys.dba_user_info u WHERE u.USERNAME = :Username", new { Username = id.ToUpper() })
+                     .FirstOrDefault();
+                if (userInfo == null)
+                {
+                    ole.Query<int>($@"INSERT INTO sys.dba_user_info (USERNAME) VALUES ('{ id.ToUpper()}')");
+                    userInfo = new UserInfoModel();
+                }
+
                 vmEditUser.FirstName = userInfo.FIRST_NAME;
                 vmEditUser.LastName = userInfo.LAST_NAME;
                 vmEditUser.Phone = userInfo.PHONE;
@@ -163,6 +169,11 @@ WHERE USERNAME = '{model.Username.ToUpper()}'";
                                         Value = x.PROFILE.ToString()
                                     });
                 vmEditUser.ProfileName = "DEFAULT";
+               
+//                ole.Query<int>($@"INSERT INTO sys.dba_user_info (USERNAME,FIRST_NAME,LAST_NAME,ADDRESS,PHONE,EMAIL) 
+//VALUES ('{ vmEditUser.Username.ToUpper()}','{vmEditUser.FirstName}','{vmEditUser.LastName}','{vmEditUser.Address}','{vmEditUser.Phone}','{vmEditUser.Email}')");
+                    
+
                 return View(vmEditUser);
             }
         }

@@ -91,8 +91,8 @@ namespace BK.UserManagement.Web.Controllers
                 var con = new OracleConnection();
                 con.ConnectionString = String.Format(config.GetConnectionString("UserConnection"), dataSource, username, password);
                 con.Open();
-                con.Close();
-                con.Dispose();
+                //con.Close();
+                //con.Dispose();
                 return true;
                 
             }

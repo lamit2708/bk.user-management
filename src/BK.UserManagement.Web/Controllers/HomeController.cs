@@ -7,14 +7,13 @@ using System.Configuration;
 using System;
 using BK.UserManagement.Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using BK.UserManagement.Web.Models.DashboardViewModels;
+using System.Linq;
+using System.Security.Claims;
 
 namespace BK.UserManagement.Web.Controllers
 {
-    //public class UserModel
-    //{
-       
-    //}
-    //[Authorize]
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IConfiguration config;
@@ -24,7 +23,26 @@ namespace BK.UserManagement.Web.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            var vmDashboard = new DashboardViewModel();
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+               
+
+                vmDashboard.NumOfUsers = ole.Query<int>("SELECT COUNT(*) FROM sys.dba_users").FirstOrDefault();
+                vmDashboard.NumOfRoles = ole.Query<int>("SELECT COUNT(*) FROM sys.dba_roles").FirstOrDefault();
+                vmDashboard.NumOfProfiles = ole.Query<int>("SELECT COUNT(DISTINCT PROFILE) FROM sys.dba_profiles").FirstOrDefault();
+                ole.Close();
+            }
+            var connString = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication).Value;
+            using (var ole = new OracleConnection(connString))
+            {
+                vmDashboard.NumOfSessionPrivs = ole.Query<int>("SELECT COUNT(*) FROM sys.session_privs").FirstOrDefault();
+                vmDashboard.NumOfSessionRoles = ole.Query<int>("SELECT COUNT(*) FROM sys.session_roles").FirstOrDefault();
+
+
+            }
+            return View(vmDashboard);
+
         }
 
         public IActionResult Dashboard()
