@@ -83,7 +83,13 @@ namespace BK.UserManagement.Web.Controllers
                 }
                 else if(ListType == "REVOKE")
                 {
-                    ole.Query<string>($@"{ListType} {ListPriv} FROM {_username}");
+                    var iExist = ole.Query($@"SELECT * FROM DBA_SYS_PRIVS WHERE GRANTEE = '{_username}' AND PRIVILEGE LIKE '{ListPriv}%'").Count();
+                    if (iExist > 0)
+                    {
+                        ole.Query<string>($@"{ListType} {ListPriv} FROM {_username}");
+                    }
+
+                    
                 }
                 
 
