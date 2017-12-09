@@ -1,4 +1,5 @@
-
+@using BK.UserManagement.Web.Models
+@model IEnumerable<SysPrivsModel>
 @{
     ViewData["Title"] = "Grant Sys Privileges To User";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -22,6 +23,24 @@
             <div class="box box-success">
                 <div class="box-header with-border">
                     @*<h3 class="box-title">General Elements</h3>*@
+                    <div class="form-group">
+                        <label class="col-md-1 control-label">PRIVILEGE</label>
+                        <div class="col-md-11">
+                            @Html.DropDownList("ListPriv", null, null, htmlAttributes: new { @class = "form-control select2" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-1 control-label">ADMIN</label>
+                        <div class="col-md-11">
+                            @Html.DropDownList("ListAdmin", null, null, htmlAttributes: new { @class = "form-control select2" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-1 control-label">TYPE</label>
+                        <div class="col-md-11">
+                            @Html.DropDownList("ListType", null, null, htmlAttributes: new { @class = "form-control select2" })
+                        </div>
+                    </div>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -33,40 +52,28 @@
                             @ViewBag.Message
                         </div>
                     }
-                    <form asp-action="GrantSysPrivs">
-                        <div class="form-horizontal">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <table id="tbl_userSysPriv" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                
+                                <th>PRIVILEGE</th>
+                                <th>ADMIN_OPTION</th>
 
-                            <input type="hidden" asp-for="Profile" value="@Model.Profile">
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                            <div class="form-group">
-                                <label asp-for="Resource_Name" class="col-md-2 control-label"></label>
-                                <div class="col-md-10">
-                                    <input asp-for="Resource_Name" class="form-control" disabled />
-                                    <input type="hidden" asp-for="Resource_Name" value="@Model.Resource_Name">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Resource_Type" class="col-md-2 control-label"></label>
-                                <div class="col-md-10">
-                                    <input asp-for="Resource_Type" class="form-control" disabled />
-                                    <input type="hidden" asp-for="Resource_Type" value="@Model.Resource_Type">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Limit" class="col-md-2 control-label"></label>
-                                <div class="col-md-10">
-                                    <input asp-for="Limit" class="form-control" />
-                                    <span asp-validation-for="Limit" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-offset-2 col-md-10">
-                                    <input type="submit" value="Save" class="btn-lg btn-success" />
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+
+
+                            @foreach (var u in Model)
+                            {
+                                <tr>
+                                    <td>@u.PRIVILEGE</td>
+                                    <td>@u.ADMIN_OPTION</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

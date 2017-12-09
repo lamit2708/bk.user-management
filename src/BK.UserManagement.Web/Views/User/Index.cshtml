@@ -113,6 +113,12 @@
                 //console.log($(this).data());
                 location.href = '@Url.Content("~/User/Edit/")' + username;
             });
+            $('.btnGrant').click(function (e) {
+                //var userId = $(this).data('userId');
+                var username = $(this).data('userName');
+                //console.log($(this).data());
+                location.href = '@Url.Content("~/Privilege/GrantSysPrivs/")' + username;
+            });
             $('.btnDelete').click(function (e)
             {
                 var userId = $(this).data('userId');
