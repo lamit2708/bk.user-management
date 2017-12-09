@@ -8,6 +8,7 @@
   <ItemGroup>
     <Compile Remove="Controllers\HomeController1.cs" />
     <Compile Remove="Controllers\SysController - Copy.cs" />
+    <Compile Remove="Models\RoleViewModels\GrantRoleObjectViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>

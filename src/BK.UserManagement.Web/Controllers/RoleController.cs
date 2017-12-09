@@ -459,5 +459,84 @@ namespace BK.UserManagement.Web.Controllers
         }
 
 
+
+        [HttpGet]
+        public IActionResult GrantRoleObjectPrivs(string id)
+        {
+            var roleObjectsPrivsViewModel = new GrantRoleObjectPrivsViewModel();
+            roleObjectsPrivsViewModel.Role = id;
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                var roleSelect = ole.Query<GrantRoleObjectPrivsViewModel>($"select * from ROLE_TAB_PRIVS where role='{id}' and PRIVILEGE='SELECT'").FirstOrDefault();
+                if (roleSelect != null)
+                {
+                    roleObjectsPrivsViewModel.Select = true;
+                }
+
+                var roleInsert = ole.Query<GrantRoleObjectPrivsViewModel>($"select * from ROLE_TAB_PRIVS where role='{id}' and PRIVILEGE='INSERT'").FirstOrDefault();
+                if (roleInsert != null)
+                {
+                    roleObjectsPrivsViewModel.Insert = true;
+                }
+
+                var roleDelete = ole.Query<GrantRoleObjectPrivsViewModel>($"select * from ROLE_TAB_PRIVS where role='{id}' and PRIVILEGE='DELETE'").FirstOrDefault();
+                if (roleDelete != null)
+                {
+                    roleObjectsPrivsViewModel.Delete = true;
+                }
+
+                return View(roleObjectsPrivsViewModel);
+            }
+        }
+
+
+        [HttpPost]
+        public IActionResult GrantRoleObjectPrivs(GrantRoleObjectPrivsViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                EditObjectPrivs(model.Role,model.Table_Name, "SELECT", model.Select);
+                EditObjectPrivs(model.Role, model.Table_Name, "INSERT", model.Insert);
+                EditObjectPrivs(model.Role, model.Table_Name, "DELETE", model.Delete);
+
+            }
+            //  return View(model);
+            return RedirectToAction(nameof(RoleController.ListRoleObjectPrivs), "Role");
+        }
+        // Ham xu ly quyen he thong
+        private void EditObjectPrivs(string user,string Table_Name, string privsName, bool grant)
+        {
+            try
+            {
+                using (var conn = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+                {
+                    conn.Open();
+                    OracleCommand cmd = conn.CreateCommand();
+                    if (grant == false)
+
+                    {
+                        cmd.CommandText = $"GRANT {privsName} ON {Table_Name} TO {user}";
+                        cmd.ExecuteNonQuery();
+                        cmd.CommandText = $"REVOKE {privsName} ON {Table_Name} FROM {user}";
+                        cmd.ExecuteNonQuery();
+                        cmd.CommandText = $"GRANT {privsName} ON {Table_Name} TO {user}";
+                        cmd.ExecuteNonQuery();
+                    }
+
+
+
+                    if (grant == false)
+                    {
+                        cmd.CommandText = $"REVOKE {privsName} ON {Table_Name} FROM {user}";
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
     }
 }

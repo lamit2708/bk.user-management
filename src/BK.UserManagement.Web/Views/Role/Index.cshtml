@@ -61,12 +61,12 @@
                                             class="btnDelete btn btn-danger pull-right">
                                             <i class="fa fa-edit"></i> Drop
                                         </button>
-<!--
+
                                         <button type="button" data-role-name="@r.ROLE"
-                                                class="btnGrantRoleRole btn btn-success pull-right" style="margin-right: 5px;">
-                                            <i class="fa fa-edit"></i> GrantRoleRole
+                                                class="btnGrantObjectPrivs btn btn-success pull-right" style="margin-right: 5px;">
+                                            <i class="fa fa-edit"></i> GrantObjectPrivs
                                         </button>
- -->
+
                                         <button type="button" data-role-name="@r.ROLE"
                                                 class="btnGrantSysPrivs btn btn-success pull-right" style="margin-right: 5px;">
                                             <i class="fa fa-edit"></i> GrantSysPrivs
@@ -117,6 +117,10 @@
                 location.href = '@Url.Content("~/Role/EditRoleSysPrivs/")' + roleName;
             });
 
+            $('.btnGrantObjectPrivs').click(function (e) {
+                var roleName = $(this).data('roleName');
+                location.href = '@Url.Content("~/Role/GrantRoleObjectPrivs/")' + roleName;
+            });
 
             $('.btnEdit').click(function (e) {
                 var roleName = $(this).data('roleName');
