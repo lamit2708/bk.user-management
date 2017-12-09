@@ -12,5 +12,11 @@ namespace BK.UserManagement.Web.Controllers
         {
             return View();
         }
+
+        public IActionResult GrantSysPrivs()
+        {
+            return View();
+        }
+
     }
 }
