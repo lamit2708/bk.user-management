@@ -14,10 +14,11 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using BK.UserManagement.Web.Models.UserViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data;
 
 namespace BK.UserManagement.Web.Controllers
 {
-    
+
     public class AccountController : Controller
     {
 
@@ -50,6 +51,7 @@ namespace BK.UserManagement.Web.Controllers
                     {
                         new Claim(ClaimTypes.Name, model.Username),
                         new Claim(ClaimTypes.Authentication, String.Format(config.GetConnectionString("UserConnection"), model.Server + "/" + model.Sid, model.Username, model.Password)),
+                        
 
                     };
 
@@ -84,29 +86,41 @@ namespace BK.UserManagement.Web.Controllers
 
         private bool LoginUser(string dataSource, string username, string password)
         {
-
+            IDbConnection con = null;
             try
             {
-
-                var con = new OracleConnection();
+                con = new OracleConnection();
                 con.ConnectionString = String.Format(config.GetConnectionString("UserConnection"), dataSource, username, password);
                 con.Open();
-                //con.Close();
-                //con.Dispose();
                 return true;
-                
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 return false;
             }
+            finally
+            {
+                con?.Close();
+                con?.Dispose();
+            }
+
 
         }
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
+            var loggedInUser = HttpContext.User;
+            var loggedInUserName = loggedInUser.Identity.Name;
             await HttpContext.Authentication.SignOutAsync("CookieAuthentication");
+            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            {
+                var sessionId = ole.Query<string>($"SELECT sid || ',' || serial# FROM v$session WHERE username LIKE '%{loggedInUserName.ToUpper()}%'").FirstOrDefault();
+                ////ole.Query<int>($"ALTER SYSTEM KILL SESSION '{sessionId}'").FirstOrDefault();
+                ole.Query<int>($"ALTER SYSTEM DISCONNECT SESSION '{sessionId}' IMMEDIATE");
+                
+
+            }
             return Redirect("/Account/Login");
         }
         private IActionResult Index()
@@ -178,7 +192,7 @@ namespace BK.UserManagement.Web.Controllers
         {
             var loggedInUser = HttpContext.User;
             string username = loggedInUser.Identity.Name;
-            
+
             using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
             {
                 EditUserViewModel vmEditUser = new EditUserViewModel();
@@ -187,7 +201,7 @@ namespace BK.UserManagement.Web.Controllers
                     .FirstOrDefault();
                 var userInfo = ole.Query<UserInfoModel>("SELECT * FROM sys.dba_user_info u WHERE u.USERNAME = :Username", new { Username = username.ToUpper() })
                     .FirstOrDefault();
-                if(userInfo == null)
+                if (userInfo == null)
                 {
                     ole.Query<int>($@"INSERT INTO sys.dba_user_info (USERNAME) VALUES ('{ username.ToUpper()}')");
                     userInfo = new UserInfoModel();
@@ -197,11 +211,11 @@ namespace BK.UserManagement.Web.Controllers
                 vmEditUser.Phone = userInfo.PHONE;
                 vmEditUser.Email = userInfo.EMAIL;
                 vmEditUser.Address = userInfo.ADDRESS;
-                
+
 
                 vmEditUser.DefaultTablespaceName = vmEditUser.User.DEFAULT_TABLESPACE;
                 vmEditUser.TemporaryTablespaceName = vmEditUser.User.TEMPORARY_TABLESPACE;
-                
+
                 vmEditUser.ProfileName = vmEditUser.User.PROFILE;
                 vmEditUser.AccountStatus = vmEditUser.User.ACCOUNT_STATUS;
                 vmEditUser.QuotaList = ole.Query<QuotaModel>($"SELECT TABLESPACE_NAME, BYTES, MAX_BYTES FROM SYS.DBA_TS_QUOTAS WHERE USERNAME = '{vmEditUser.User.USERNAME}'");
