@@ -61,6 +61,12 @@
                                                 data-user-name="@u.USERNAME" type="button" class="btnDelete btn btn-danger pull-right">
                                             <i class="fa fa-remove"></i> Delete
                                         </button>
+
+                                        <button data-user-id="@u.USER_ID"
+                                                data-user-name="@u.USERNAME" type="button" class="btnGrant btn btn-primary pull-right" style="margin-right: 5px;">
+                                            <i class="fa fa-chain"></i> Grant/Revoke
+                                        </button>
+
                                         @*@Html.ActionLink("Edit", "Edit", new { id=u.USER_ID})*@
                                         <button type="button" data-user-id="@u.USER_ID" data-user-name="@u.USERNAME"
                                                 class="btnEdit btn btn-success pull-right" style="margin-right: 5px;">
@@ -106,6 +112,12 @@
                 var username = $(this).data('userName');
                 //console.log($(this).data());
                 location.href = '@Url.Content("~/User/Edit/")' + username;
+            });
+            $('.btnGrant').click(function (e) {
+                //var userId = $(this).data('userId');
+                var username = $(this).data('userName');
+                //console.log($(this).data());
+                location.href = '@Url.Content("~/Privilege/GrantSysPrivs/")' + username;
             });
             $('.btnDelete').click(function (e)
             {

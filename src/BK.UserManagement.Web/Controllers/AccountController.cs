@@ -51,7 +51,7 @@ namespace BK.UserManagement.Web.Controllers
                     {
                         new Claim(ClaimTypes.Name, model.Username),
                         new Claim(ClaimTypes.Authentication, String.Format(config.GetConnectionString("UserConnection"), model.Server + "/" + model.Sid, model.Username, model.Password)),
-                        
+
 
                     };
 
@@ -110,16 +110,23 @@ namespace BK.UserManagement.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            var loggedInUser = HttpContext.User;
-            var loggedInUserName = loggedInUser.Identity.Name;
-            await HttpContext.Authentication.SignOutAsync("CookieAuthentication");
-            using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+            try
             {
-                var sessionId = ole.Query<string>($"SELECT sid || ',' || serial# FROM v$session WHERE username LIKE '%{loggedInUserName.ToUpper()}%'").FirstOrDefault();
-                ////ole.Query<int>($"ALTER SYSTEM KILL SESSION '{sessionId}'").FirstOrDefault();
-                ole.Query<int>($"ALTER SYSTEM DISCONNECT SESSION '{sessionId}' IMMEDIATE");
-                
-
+                var loggedInUser = HttpContext.User;
+                var loggedInUserName = loggedInUser.Identity.Name;
+                var username = loggedInUserName.ToUpper();
+                await HttpContext.Authentication.SignOutAsync("CookieAuthentication");
+                if (username == "SYSTEM") return Redirect("/Account/Login");
+                using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
+                {
+                    var sessionId = ole.Query<string>($"SELECT sid || ',' || serial# FROM v$session WHERE username LIKE '%{loggedInUserName.ToUpper()}%'").FirstOrDefault();
+                    ////ole.Query<int>($"ALTER SYSTEM KILL SESSION '{sessionId}'").FirstOrDefault();
+                    ole.Query<int>($"ALTER SYSTEM DISCONNECT SESSION '{sessionId}' IMMEDIATE");
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
             return Redirect("/Account/Login");
         }

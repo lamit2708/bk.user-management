@@ -11,6 +11,7 @@ using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace BK.UserManagement.Web.Controllers
 {
@@ -267,7 +268,53 @@ namespace BK.UserManagement.Web.Controllers
             
         }
 
-        
+        [HttpPost]
+        public IActionResult Edit(ProfileResource _profile)
+        {
+            if (ModelState.IsValid)
+            {
+                if (isGranted("ALTER PROFILE", HttpContext.User.Identity.Name))
+                {
+                    if (_profile.Limit.ToUpper().Trim() != "DEFAULT" & _profile.Limit.ToUpper().Trim() != "UNLIMITED")
+                    {
+                        if (Regex.IsMatch(_profile.Limit.Trim(), @"^\d+$"))
+                        {
+                            if (Int64.Parse(_profile.Limit.Trim()) < 0 | Int64.Parse(_profile.Limit.Trim()) > 2147483646)
+                            {
+                                ViewBag.Message = "Invalid LIMIT Parameter. Please enter DEFAULT or UNLIMITED or number from 1 to 2147483646 (2^31)";
+                                return View(_profile);
+                            }
+                        }
+                        else
+                        {
+                            ViewBag.Message = "Invalid LIMIT Parameter. Please enter DEFAULT or UNLIMITED or number from 1 to 2147483646 (2^31)";
+                            return View(_profile);
+                        }
+
+                    }
+
+
+                    connString = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication).Value;
+                    using (var conn = new OracleConnection(connString))
+                    {
+                        conn.Open();
+                        OracleCommand cmd = conn.CreateCommand();
+                        cmd.CommandText = $"ALTER PROFILE {_profile.Profile} LIMIT {_profile.Resource_Name} {_profile.Limit}";
+                        cmd.ExecuteNonQuery();
+                        return RedirectToAction("ViewProfile", new { _profileName = _profile.Profile });
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("NoPermit"); // 
+                }
+            }
+            else
+            {
+                return View(_profile);
+            }
+        }
+
 
     }
 }

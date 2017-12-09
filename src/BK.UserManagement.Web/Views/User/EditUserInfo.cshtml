@@ -1,0 +1,131 @@
+@using BK.UserManagement.Web.Models.UserViewModels
+@model EditUserViewModel
+@{
+    ViewData["Title"] = "EditUserInfo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        User Details
+    </h1>
+
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> User</a></li>
+        <li class="active">Edit User Info</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <form role="form" asp-controller="User" asp-action="EditUserInfo" asp-route-returnurl="@ViewData["ReturnUrl"]" class="form-horizontal">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        @*<h3 class="box-title">General Elements</h3>*@
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+
+                        <div class=" col-md-6">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+
+                            <div class="form-group">
+                                <label asp-for="Username" class="col-md-4 control-label"></label>
+                                <div class="col-md-8">
+                                    <input class="form-control" value="@Model.User.USERNAME" disabled />
+                                    <input type="hidden" asp-for="Username" value="@Model.User.USERNAME">
+                                    <span asp-validation-for="Username" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Password" class="col-md-4 control-label"></label>
+                                <div class="col-md-8">
+                                    <input asp-for="Password" class="form-control" placeholder="Update your password here!" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ConfirmPassword" class="col-md-4 control-label"></label>
+                                <div class="col-md-8">
+                                    <input asp-for="ConfirmPassword" class="form-control" />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label asp-for="FirstName" class="col-md-4 control-label"></label>
+                                <div class="col-md-8">
+                                    <input asp-for="FirstName" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="LastName" class="col-md-4 control-label"></label>
+                                <div class="col-md-8">
+                                    <input asp-for="LastName" class="form-control" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Address" class="col-md-4 control-label"></label>
+                                <div class="col-md-8">
+                                    <input asp-for="Address" class="form-control" />
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Phone" class="col-md-4 control-label"></label>
+                                <div class="col-md-8">
+                                    <input asp-for="Phone" class="form-control" />
+                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Email" class="col-md-4 control-label"></label>
+                                <div class="col-md-8">
+                                    <input asp-for="Email" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-4 col-md-7">
+                                    <button type="submit"
+                                            class="btnSave btn btn-success pull-left" style="margin-right: 5px;">
+                                        <i class="fa fa-save"></i> Save
+                                    </button>
+                                    <button type="reset"
+                                            class="btnReset btn btn-default pull-right" style="margin-right: 5px;">
+                                        <i class="fa fa-undo"></i> Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Active Menu
+            $('.menu_list_user_info').parent().addClass('active').closest('.treeview').addClass('active');
+
+        });
+    </script>
+
+
+}

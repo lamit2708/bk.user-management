@@ -1,0 +1,100 @@
+@using BK.UserManagement.Web.Models
+@model IEnumerable<SysPrivsModel>
+@{
+    ViewData["Title"] = "Grant Sys Privileges To User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Grant System Privileges To @ViewBag.Username
+    </h1>
+
+    @*<ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> User</a></li>
+        <li class="active">Edit</li>
+    </ol>*@
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class=" col-md-12">
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    @using (Html.BeginForm("GrantSysPrivs", "Privilege")) { 
+                    <div class="form-group">
+                        <INPUT TYPE="text" NAME="_username" value="@ViewBag.Username" style="display: none">
+                        <label class="col-md-1 control-label">PRIVILEGE</label>
+                        <div class="col-md-11">
+                            @Html.DropDownList("ListPriv", null, null, htmlAttributes: new { @class = "form-control select2" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-1 control-label">ADMIN_OPTION</label>
+                        <div class="col-md-11">
+                            @Html.DropDownList("ListAdmin", null, null, htmlAttributes: new { @class = "form-control select2" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-1 control-label">ACTION</label>
+                        <div class="col-md-11">
+                            @Html.DropDownList("ListType", null, null, htmlAttributes: new { @class = "form-control select2" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <button type="submit"
+                                    class="btnSave btn btn-success pull-left" style="margin-right: 5px;">
+                                <i class="fa fa-save"></i> Save
+                            </button>
+                        </div>
+                    </div>
+                    }
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    @if (ViewBag.Message != null)
+                    {
+                        <div class="alert alert-warning alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
+                            <h4><i class="icon fa fa-warning"></i> Alert!</h4>
+                            @ViewBag.Message
+                        </div>
+                    }
+                    <table id="tbl_userSysPriv" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>PRIVILEGE</th>
+                                <th>ADMIN_OPTION</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+
+                            @foreach (var u in Model)
+                            {
+                                <tr>
+                                    <td>@u.PRIVILEGE</td>
+                                    <td>@u.ADMIN_OPTION</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+@section Scripts {
+<script type="text/javascript">
+        $(document).ready(function () {
+
+            $('.select2').select2();
+
+        });
+</script>
+}
