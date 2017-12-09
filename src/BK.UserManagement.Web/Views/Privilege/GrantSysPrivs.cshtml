@@ -8,7 +8,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Grant System Privileges To User
+        Grant System Privileges To @ViewBag.Username
     </h1>
 
     @*<ol class="breadcrumb">
@@ -22,25 +22,35 @@
         <div class=" col-md-12">
             <div class="box box-success">
                 <div class="box-header with-border">
-                    @*<h3 class="box-title">General Elements</h3>*@
+                    @using (Html.BeginForm("GrantSysPrivs", "Privilege")) { 
                     <div class="form-group">
+                        <INPUT TYPE="text" NAME="_username" value="@ViewBag.Username" style="display: none">
                         <label class="col-md-1 control-label">PRIVILEGE</label>
                         <div class="col-md-11">
                             @Html.DropDownList("ListPriv", null, null, htmlAttributes: new { @class = "form-control select2" })
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-1 control-label">ADMIN</label>
+                        <label class="col-md-1 control-label">ADMIN_OPTION</label>
                         <div class="col-md-11">
                             @Html.DropDownList("ListAdmin", null, null, htmlAttributes: new { @class = "form-control select2" })
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-1 control-label">TYPE</label>
+                        <label class="col-md-1 control-label">ACTION</label>
                         <div class="col-md-11">
                             @Html.DropDownList("ListType", null, null, htmlAttributes: new { @class = "form-control select2" })
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <button type="submit"
+                                    class="btnSave btn btn-success pull-left" style="margin-right: 5px;">
+                                <i class="fa fa-save"></i> Save
+                            </button>
+                        </div>
+                    </div>
+                    }
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -55,7 +65,6 @@
                     <table id="tbl_userSysPriv" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                
                                 <th>PRIVILEGE</th>
                                 <th>ADMIN_OPTION</th>
 
@@ -80,3 +89,12 @@
     </div>
 
 </section>
+@section Scripts {
+<script type="text/javascript">
+        $(document).ready(function () {
+
+            $('.select2').select2();
+
+        });
+</script>
+}
