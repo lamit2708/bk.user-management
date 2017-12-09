@@ -36,7 +36,7 @@
                         <div class="form-group">
                             <label asp-for="UserId" class="col-md-4 control-label"></label>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" value="@Model.User.USER_ID" disabled>
+                                <input type="text" class="form-control" value="@Model.User.USER_ID" hidden>
                                 <input type="hidden" asp-for="UserId" value="@Model.User.USER_ID">
                                 <span asp-validation-for="UserId" class="text-danger"></span>
                             </div>

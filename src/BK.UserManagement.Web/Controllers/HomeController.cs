@@ -26,20 +26,16 @@ namespace BK.UserManagement.Web.Controllers
             var vmDashboard = new DashboardViewModel();
             using (var ole = new OracleConnection(config.GetConnectionString("DefaultConnection")))
             {
-               
-
                 vmDashboard.NumOfUsers = ole.Query<int>("SELECT COUNT(*) FROM sys.dba_users").FirstOrDefault();
                 vmDashboard.NumOfRoles = ole.Query<int>("SELECT COUNT(*) FROM sys.dba_roles").FirstOrDefault();
                 vmDashboard.NumOfProfiles = ole.Query<int>("SELECT COUNT(DISTINCT PROFILE) FROM sys.dba_profiles").FirstOrDefault();
-                ole.Close();
             }
+            //var connString1 = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication).Value;
             var connString = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication).Value;
             using (var ole = new OracleConnection(connString))
             {
                 vmDashboard.NumOfSessionPrivs = ole.Query<int>("SELECT COUNT(*) FROM sys.session_privs").FirstOrDefault();
                 vmDashboard.NumOfSessionRoles = ole.Query<int>("SELECT COUNT(*) FROM sys.session_roles").FirstOrDefault();
-
-
             }
             return View(vmDashboard);
 
